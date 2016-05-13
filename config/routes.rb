@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
+  resources :users
+
   get 'register', to: 'users#new', as: 'register'
+  # user_registration_test.rb dependent on register_path too
 
   root 'pages#home'
 
