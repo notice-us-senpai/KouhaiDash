@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'register', to: 'users#new', as: 'register'
+
   root 'pages#home'
 
   get 'pages/profile'
