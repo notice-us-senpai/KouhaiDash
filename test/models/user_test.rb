@@ -9,6 +9,7 @@ class UserTest < ActiveSupport::TestCase
     @user = User.new(
     	username: "Jiayee", 
     	password: "password", 
+      password_confirmation: "password", 
     	email: "l-jiayee@comp.nus.edu.sg"
   	)
   end
@@ -23,7 +24,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "password should be present" do
-    @user.password = ""
+    @user.password = @user.password_confirmation = " "
     assert_not @user.valid?
   end
 
@@ -43,7 +44,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "password should not be too short" do
-    @user.password = "z" * 7
+    @user.password = @user.password_confirmation = "z" * 7
     assert_not @user.valid?
   end
 
