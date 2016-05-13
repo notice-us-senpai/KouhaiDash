@@ -4,7 +4,7 @@ class PagesControllerTest < ActionController::TestCase
   test "should get home" do
     get :home
     assert_response :success
-    assert_select "title", "Home | KouhaiDash!"
+    assert_select "title", "KouhaiDash!"
   end
 
   test "should get profile" do
