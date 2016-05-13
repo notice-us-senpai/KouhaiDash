@@ -9,3 +9,8 @@ one: {}
 #
 two: {}
 #  column: value
+
+jiayee:
+  username: jia96
+  email: akashahikari@gmail.com
+  password_digest: <%= User.digest('password') %>
