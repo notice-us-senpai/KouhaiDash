@@ -1,4 +1,9 @@
 class UsersController < ApplicationController
+  before_action :get_user, only: [:show, :edit]
+
+  def show
+  end
+
   def new
   	@user = User.new
   end
@@ -15,9 +20,8 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
-  	@user = User.find(params[:id])
- 	end
+  def edit
+  end
 
  	private
   
@@ -30,4 +34,8 @@ class UsersController < ApplicationController
    			:organisation, :position
   		)
   	end
+
+    def get_user
+      @user = User.find(params[:id])
+    end
 end
