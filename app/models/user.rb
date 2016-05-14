@@ -17,7 +17,8 @@ class User < ActiveRecord::Base
 	validates :password, 
 						presence: true, 
 						length: { minimum: 8 }, 
-						confirmation: true
+						confirmation: true, 
+            allow_nil: true
 
 	# Returns the hash digest of the given string.
   def User.digest(string)
