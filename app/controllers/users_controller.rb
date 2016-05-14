@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :get_user, only: [:show, :edit, :update]
-
+  before_action :logged_in_user, only: [:edit, :update]
+  
   def show
   end
 
@@ -46,5 +47,13 @@ class UsersController < ApplicationController
 
     def get_user
       @user = User.find(params[:id])
+    end
+
+    # Confirms a logged-in user.
+    def logged_in_user
+      unless logged_in?
+        flash[:danger] = "Please login."
+        redirect_to login_url
+      end
     end
 end
