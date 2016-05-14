@@ -14,3 +14,8 @@ jiayee:
   username: jia96
   email: akashahikari@gmail.com
   password_digest: <%= User.digest('password') %>
+
+yimin:
+  username: yimin
+  email: e0008742@u.nus.edu
+  password_digest: <%= User.digest('password') %>
