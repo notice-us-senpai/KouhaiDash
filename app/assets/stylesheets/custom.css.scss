@@ -1,5 +1,3 @@
-@import url(bootstrap-sprockets);
-@import url(bootstrap);
 @import url(https://fonts.googleapis.com/css?family=Nosifer);
 @import url(https://fonts.googleapis.com/css?family=Shadows+Into+Light+Two);
 @import url(https://fonts.googleapis.com/css?family=Shojumaru);
@@ -7,7 +5,7 @@
 /* universal */
 
 body {
-  background: url('ore-no-imouto.jpg');
+  background: url(asset-path('ore-no-imouto.jpg'));
   background-size: cover;
   font-family: 'Shadows Into Light Two', cursive; /* Jiayee */
   font-weight: bold;
