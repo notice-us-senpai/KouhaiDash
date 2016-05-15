@@ -1,5 +1,6 @@
 @import url(bootstrap-sprockets);
 @import url(bootstrap);
+@import url(https://fonts.googleapis.com/css?family=Nosifer);
 @import url(https://fonts.googleapis.com/css?family=Shadows+Into+Light+Two);
 @import url(https://fonts.googleapis.com/css?family=Shojumaru);
 
@@ -179,4 +180,8 @@ input {
 
 .jumbotron {
   font-family: 'Shojumaru', cursive;
+}
+
+footer {
+  font-family: 'Nosifer', cursive;
 }
