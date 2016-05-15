@@ -1,9 +1,12 @@
-/* @import "bootstrap-sprockets"; */
-/* @import "bootstrap"; */
+@import url(bootstrap-sprockets);
+@import url(bootstrap);
+@import url(https://fonts.googleapis.com/css?family=Shadows+Into+Light+Two);
+@import url(https://fonts.googleapis.com/css?family=Shojumaru);
 
 /* universal */
 
 body {
+  font-family: 'Shadows Into Light Two', cursive; /* Jiayee */
   padding-top: 60px;
 }
 
@@ -170,4 +173,10 @@ input {
 #session_remember_me {
   width: auto;
   margin-left: 0;
+}
+
+/* Jiayee */
+
+.jumbotron {
+  font-family: 'Shojumaru', cursive;
 }
