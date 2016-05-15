@@ -5,7 +5,9 @@
 /* universal */
 
 body {
-  background: url(asset-path('ore-no-imouto.jpg'));
+  background: url('ore-no-imouto.jpg');
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   background-size: cover;
   font-family: 'Shadows Into Light Two', cursive; /* Jiayee */
   font-weight: bold;
