@@ -4,14 +4,19 @@
       <%= link_to "KouhaiDash!", root_path %>
       <nav>
         <ul class="nav navbar-nav navbar-right">
-          <li><%= link_to "Home", root_path %></li>
+          <li>
+            <%= link_to "Home", root_path %>
+          </li>
           <% if logged_in? %>
-          	<li><%= link_to "Profile", current_user %></li>
+          	<li>
+              <%= link_to "Profile", current_user %>
+            </li>
             <li>
               <%= link_to "Settings", edit_user_path(current_user) %>
             </li>
-          	<li><%= link_to "Logout", logout_path, 
-          		method: "delete" %></li>
+          	<li>
+              <%= link_to "Logout", logout_path, method: "delete" %>
+            </li>
         	<% else %>
         		<li>
         			<%= link_to "Login", login_path %>

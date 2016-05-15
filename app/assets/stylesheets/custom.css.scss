@@ -7,7 +7,11 @@
 /* universal */
 
 body {
+  background: url('ore-no-imouto.jpg');
+  background-size: cover;
   font-family: 'Shadows Into Light Two', cursive; /* Jiayee */
+  font-weight: bold;
+  letter-spacing: 2px;
   /* padding-top: 60px; */
 }
 
@@ -179,9 +183,11 @@ input {
 /* Jiayee */
 
 .jumbotron {
+  background-color: rgba(255, 255, 255, 0.75);
   font-family: 'Shojumaru', cursive;
 }
 
 footer {
   font-family: 'Nosifer', cursive;
+  font-weight: normal;
 }

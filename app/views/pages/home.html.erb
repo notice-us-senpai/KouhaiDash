@@ -1,5 +1,10 @@
 <div class="jumbotron text-center">
   <h1>Welcome to KouhaiDash!</h1>
-  <%= link_to "Register", register_path, 
-  	class: "btn btn-lg btn-default" %>
+  <% if logged_in? %>
+  	<%= link_to "View Profile", current_user, 
+  		class: "btn btn-lg btn-default" %>
+	<% else %>
+		<%= link_to "Register", register_path, 
+  		class: "btn btn-lg btn-default" %>
+	<% end %>
 </div>
