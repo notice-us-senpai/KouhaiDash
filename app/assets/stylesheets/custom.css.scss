@@ -4,6 +4,10 @@
 
 /* universal */
 
+html {
+  height: 100%;
+}
+
 body {
   background: url(asset-path('ore-no-imouto.jpg'));
   background-attachment: fixed;
