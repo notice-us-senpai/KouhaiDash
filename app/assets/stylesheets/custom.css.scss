@@ -43,14 +43,14 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-size: 3em;
-  letter-spacing: -2px;
+  /* letter-spacing: -2px; */
   margin-bottom: 30px;
   text-align: center;
 }
 
 h2 {
   font-size: 1.2em;
-  letter-spacing: -1px;
+  /* letter-spacing: -1px; */
   margin-bottom: 30px;
   text-align: center;
   font-weight: normal;
@@ -70,7 +70,7 @@ p {
   font-size: 1.7em;
   color: #fff;
   text-transform: uppercase;
-  letter-spacing: -1px;
+  /* letter-spacing: -1px; */
   padding-top: 9px;
   font-weight: bold;
 }
@@ -132,7 +132,7 @@ aside {
     h1 {
       font-size: 1.4em;
       text-align: left;
-      letter-spacing: -1px;
+      /* letter-spacing: -1px; */
       margin-bottom: 3px;
       margin-top: 0px;
     }
@@ -182,6 +182,19 @@ input {
 #session_remember_me {
   width: auto;
   margin-left: 0;
+}
+
+/* Users index */
+
+.users {
+  list-style: none;
+  margin: 0;
+  li {
+    overflow: auto;
+    padding: 10px 0;
+    border-bottom: 1px solid silver;
+    margin-bottom: 4px;
+  }
 }
 
 /* Jiayee */
