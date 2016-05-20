@@ -38,6 +38,8 @@ magic_number.times do |n|
     )
 end
 
+=begin
+
 Group.create(name: 'TestGroup')
 Group.create(name: 'NoMember')
 magic_number.times do |i|
@@ -61,3 +63,5 @@ end
 
 # id: nil, name: nil, deadline: nil, description: nil, done: nil, 
 # created_at: nil, updated_at: nil, category_id: nil
+
+=end

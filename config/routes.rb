@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
-  resources :task_assignments
-  resources :tasks
-  resources :categories
-  resources :memberships
-  resources :groups
+  # resources :task_assignments
+  # resources :tasks
+  # resources :categories
+  # resources :memberships
+  # resources :groups
   
   get 'sessions/new'
 
@@ -18,7 +18,7 @@ Rails.application.routes.draw do
 
   root 'pages#home'
 
-  get 'cat_task/:cat_id', to: 'tasks#index', as: 'category_tasks'
+  # get 'cat_task/:cat_id', to: 'tasks#index', as: 'category_tasks'
 
   get 'pages/profile'
 
