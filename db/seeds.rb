@@ -10,7 +10,8 @@ User.create!(
 	username: "jia96",
   email: "akashahikari@gmail.com",
   password: "password",
-  password_confirmation: "password"
+  password_confirmation: "password",
+  admin: true
   )
 
 User.create!(
@@ -21,7 +22,10 @@ User.create!(
   )
 
 10.times do |n|
-  username = Faker::Internet.user_name[0...16]
+  username =""
+  until username.length >= 4
+    username = Faker::Internet.user_name[0...16]
+  end
   email = "#{n+1}@kouhaidash.org"
   password = "password"
   User.create!(
