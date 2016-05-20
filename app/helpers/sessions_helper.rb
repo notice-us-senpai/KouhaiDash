@@ -2,6 +2,7 @@ module SessionsHelper
 	# Logs in the given user.
   def log_in(user)
     session[:user_id] = user.id
+    session[:group_id] = User.find(user.id).groups.first.id
   end
 
   # Remembers a user in a persistent session.
@@ -34,6 +35,16 @@ module SessionsHelper
     end
   end
 
+  def current_group
+    if current_user
+      @current_group = Group.where(id:session[:group_id]).first
+    end
+  end
+
+  def change_group(group)
+    session[:group_id] = group.id
+  end
+
 	# Returns true if the user is logged in, false otherwise.
   def logged_in?
     !current_user.nil?
@@ -44,7 +55,7 @@ module SessionsHelper
     return false if remember_digest.nil?
     BCrypt::Password.new(remember_digest).is_password?(remember_token)
   end
-  
+
   # Forgets a persistent session.
   def forget(user)
     user.forget
