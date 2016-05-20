@@ -1,9 +1,17 @@
 Rails.application.routes.draw do
-  resources :task_assignments
-  resources :tasks
-  resources :categories
-  resources :memberships
-  resources :groups
+# <<<<<<< HEAD
+  # resources :task_assignments
+  # resources :tasks
+  # resources :categories
+  # resources :memberships
+  # resources :groups
+# =======
+  # resources :task_assignments
+  # resources :tasks
+  # resources :categories
+  # resources :memberships
+  # resources :groups
+# >>>>>>> delete-user
   
   get 'sessions/new'
 
@@ -18,7 +26,11 @@ Rails.application.routes.draw do
 
   root 'pages#home'
 
+<<<<<<< HEAD
   get 'cat_task/:cat_id', to: 'tasks#index', as: 'category_tasks'
+=======
+  # get 'cat_task/:cat_id', to: 'tasks#index', as: 'category_tasks'
+>>>>>>> delete-user
 
   get 'pages/profile'
 

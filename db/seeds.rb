@@ -38,6 +38,11 @@ magic_number.times do |n|
     )
 end
 
+# <<<<<<< HEAD
+# =======
+=begin
+
+>>>>>>> delete-user
 Group.create(name: 'TestGroup')
 Group.create(name: 'NoMember')
 magic_number.times do |i|
@@ -61,3 +66,8 @@ end
 
 # id: nil, name: nil, deadline: nil, description: nil, done: nil, 
 # created_at: nil, updated_at: nil, category_id: nil
+<<<<<<< HEAD
+=======
+
+=end
+# >>>>>>> delete-user
