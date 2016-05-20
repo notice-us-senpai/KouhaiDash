@@ -18,7 +18,7 @@ module GroupsHelper
       when 2
         root_path #calendar
       when 3
-        root_path #task
+        category_tasks_path(cat.id)
       when 4
         root_path #file
       when 5
@@ -28,7 +28,7 @@ module GroupsHelper
       end
       array.push({name: cat.name, path: path}) if path
     end
-    logger.info array.size.to_s + "number of element(s)\n"
+    #logger.info array.size.to_s + "number of element(s)\n"
     return array
   end
 end

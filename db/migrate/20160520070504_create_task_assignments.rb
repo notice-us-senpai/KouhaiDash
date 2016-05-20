@@ -6,5 +6,7 @@ class CreateTaskAssignments < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+    add_index :task_assignments, :tasks
+    add_index :task_assignments, :membership_id
   end
 end

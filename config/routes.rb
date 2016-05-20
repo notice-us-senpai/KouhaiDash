@@ -17,6 +17,8 @@ Rails.application.routes.draw do
 
   root 'pages#home'
 
+  get 'cat_task/:cat_id', to: 'tasks#index', as: 'category_tasks'
+
   get 'pages/profile'
 
   get 'pages/calendar'

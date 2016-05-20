@@ -4,7 +4,12 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
+    if params[:cat_id]
+      @category = Category.find(params[:cat_id])
+      @tasks = @category.tasks
+    else
+      @tasks = Task.all
+    end
   end
 
   # GET /tasks/1
