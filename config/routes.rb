@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :task_assignments
+  resources :tasks
+  resources :categories
+  resources :memberships
+  resources :groups
   get 'sessions/new'
 
   get 'login', to: 'sessions#new'
@@ -11,6 +16,8 @@ Rails.application.routes.draw do
   # user_registration_test.rb dependent on register_path too
 
   root 'pages#home'
+
+  get 'cat_task/:cat_id', to: 'tasks#index', as: 'category_tasks'
 
   get 'pages/profile'
 
