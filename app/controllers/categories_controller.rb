@@ -10,6 +10,12 @@ class CategoriesController < ApplicationController
   # GET /categories/1
   # GET /categories/1.json
   def show
+    case @category.type_no
+    when 3
+      session[:category]= @category.id
+      redirect_to tasks_path
+    else
+    end
   end
 
   # GET /categories/new

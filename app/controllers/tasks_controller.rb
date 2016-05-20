@@ -4,10 +4,11 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    if params[:cat_id]
-      @category = Category.find(params[:cat_id])
+    if session[:category]
+      @category = Category.find(session[:category])
       @tasks = @category.tasks
     else
+      # todo: display current_user tasks
       @tasks = Task.all
     end
   end
@@ -33,6 +34,9 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
+        if session[:category]
+          @task.update(category_id: session[:category])
+        end
         format.html { redirect_to @task, notice: 'Task was successfully created.' }
         format.json { render :show, status: :created, location: @task }
       else
@@ -61,7 +65,7 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
     respond_to do |format|
-      format.html { redirect_to tasks_url, notice: 'Task was successfully destroyed.' }
+      format.html { redirect_to task_url, notice: 'Task was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -76,4 +80,5 @@ class TasksController < ApplicationController
     def task_params
       params.require(:task).permit(:name, :deadline, :description, :done)
     end
+
 end

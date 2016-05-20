@@ -12,21 +12,7 @@ module GroupsHelper
     end
     array =[]
     categories.each do |cat|
-      path = case cat.type_no
-      when 1
-        root_path #org profile
-      when 2
-        root_path #calendar
-      when 3
-        category_tasks_path(cat.id)
-      when 4
-        root_path #file
-      when 5
-        root_path #contacts
-      else
-        nil
-      end
-      array.push({name: cat.name, path: path}) if path
+      array.push({name: cat.name, path: cat})
     end
     #logger.info array.size.to_s + "number of element(s)\n"
     return array

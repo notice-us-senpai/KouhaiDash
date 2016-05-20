@@ -16,12 +16,16 @@
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :type %><br>
-    <%= f.number_field :type %>
+    <%= f.label :type_no %><br>
+    <%= f.number_field :type_no %>
   </div>
   <div class="field">
     <%= f.label :group_id %><br>
     <%= f.number_field :group_id %>
+  </div>
+  <div class="field">
+    <%= f.label :public %><br>
+    <%= f.check_box :public %>
   </div>
   <div class="actions">
     <%= f.submit %>
