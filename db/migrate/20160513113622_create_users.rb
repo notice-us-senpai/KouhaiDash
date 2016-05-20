@@ -8,8 +8,8 @@ class CreateUsers < ActiveRecord::Migration
     	t.string :name
     	t.string :email
 
-    	t.string :birthday
-    	t.string :description
+    	t.date :birthday
+    	t.text :description
     	t.string :picture
 
     	t.string :organisation

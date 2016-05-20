@@ -2,6 +2,7 @@
 
 <h1>Listing Tasks</h1>
 
+<!--
 <table>
   <thead>
     <tr>
@@ -27,7 +28,29 @@
     <% end %>
   </tbody>
 </table>
+-->
 
-<br>
+<% @tasks.each do |task| %>
+  <h3>Name</h3>
+  <%= task.name %>
 
-<%= link_to 'New Task', new_task_path %>
+  <h3>Deadline</h3>
+  <%= task.deadline %>
+
+  <h3>Done</h3>
+  <% if task.done %>
+    <%= "Yes!" %>
+  <% else %>
+    <%= "Not yet!" %>
+  <% end %>
+
+  <h3>Actions</h3>
+  <p>
+    <%= link_to 'See More', task %> |
+    <%= link_to 'Edit', edit_task_path(task) %> |
+    <%= link_to 'Delete', task, method: :delete, 
+      data: { confirm: 'Are you sure?' } %>
+  </p>
+<% end %>
+
+<p><%= link_to 'New Task', new_task_path %></p>
