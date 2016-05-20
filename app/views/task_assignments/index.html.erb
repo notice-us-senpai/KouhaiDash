@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Task Assignments</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Membership</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @task_assignments.each do |task_assignment| %>
+      <tr>
+        <td><%= task_assignment.task_id %></td>
+        <td><%= task_assignment.membership_id %></td>
+        <td><%= link_to 'Show', task_assignment %></td>
+        <td><%= link_to 'Edit', edit_task_assignment_path(task_assignment) %></td>
+        <td><%= link_to 'Destroy', task_assignment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Task assignment', new_task_assignment_path %>

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :task_assignments
+  resources :tasks
   resources :categories
   resources :memberships
   resources :groups
