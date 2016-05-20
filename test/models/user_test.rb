@@ -10,7 +10,7 @@ class UserTest < ActiveSupport::TestCase
     	username: "l-jiayee", 
     	password: "password", 
       password_confirmation: "password", 
-    	email: "l-jiayee@comp.nus.edu.sg"
+    	email: "l-jiayee@comp.nus.edu.sg", 
   	)
   end
 
