@@ -26,11 +26,11 @@ Rails.application.routes.draw do
 
   root 'pages#home'
 
-<<<<<<< HEAD
-  get 'cat_task/:cat_id', to: 'tasks#index', as: 'category_tasks'
-=======
+# <<<<<<< HEAD
   # get 'cat_task/:cat_id', to: 'tasks#index', as: 'category_tasks'
->>>>>>> delete-user
+# =======
+  # get 'cat_task/:cat_id', to: 'tasks#index', as: 'category_tasks'
+# >>>>>>> delete-user
 
   get 'pages/profile'
 
