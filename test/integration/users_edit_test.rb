@@ -40,4 +40,12 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_equal username, @user.username
     assert_equal email, @user.email
   end
+
+  # JIAYEE WROTE THIS HERSELF!
+  test "admin should be immutable" do
+    patch user_path(@user), user: { 
+      admin: true
+    }
+    assert_not @user.admin?
+  end
 end

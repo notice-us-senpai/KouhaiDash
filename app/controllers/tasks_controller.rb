@@ -65,7 +65,7 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
     respond_to do |format|
-      format.html { redirect_to task_url, notice: 'Task was successfully destroyed.' }
+      format.html { redirect_to tasks_url, notice: 'Task was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -73,6 +73,7 @@ class TasksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
+      # raise params.inspect
       @task = Task.find(params[:id])
     end
 

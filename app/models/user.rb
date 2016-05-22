@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+  # 0 - ordinary community user
+  # 1 - community administrator
+  # 2 - kouhaidash administrator
+  
 	attr_accessor :remember_token
   has_many :memberships
   has_many :groups, through: :memberships

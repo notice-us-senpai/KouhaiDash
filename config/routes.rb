@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :categories
   resources :memberships
   resources :groups
+  
   get 'sessions/new'
 
   get 'login', to: 'sessions#new'
