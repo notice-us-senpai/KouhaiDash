@@ -34,13 +34,18 @@ Rails.application.routes.draw do
 
   get 'pages/profile'
 
-  get 'pages/calendar'
+  get 'calendar', to: 'pages#calendar', as: 'calendar'
 
   get 'pages/tasks'
 
-  get 'pages/files'
+  get 'pages/drive'
 
   get 'pages/contacts'
+
+  get 'google-calendar', to: 'pages#google_calendar'
+  get 'google-drive', to: 'pages#google_drive'
+  get 'pages/calendar-callback', to: 'pages#calendar_callback'
+  get 'pages/drive-callback', to: 'pages#drive_callback'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

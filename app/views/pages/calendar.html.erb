@@ -1,3 +1,9 @@
 <% provide(:title, "Calendar") %>
 <h1>Pages#calendar</h1>
 <p>Find me in app/views/pages/calendar.html.erb</p>
+
+<ul>
+	<% @calendar_list.items.each do |calendar| %>
+	  <li><%= calendar.summary %></li>
+	<% end %>
+</ul>
