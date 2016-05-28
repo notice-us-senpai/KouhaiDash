@@ -1,5 +1,7 @@
 <% provide(:title, 'Register') %>
-<h1>Register</h1>
+<div class="row">
+  <h1>Register</h1>
+</div>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
@@ -19,7 +21,7 @@
       <%= f.password_field :password_confirmation, 
       	class: 'form-control' %>
 
-      <%= f.submit "Register", class: "btn btn-default" %>
+      <%= f.submit "Register", class: "btn btn-primary" %>
     <% end %>
   </div>
 </div>
