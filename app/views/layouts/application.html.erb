@@ -69,7 +69,6 @@
       <div id="page-content-wrapper">
         <div class="container-fluid">
           <div class="container">
-<<<<<<< HEAD
             <% if flash.keys.size > 0 %>
               <div class="not-row">
                 <div class="col-lg-12">
@@ -82,17 +81,6 @@
               </div>
             <% else %>
             <% end %>
-=======
-            <!-- <div class="row"> -->
-              <div class="col-lg-12">
-                <% flash.each do |message_type, message| %>
-                  <div class="alert alert-<%= message_type %>">
-                    <%= message %>
-                  </div>
-                <% end %>
-              </div>
-            <!-- </div> -->
->>>>>>> parent of da93d18... Beautify error message and sidebar
             <%= yield %>
             <div class="row">
               <div class="col-lg-12 text-center">
