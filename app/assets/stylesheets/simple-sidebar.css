@@ -21,12 +21,14 @@
 #sidebar-wrapper {
     z-index: 1000;
     position: fixed;
+    /* left: 250px; */
     left: 250px;
     width: 0;
     height: 100%;
     margin-left: -250px;
     overflow-y: auto;
-    background: #000;
+    /* background: #000; */
+    background-color: mintcream;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -34,7 +36,8 @@
 }
 
 #wrapper.toggled #sidebar-wrapper {
-    width: 250px;
+    /* width: 250px; */
+    width: 252px;
 }
 
 #page-content-wrapper {
@@ -72,8 +75,12 @@
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-    color: #fff;
+    /* color: #fff; */
+    color: black;
     background: rgba(255,255,255,0.2);
+
+    border-left: none;
+    border-right: none;
 }
 
 .sidebar-nav li a:active,
@@ -94,8 +101,10 @@
 }
 
 .sidebar-nav > .sidebar-brand a:hover {
-    color: #fff;
+    /* color: #fff; */
+    color: black;
     background: none;
+    border-top: none;
 }
 
 @media(min-width:768px) {
