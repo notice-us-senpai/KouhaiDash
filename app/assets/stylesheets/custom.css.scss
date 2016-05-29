@@ -167,19 +167,12 @@ input {
 }
 
 #error_explanation {
-  /* color: red; */
+  color: red;
 }
 
-/* #error_explanation, ul { */
-#error_explanation ul {
+#error_explanation, ul {
     /* color: red; */
-    /* margin: 0 0 30px 0; */
-
-    background-color: rgba(255, 230, 230, 0.5);
-    color: crimson;
-    padding-top: 1em;
-    padding-right: 1em;
-    padding-bottom: 1em;
+    margin: 0 0 30px 0;
 }
 
 .checkbox {
@@ -215,6 +208,7 @@ input {
 .jumbotron {
   background-color: rgba(255, 255, 255, 0.75);
   font-family: 'Shojumaru', cursive;
+  margin-top: 1em;
 }
 
 footer {
@@ -258,4 +252,8 @@ a:hover {
 
 #menu-toggle {
   margin-top: 1em;
+}
+
+.not-row {
+  margin-bottom: 7.5%;
 }
