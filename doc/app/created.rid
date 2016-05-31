@@ -1,0 +1,26 @@
+Tue, 31 May 2016 23:28:02 +0800
+README.rdoc	Fri, 13 May 2016 14:37:56 +0800
+app/controllers/application_controller.rb	Tue, 31 May 2016 23:25:17 +0800
+app/controllers/categories_controller.rb	Tue, 31 May 2016 23:25:17 +0800
+app/controllers/groups_controller.rb	Tue, 31 May 2016 23:25:17 +0800
+app/controllers/memberships_controller.rb	Tue, 31 May 2016 23:25:17 +0800
+app/controllers/pages_controller.rb	Tue, 31 May 2016 23:25:17 +0800
+app/controllers/sessions_controller.rb	Tue, 31 May 2016 23:25:17 +0800
+app/controllers/task_assignments_controller.rb	Tue, 31 May 2016 23:25:17 +0800
+app/controllers/tasks_controller.rb	Tue, 31 May 2016 23:25:17 +0800
+app/controllers/users_controller.rb	Tue, 31 May 2016 23:25:17 +0800
+app/helpers/application_helper.rb	Fri, 13 May 2016 15:39:08 +0800
+app/helpers/categories_helper.rb	Tue, 31 May 2016 23:25:17 +0800
+app/helpers/groups_helper.rb	Tue, 31 May 2016 23:25:17 +0800
+app/helpers/memberships_helper.rb	Tue, 31 May 2016 23:25:17 +0800
+app/helpers/pages_helper.rb	Fri, 13 May 2016 15:36:38 +0800
+app/helpers/sessions_helper.rb	Tue, 31 May 2016 23:25:17 +0800
+app/helpers/task_assignments_helper.rb	Tue, 31 May 2016 23:25:17 +0800
+app/helpers/tasks_helper.rb	Tue, 31 May 2016 23:25:17 +0800
+app/helpers/users_helper.rb	Tue, 31 May 2016 23:25:17 +0800
+app/models/category.rb	Tue, 31 May 2016 23:25:17 +0800
+app/models/group.rb	Tue, 31 May 2016 23:25:17 +0800
+app/models/membership.rb	Tue, 31 May 2016 23:25:17 +0800
+app/models/task.rb	Tue, 31 May 2016 23:25:17 +0800
+app/models/task_assignment.rb	Tue, 31 May 2016 23:25:17 +0800
+app/models/user.rb	Tue, 31 May 2016 23:25:17 +0800
