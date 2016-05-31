@@ -149,3 +149,24 @@
 .container {
     max-width: 100%;
 }
+
+.menu-toggle {
+    /* For browsers that do not support gradients */
+    background-color: rgba(204, 255, 255, 0.2);
+    /* For Safari 5.1 to 6.0 */
+    background: -webkit-linear-gradient(left, gainsboro, azure);
+    /* For Opera 11.1 to 12.0 */
+    background: -o-linear-gradient(right, gainsboro, azure);
+    /* For Firefox 3.6 to 15 */
+    background: -moz-linear-gradient(right, gainsboro, azure);
+    /* Standard syntax */
+    background: linear-gradient(to right, gainsboro, azure);
+
+    border: 0.1em groove snow;
+    border-radius: 0%;
+
+    padding: 0 1em;
+    margin: 0%;
+    text-align: right;
+    text-decoration: none;
+}
