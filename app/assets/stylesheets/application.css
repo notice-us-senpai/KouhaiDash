@@ -37,7 +37,7 @@ footer {
 .form-control, .checkbox, .btn {
   font-size: 1.2em;
   letter-spacing: 0.1em;
-  margin-bottom: 0.4em;
+  margin-bottom: 0.8em;
   padding: 0.4em;
 }
 
@@ -72,6 +72,10 @@ a:hover {
 
 .not-row {
   margin-bottom: 4em;
+}
+
+#error_explanation {
+  padding-bottom: 0.1em;
 }
 
 /* Smartphones (portrait and landscape) ----------- */

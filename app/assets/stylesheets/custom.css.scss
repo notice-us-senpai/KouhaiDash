@@ -164,12 +164,13 @@ input {
 }
 
 #error_explanation {
-  color: red;
+  /* color: red; */
+  color: crimson;
 }
 
 #error_explanation, ul {
-    /* color: red; */
-    margin: 0 0 30px 0;
+  /* color: red; */
+  margin: 0 0 30px 0;
 }
 
 .checkbox {
@@ -178,8 +179,8 @@ input {
 }
 
 .checkbox span {
-    margin-left: 20px;
-    font-weight: normal;
+  margin-left: 20px;
+  font-weight: normal;
 }
 
 #session_remember_me {
