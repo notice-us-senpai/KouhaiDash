@@ -1,0 +1,23 @@
+<div class="row">
+	<h1>Contacts#show</h1>
+	<p>Find me in app/views/contacts/show.html.erb</p>
+</div>
+<div class="row">
+	<ul class="contact">
+			<li><%= @contact.name %></li>
+
+			<li><%= @contact.organisation %></li>
+			<li><%= @contact.position %></li>
+
+			<li><%= @contact.email %></li>
+			<li><%= @contact.number %></li>
+
+			<li><%= @contact.website %></li>
+			<li><%= @contact.description %></li>
+			
+			<%= link_to "Read More", { action: "show", id: @contact } %> | 
+			<%= link_to "Update", { action: "edit", id: @contact } %> | 
+			<%= link_to "Delete", { action: "destroy", id: @contact }, 
+				method: :delete, data: { confirm: "Delete #{@contact.name}?" } %>
+	</ul>
+</div>

@@ -41,6 +41,7 @@ Rails.application.routes.draw do
   get 'pages/drive'
 
   get 'pages/contacts'
+  resources :contacts
 
   get 'google-calendar', to: 'pages#google_calendar'
   get 'google-drive', to: 'pages#google_drive'
