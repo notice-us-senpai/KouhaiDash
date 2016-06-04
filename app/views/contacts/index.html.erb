@@ -3,6 +3,10 @@
 	<p>Find me in app/views/contacts/index.html.erb</p>
 </div>
 
+<div class="row">
+	<%= link_to "Create new contact", { action: "new" } %>
+</div>
+
 <% row = 0 %>
 
 <% @contacts.each do |contact| %>
@@ -11,8 +15,8 @@
 		<div class="row">
 	<% end %>
 
-	<div class="col-md-6">
-		<ul class="contact">
+	<div class="col-md-6 contact">
+		<ul class="contact-details">
 			<li><%= contact.name %></li>
 
 			<li><%= contact.organisation %></li>

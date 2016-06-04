@@ -24,7 +24,7 @@ User.create(
   )
 
 magic_number.times do |n|
-  username =""
+  username = ""
   until username.length >= 4
     username = Faker::Internet.user_name[0...16]
   end
@@ -37,6 +37,33 @@ magic_number.times do |n|
     password_confirmation: password
     )
 end
+
+Contact.create(
+  name: "Chia Hui",  
+  organisation: "NUS", 
+  position: "Sophomore", 
+  email: "ch@u.nus.edu", 
+  number: 87654321, 
+  website: "chia-hui.azurewebsites.net", 
+  description: "Our awesome friend."
+  )
+
+magic_number.times do |n|
+  name = ""
+  until name.length >= 2
+    name = Faker::Internet.name[0...64]
+  end
+  Contact.create(
+    name: name, 
+    organisation: "{n+1} KouhaiDash Pte Ltd", 
+    position: "CTO", 
+    email: "#{name}@kouhaidash.org", 
+    number: "87654321", 
+    website: "#{name}.azurewebsites.net", 
+    description: "Our BFF"
+  )
+end
+
 
 # <<<<<<< HEAD
 # =======

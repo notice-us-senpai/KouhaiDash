@@ -3,6 +3,11 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .contact {
+	border: 4px groove snow;
+}
+
+.contact-details {
 	list-style-type: none;
+	padding-top: 2.5%;
 	padding-left: 0;
 }
