@@ -60,3 +60,8 @@ gem 'bootstrap-will_paginate'
 
 gem 'google-api-client', '~> 0.9', require: 'google/apis/calendar_v3'
 gem 'signet', '~> 0.7.2'
+
+# gem 'annotate'
+group :development do
+  gem 'rails-erd'
+end
