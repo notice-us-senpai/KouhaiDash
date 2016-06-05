@@ -38,7 +38,7 @@ Rails.application.routes.draw do
 
   get 'pages/tasks'
 
-  get 'pages/drive'
+  get 'files', to: 'pages#files', as: 'files'
 
   get 'pages/contacts'
   resources :contacts

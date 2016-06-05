@@ -12,9 +12,9 @@ class PagesController < ApplicationController
     @authorised = false
     begin
       client = Signet::OAuth2::Client.new(access_token: session[:access_token])
-      service = Google::Apis::CalendarV3::CalendarService.new
-      service.authorization = client
-      @calendar_list = service.list_calendar_lists
+      calendar_service = Google::Apis::CalendarV3::CalendarService.new
+      calendar_service.authorization = client
+      @calendar_list = calendar_service.list_calendar_lists
       @authorised = true
     rescue
     end
@@ -23,7 +23,16 @@ class PagesController < ApplicationController
   def tasks
   end
 
-  def drive
+  def files
+    @drive_authorised = false
+    begin
+      client = Signet::OAuth2::Client.new(access_token: session[:access_token])
+      drive_service = Google::Apis::DriveV3::DriveService.new
+      drive_service.authorization = client
+      # @drive_list = drive_service.
+      # @drive_authorised = true
+    rescue
+    end
   end
 
   def contacts
@@ -58,7 +67,7 @@ class PagesController < ApplicationController
       client_id: ENV.fetch('GOOGLE_API_CLIENT_ID'),
       client_secret: ENV.fetch('GOOGLE_API_CLIENT_SECRET'),
       authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
-      # scope: Google::Apis::CalendarV3::AUTH_CALENDAR_READONLY,
+      scope: Google::Apis::DriveV3::AUTH_DRIVE_READONLY,
       redirect_uri: url_for(:action => :drive_callback)
     })
     redirect_to client.authorization_uri.to_s
@@ -74,6 +83,6 @@ class PagesController < ApplicationController
     })
     response = client.fetch_access_token!
     session[:access_token] = response['access_token']
-    redirect_to url_for(:action => :drive)
+    redirect_to url_for(:action => :files)
   end
 end
