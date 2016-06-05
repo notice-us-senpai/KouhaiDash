@@ -5,10 +5,15 @@
 
 <div class="row">
 	<p>Find me in app/views/pages/calendar.html.erb</p>
-
-	<ul>
-		<% @calendar_list.items.each do |calendar| %>
-		  <li><%= calendar.summary %></li>
-		<% end %>
-	</ul>
+	<% if @authorised %>
+		<ul>
+			<% @calendar_list.items.each do |calendar| %>
+		  	<li><%= calendar.summary %></li>
+			<% end %>
+		</ul>
+	<% else %>
+		<p>
+			<%= link_to "Sign in with Google here", google_calendar_path %>
+		</p>
+	<% end %>
 </div>
