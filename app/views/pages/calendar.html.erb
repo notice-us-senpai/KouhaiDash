@@ -7,8 +7,8 @@
 	<p>Find me in app/views/pages/calendar.html.erb</p>
 	<% if @authorised %>
 		<ul>
-			<% @calendar_list.items.each do |calendar| %>
-		  	<li><%= calendar.summary %></li>
+			<% @calendar_response.items.each do |event| %>
+		  	<li><%= event.summary %></li>
 			<% end %>
 		</ul>
 	<% else %>

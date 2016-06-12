@@ -7,7 +7,7 @@
 	<p>Find me in app/views/pages/files.html.erb</p>
 	<% if @drive_authorised %>
 		<ul>
-			<% @drive_list.each do |file| %>
+			<% @drive_response.files.each do |file| %>
 		  	<li><%= file.name %></li>
 			<% end %>
 		</ul>
