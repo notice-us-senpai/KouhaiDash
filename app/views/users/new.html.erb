@@ -21,6 +21,9 @@
       <%= f.password_field :password_confirmation, 
       	class: 'form-control' %>
 
+      <%= f.label :image, "Profile Picture" %><br>
+      <%= f.file_field :image %>
+
       <%= f.submit "Register", class: "btn btn-primary" %>
     <% end %>
   </div>

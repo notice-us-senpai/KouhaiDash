@@ -7,7 +7,7 @@ class CreateContacts < ActiveRecord::Migration
     	t.string :position
 
     	t.string :email
-    	t.string :number
+    	t.string :phone
     	t.string :website
 
     	t.text :description

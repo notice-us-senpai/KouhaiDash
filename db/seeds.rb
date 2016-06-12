@@ -44,7 +44,7 @@ magic_number.times do |n|
     organisation: organisation, 
     position: Faker::Company.profession, 
     email: Faker::Internet.email[0...64], 
-    number: Faker::PhoneNumber.cell_phone, 
+    phone: Faker::PhoneNumber.cell_phone, 
     website: Faker::Internet.url, 
     description: Faker::Lorem.paragraph
   )

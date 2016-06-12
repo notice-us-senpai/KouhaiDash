@@ -10,7 +10,7 @@ class CreateUsers < ActiveRecord::Migration
 
     	t.date :birthday
     	t.text :description
-    	t.string :picture
+    	t.string :image
 
     	t.string :organisation
     	t.string :position

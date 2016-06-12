@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20160603012624) do
     t.string   "organisation"
     t.string   "position"
     t.string   "email"
-    t.string   "number"
+    t.string   "phone"
     t.string   "website"
     t.text     "description"
     t.datetime "created_at",   null: false
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20160603012624) do
     t.string   "email"
     t.date     "birthday"
     t.text     "description"
-    t.string   "picture"
+    t.string   "image"
     t.string   "organisation"
     t.string   "position"
     t.datetime "created_at",                      null: false
