@@ -70,7 +70,6 @@ class CategoriesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_group
-      logger.info "reached set_group"
       @group = Group.find(params[:group_id])
     end
     def set_category
