@@ -4,8 +4,8 @@
     <title>
     	<%= full_title(yield(:title)) %>
   	</title>
-    
-    <meta name="viewport" content="width=device-width, 
+
+    <meta name="viewport" content="width=device-width,
       initial-scale=1, maximum-scale=1" />
 
     <%= stylesheet_link_tag 'application',
@@ -25,7 +25,7 @@
             <%= link_to 'KouhaiDash!', root_path %>
           </li>
           <li>
-            <a href="#menu-toggle" 
+            <a href="#menu-toggle"
                class="btn btn-default menu-toggle">
               <h4>Hide Sidebar</h4>
             </a>
@@ -40,8 +40,8 @@
             <li>
               <%= link_to "Members", users_path %>
             </li>
-            <% if current_group %>
-              <%get_categories_and_path(current_group).each do |link| %>
+            <% if @group %>
+              <%get_categories_and_path(@group).each do |link| %>
               <li>
                 <%= link_to link[:name], link[:path] %>
               </li>
@@ -50,10 +50,6 @@
             <li>
               <%= link_to "Calendar", google_calendar_path %>
             </li>
-            <!--
-            <li>
-              <%= link_to "Tasks", root_path %>
-            </li> -->
             <li>
               <%= link_to "Files", google_drive_path %>
             </li>
