@@ -20,12 +20,19 @@
       <%= f.label :password_confirmation, "Confirm Password" %>
       <%= f.password_field :password_confirmation, class: 'form-control' %>
 
+      <%= f.label :image, "Profile Picture" %>
+      <%= f.file_field :image %>
+      <% if f.object.image? %>
+        <p>
+          <%= image_tag f.object.image.thumb.url %>
+        </p>
+        <p>
+          <%= f.label :remove_image %>
+          <%= f.check_box :remove_image %>
+        </p>
+      <% end %>
+
       <%= f.submit "Update", class: "btn btn-primary" %>
     <% end %>
-
-    <div class="gravatar_edit">
-      <%= gravatar_for @user %>
-      <a href="http://gravatar.com/emails" target="_blank">Update</a>
-    </div>
   </div>
 </div>

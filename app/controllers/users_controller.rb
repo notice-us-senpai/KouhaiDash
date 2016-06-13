@@ -59,7 +59,7 @@ class UsersController < ApplicationController
    			:username, :email, 
    			:password, :password_confirmation, 
    			:name, :birthday, :description, 
-   			:picture, 
+   			:image, :remove_image, 
    			:organisation, :position
   		)
   	end

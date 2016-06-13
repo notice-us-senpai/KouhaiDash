@@ -4,10 +4,16 @@ class User < ActiveRecord::Base
   # 2 - kouhaidash administrator
   
 	attr_accessor :remember_token
-  has_many :memberships
-  has_many :groups, through: :memberships
-  has_many :task_assignments, through: :memberships
-  has_many :tasks, through: :memberships
+
+  # has_many :memberships
+  # has_many :groups, through: :memberships
+  # has_many :task_assignments, through: :memberships
+  # has_many :tasks, through: :memberships
+
+  mount_uploader :image, ImageUploader
+  validates_processing_of :image
+  validate :image_size_validation
+
 	before_save { self.email = email.downcase }
 
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -54,5 +60,9 @@ class User < ActiveRecord::Base
   # Forgets a user.
   def forget
     update_attribute(:remember_digest, nil)
+  end
+
+  def image_size_validation
+    errors[:image] << "should be less than 500KB" if image.size > 0.5.megabytes
   end
 end

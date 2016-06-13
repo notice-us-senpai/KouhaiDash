@@ -3,6 +3,14 @@ class ContactsController < ApplicationController
 
   def index
   	@contacts = Contact.all
+  	@file_prefix = "KouhaiDash-Contacts"
+  	respond_to do |format|
+      format.html
+      format.csv { 
+      	send_data @contacts.to_csv, 
+      	filename: "#{@file_prefix}-#{Date.today}.csv" 
+      }
+    end
   end
 
   def show

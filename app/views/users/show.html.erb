@@ -6,10 +6,16 @@
 <div class="row">
   <aside class="col-md-4">
     <section class="user-info">
-      <h1>
-        <%= gravatar_for @user %>
-        <%= @user.username %>
-      </h1>
+    	<div class="profile-picture">
+    		<p>
+    			<%= image_tag @user.image.thumb.url %>
+  			</p>
+  		</div>
+  		<div class="profile-description">
+      	<h1>
+      		<%= @user.username %>
+    		</h1>
+    	</div>
     </section>
   </aside>
 </div>

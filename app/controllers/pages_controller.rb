@@ -9,12 +9,12 @@ class PagesController < ApplicationController
   end
 
   def calendar
-    @authorised = false
+    @calendar_authorised = false
     begin
-      client = Signet::OAuth2::Client.new(access_token: session[:access_token])
+      calendar_client = Signet::OAuth2::Client.new(access_token: session[:access_token])
       calendar_service = Google::Apis::CalendarV3::CalendarService.new
-      calendar_service.authorization = client
-      @calendar_list = calendar_service.list_calendar_lists
+      calendar_service.authorization = calendar_client
+      @calendar_response = calendar_service.list_events('primary')
       @authorised = true
     rescue
     end
@@ -26,11 +26,11 @@ class PagesController < ApplicationController
   def files
     @drive_authorised = false
     begin
-      client = Signet::OAuth2::Client.new(access_token: session[:access_token])
+      drive_client = Signet::OAuth2::Client.new(access_token: session[:access_token])
       drive_service = Google::Apis::DriveV3::DriveService.new
-      drive_service.authorization = client
-      # @drive_list = drive_service.
-      # @drive_authorised = true
+      drive_service.authorization = drive_client
+      @drive_response = drive_service.list_files
+      @drive_authorised = true
     rescue
     end
   end

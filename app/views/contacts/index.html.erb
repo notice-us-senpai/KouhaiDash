@@ -4,7 +4,8 @@
 </div>
 
 <div class="row">
-	<%= link_to "Create new contact", { action: "new" } %>
+	<%= link_to "Create New Contact", { action: "new" } %> | 
+	<%= link_to "Download as CSV", contacts_path(format: "csv") %>
 </div>
 
 <% row = 0 %>
@@ -22,7 +23,7 @@
 			<li><%= contact.organisation %></li>
 
 			<li><%= contact.email %></li>
-			<li><%= contact.number %></li>
+			<li><%= contact.phone %></li>
 		</ul>
 
 		<%= link_to "Read More", { action: "show", id: contact } %> | 
@@ -43,5 +44,6 @@
 <% end %>
 
 <div class="row">
-	<%= link_to "Create new contact", { action: "new" } %>
+	<%= link_to "Create New Contact", { action: "new" } %> | 
+	<%= link_to "Download as CSV", contacts_path(format: "csv") %>
 </div>
