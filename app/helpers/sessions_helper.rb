@@ -2,7 +2,7 @@ module SessionsHelper
 	# Logs in the given user.
   def log_in(user)
     session[:user_id] = user.id
-    session[:group_id] = User.find(user.id).groups.first.id
+    # session[:group_id] = User.find(user.id).groups.first.id
   end
 
   # Remembers a user in a persistent session.
@@ -37,12 +37,20 @@ module SessionsHelper
 
   def current_group
     if current_user
-      @current_group = Group.where(id:session[:group_id]).first
+# <<<<<<< HEAD
+      # @current_group = Group.where(id:session[:group_id]).first
+# =======
+      # @current_group = Group.where(id:session[:group_id]).first
+# >>>>>>> delete-user
     end
   end
 
   def change_group(group)
-    session[:group_id] = group.id
+# <<<<<<< HEAD
+    # session[:group_id] = group.id
+# =======
+    # session[:group_id] = group.id
+# >>>>>>> delete-user
   end
 
 	# Returns true if the user is logged in, false otherwise.

@@ -1,8 +1,10 @@
 class UsersController < ApplicationController
   before_action :get_user, only: [:show, :edit, :update, 
-    :correct_user]
-  before_action :logged_in_user, only: [:index, :edit, :update]
+    :correct_user, :destroy]
+  before_action :logged_in_user, only: [:index, :edit, 
+    :update]
   before_action :correct_user, only: [:edit, :update]
+  before_action :admin_user, only: :destroy
   
   def index
     # raise params.inspect
@@ -41,6 +43,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def delete
+  end
+
+  def destroy
+    @user.destroy
+    flash[:success] = "User Deleted!"
+    redirect_to users_url
+  end
+
  	private
   
    	def user_params
@@ -69,5 +80,14 @@ class UsersController < ApplicationController
     # Confirms the correct user.
     def correct_user
       redirect_to(root_url) unless @user == current_user
+    end
+
+    def same_user
+      correct_user
+    end
+
+    # Confirms an admin user.
+    def admin_user
+      redirect_to(root_url) unless current_user.admin?
     end
 end

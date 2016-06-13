@@ -24,18 +24,31 @@ User.create(
   )
 
 magic_number.times do |n|
-  username =""
+
+  username = ""
   until username.length >= 4
     username = Faker::Internet.user_name[0...16]
   end
-  email = "#{n+1}@kouhaidash.org"
-  password = "password"
+  password = Faker::Internet.password(8)
   User.create(
   	username: username,
-    email: email,
+    email: Faker::Internet.email[0...64],
     password: password,
     password_confirmation: password
     )
+end
+
+magic_number.times do |n|
+  organisation = "#{Faker::Company.name} #{Faker::Company.suffix}"
+  Contact.create(
+    name: Faker::Name.name[0...64], 
+    organisation: organisation, 
+    position: Faker::Company.profession, 
+    email: Faker::Internet.email[0...64], 
+    number: Faker::PhoneNumber.cell_phone, 
+    website: Faker::Internet.url, 
+    description: Faker::Lorem.paragraph
+  )
 end
 
 Group.create(name: 'TestGroup')
@@ -61,3 +74,5 @@ end
 
 # id: nil, name: nil, deadline: nil, description: nil, done: nil, 
 # created_at: nil, updated_at: nil, category_id: nil
+
+

@@ -14,3 +14,156 @@
  *= require_self
  *= require bootstrap
  */
+
+@import url(https://fonts.googleapis.com/css?family=Nosifer);
+@import url(https://fonts.googleapis.com/css?family=Shadows+Into+Light+Two);
+@import url(https://fonts.googleapis.com/css?family=Shojumaru);
+
+/* Jiayee */
+
+.jumbotron {
+  background-color: rgba(255, 255, 255, 0.75);
+  font-family: 'Shojumaru', cursive;
+  margin-top: 1em;
+}
+
+footer {
+  color: black;
+  font-family: 'Nosifer', cursive;
+  font-size: 0.8em;
+  font-weight: normal;
+}
+
+.form-control, .checkbox, .btn {
+  font-size: 1.2em;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.8em;
+  padding: 0.4em;
+}
+
+.row {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 0.5em 2em;
+}
+
+.row > h1 {
+  background-color: rgba(204, 255, 255, 0.25);
+  border: 0.1em dashed black;
+  line-height: 1.6em;
+}
+
+a {
+  padding: 0.2em;
+}
+
+a:hover {
+  background-color: rgba(204, 255, 255, 0.25);
+  border: 0.2em groove mintcream;
+  color: midnightblue;
+  font-size: 1.2em;
+  line-height: 1.6em;
+  padding: 0.2em default;
+  text-decoration: none;
+}
+
+#menu-toggle {
+  margin-top: 1em;
+}
+
+.not-row {
+  margin-bottom: 4em;
+}
+
+#error_explanation {
+  padding-bottom: 0.1em;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) {
+  body {
+    font-size: 1em;
+  }
+
+  #wrapper.toggled {
+    padding-left: 100%;
+  }
+
+  #sidebar-wrapper {
+    border-radius: 0%;
+    left: 100%;
+    margin-left: -100%;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    width: 100%;
+  }
+
+  #wrapper.toggled #page-content-wrapper {
+    margin-right: -100%;
+  }
+
+  .sidebar-nav {
+    width: 100%;
+  }
+
+  .menu-toggle {
+    text-align: left;
+  }
+
+}
+
+/* Smartphones (landscape) ----------- */
+@media only screen 
+and (min-width : 321px) {
+  /* Styles */
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+and (max-width : 320px) {
+  /* Styles */
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+  /* Styles */
+}
+
+/* iPads (landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape) {
+  /* Styles */
+}
+
+/* iPads (portrait) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) {
+  /* Styles */
+}
+
+/* Desktops and laptops ----------- */
+@media only screen 
+and (min-width : 1224px) {
+  /* Styles */
+}
+
+/* Large screens ----------- */
+@media only screen 
+and (min-width : 1824px) {
+/* Styles */
+}
+
+/* iPhone 4 ----------- */
+@media
+only screen and (-webkit-min-device-pixel-ratio : 1.5),
+only screen and (min-device-pixel-ratio : 1.5) {
+  /* Styles */
+}

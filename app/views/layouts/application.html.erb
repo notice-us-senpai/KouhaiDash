@@ -4,6 +4,10 @@
     <title>
     	<%= full_title(yield(:title)) %>
   	</title>
+    
+    <meta name="viewport" content="width=device-width, 
+      initial-scale=1, maximum-scale=1" />
+
     <%= stylesheet_link_tag 'application',
     		media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application',
@@ -21,6 +25,12 @@
             <%= link_to 'KouhaiDash!', root_path %>
           </li>
           <li>
+            <a href="#menu-toggle" 
+               class="btn btn-default menu-toggle">
+              <h4>Hide Sidebar</h4>
+            </a>
+          </li>
+          <li>
             <%= link_to "Home", root_path %>
           </li>
           <% if logged_in? %>
@@ -28,7 +38,7 @@
               <%= link_to "Profile", current_user %>
             </li>
             <li>
-              <%= link_to "Community", users_path %>
+              <%= link_to "Members", users_path %>
             </li>
             <% if current_group %>
               <%get_categories_and_path(current_group).each do |link| %>
@@ -37,7 +47,19 @@
               </li>
               <%end%>
             <%end%>
-            
+            <li>
+              <%= link_to "Calendar", google_calendar_path %>
+            </li>
+            <!--
+            <li>
+              <%= link_to "Tasks", root_path %>
+            </li> -->
+            <li>
+              <%= link_to "Files", google_drive_path %>
+            </li>
+            <li>
+              <%= link_to "Contacts", contacts_path %>
+            </li>
             <li>
               <%= link_to "Settings", edit_user_path(current_user) %>
             </li>
@@ -57,21 +79,30 @@
       <div id="page-content-wrapper">
         <div class="container-fluid">
           <div class="container">
-            <div class="row">
-              <div class="col-lg-12">
-                <% flash.each do |message_type, message| %>
-                  <div class="alert alert-<%= message_type %>">
-                    <%= message %>
-                  </div>
-                <% end %>
+            <% if flash.keys.size > 0 %>
+              <div class="not-row">
+                <div class="col-lg-12">
+                  <% flash.each do |message_type, message| %>
+                    <div class="alert alert-<%= message_type %>">
+                      <%= message %>
+                    </div>
+                  <% end %>
+                </div>
               </div>
+            <% else %>
+            <% end %>
+            <!--
+            <div class="row" style="background-color: transparent;">
+              <a href="#menu-toggle" class="menu-toggle">
+                <small>Toggle Sidebar</small>
+              </a>
             </div>
+            -->
             <%= yield %>
             <div class="row">
               <div class="col-lg-12 text-center">
-                <a href="#menu-toggle" class="btn btn-default"
-            id="menu-toggle">
-                  <h4>Toggle Menu</h4>
+                <a href="#menu-toggle" class="btn btn-default menu-toggle">
+                  <h4>Toggle Sidebar</h4>
                 </a>
               </div>
             </div>
@@ -87,7 +118,7 @@
 
     <!-- Menu Toggle Script -->
     <script>
-    $("#menu-toggle").click(function(e) {
+    $(".menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });

@@ -14,7 +14,6 @@
 ActiveRecord::Schema.define(version: 20160603012624) do
 
   create_table "categories", force: :cascade do |t|
-    t.string   "name"
     t.integer  "type_no"
     t.integer  "group_id"
     t.datetime "created_at", null: false
@@ -23,7 +22,7 @@ ActiveRecord::Schema.define(version: 20160603012624) do
   end
 
   add_index "categories", ["group_id"], name: "index_categories_on_group_id"
-
+  
   create_table "contacts", force: :cascade do |t|
     t.string   "name"
     t.string   "organisation"
@@ -66,21 +65,17 @@ ActiveRecord::Schema.define(version: 20160603012624) do
     t.string   "name"
     t.date     "deadline"
     t.text     "description"
-    t.boolean  "done"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "category_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
-
-  add_index "tasks", ["category_id"], name: "index_tasks_on_category_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "username"
     t.string   "password"
     t.string   "name"
     t.string   "email"
-    t.string   "birthday"
-    t.string   "description"
+    t.date     "birthday"
+    t.text     "description"
     t.string   "picture"
     t.string   "organisation"
     t.string   "position"

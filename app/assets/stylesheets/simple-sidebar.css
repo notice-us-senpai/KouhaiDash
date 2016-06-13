@@ -26,7 +26,21 @@
     height: 100%;
     margin-left: -250px;
     overflow-y: auto;
-    background: #000;
+    /* background: #000; */
+    /* background-color: azure; */
+
+    /* For browsers that do not support gradients */
+    background: azure;
+    /* For Safari 5.1 to 6.0 */
+    background: -webkit-linear-gradient(left, gainsboro, azure);
+    /* For Opera 11.1 to 12.0 */
+    background: -o-linear-gradient(right, gainsboro, azure);
+    /* For Firefox 3.6 to 15 */
+    background: -moz-linear-gradient(right, gainsboro, azure);
+    /* Standard syntax */
+    background: linear-gradient(to right, gainsboro, azure);
+    border-radius: 0% 5% 5% 0%;
+
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -67,12 +81,16 @@
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    color: #999999;
+    /* color: #999999; */
+    color: gray;
 }
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-    color: #fff;
+    /* color: #fff; */
+    border-left: none;
+    border-right: none;
+    color: black;
     background: rgba(255,255,255,0.2);
 }
 
@@ -82,18 +100,22 @@
 }
 
 .sidebar-nav > .sidebar-brand {
-    height: 65px;
-    font-size: 18px;
-    line-height: 60px;
+    /* height: 65px; */
+    /* font-size: 18px; */
+    /* line-height: 60px; */
+    font-size: 1.6em;
+    line-height: 2em;
 }
 
 .sidebar-nav > .sidebar-brand a {
-    color: #999999;
+    /* color: #999999; */
+    color: gray;
 }
 
 .sidebar-nav > .sidebar-brand a:hover {
-    color: #fff;
+    /* color: #fff; */
     background: none;
+    border-top: none;
 }
 
 @media(min-width:768px) {
@@ -126,4 +148,25 @@
 
 .container {
     max-width: 100%;
+}
+
+.menu-toggle {
+    /* For browsers that do not support gradients */
+    background-color: rgba(204, 255, 255, 0.2);
+    /* For Safari 5.1 to 6.0 */
+    background: -webkit-linear-gradient(left, gainsboro, azure);
+    /* For Opera 11.1 to 12.0 */
+    background: -o-linear-gradient(right, gainsboro, azure);
+    /* For Firefox 3.6 to 15 */
+    background: -moz-linear-gradient(right, gainsboro, azure);
+    /* Standard syntax */
+    background: linear-gradient(to right, gainsboro, azure);
+
+    border: 0.1em groove snow;
+    border-radius: 0%;
+
+    padding: 0 1em;
+    margin: 0%;
+    text-align: right;
+    text-decoration: none;
 }

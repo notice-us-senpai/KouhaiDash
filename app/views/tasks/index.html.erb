@@ -1,6 +1,7 @@
 
 <h1>Listing Tasks</h1>
 
+
 <% @tasks.each do |task| %>
   <h3>Name</h3>
   <%= task.name %>
@@ -20,6 +21,7 @@
     <%= link_to 'See More', [@group,@category,task] %> |
     <%= link_to 'Edit', edit_group_category_task_path(@group,@category,task) %> |
     <%= link_to 'Delete', [@group,@category,task], method: :delete,
+
       data: { confirm: 'Are you sure?' } %>
   </p>
 <% end %>

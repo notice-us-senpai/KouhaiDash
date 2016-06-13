@@ -1,3 +1,19 @@
 <% provide(:title, "Calendar") %>
-<h1>Pages#calendar</h1>
-<p>Find me in app/views/pages/calendar.html.erb</p>
+<div class="row">
+	<h1>Pages#calendar</h1>
+</div>
+
+<div class="row">
+	<p>Find me in app/views/pages/calendar.html.erb</p>
+	<% if @authorised %>
+		<ul>
+			<% @calendar_list.items.each do |calendar| %>
+		  	<li><%= calendar.summary %></li>
+			<% end %>
+		</ul>
+	<% else %>
+		<p>
+			<%= link_to "Sign in with Google here", google_calendar_path %>
+		</p>
+	<% end %>
+</div>
