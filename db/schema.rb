@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160520070720) do
+ActiveRecord::Schema.define(version: 20160603012624) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -23,6 +23,18 @@ ActiveRecord::Schema.define(version: 20160520070720) do
   end
 
   add_index "categories", ["group_id"], name: "index_categories_on_group_id"
+
+  create_table "contacts", force: :cascade do |t|
+    t.string   "name"
+    t.string   "organisation"
+    t.string   "position"
+    t.string   "email"
+    t.string   "number"
+    t.string   "website"
+    t.text     "description"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
@@ -67,8 +79,8 @@ ActiveRecord::Schema.define(version: 20160520070720) do
     t.string   "password"
     t.string   "name"
     t.string   "email"
-    t.date     "birthday"
-    t.text     "description"
+    t.string   "birthday"
+    t.string   "description"
     t.string   "picture"
     t.string   "organisation"
     t.string   "position"

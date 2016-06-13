@@ -12,7 +12,7 @@ module GroupsHelper
     end
     array =[]
     categories.each do |cat|
-      array.push({name: cat.name, path: cat})
+      array.push({name: cat.name, path: [group,cat]})
     end
     #logger.info array.size.to_s + "number of element(s)\n"
     return array

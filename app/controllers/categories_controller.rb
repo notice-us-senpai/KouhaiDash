@@ -1,4 +1,5 @@
 class CategoriesController < ApplicationController
+  before_action :set_group
   before_action :set_category, only: [:show, :edit, :update, :destroy]
 
   # GET /categories
@@ -12,8 +13,7 @@ class CategoriesController < ApplicationController
   def show
     case @category.type_no
     when 3
-      session[:category]= @category.id
-      redirect_to tasks_path
+      redirect_to group_category_tasks_path(@group,@category)
     else
     end
   end
@@ -69,8 +69,12 @@ class CategoriesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_group
+      logger.info "reached set_group"
+      @group = Group.find(params[:group_id])
+    end
     def set_category
-      @category = Category.find(params[:id])
+      @category = @group.categories.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

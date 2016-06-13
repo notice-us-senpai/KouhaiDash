@@ -1,16 +1,12 @@
 class TasksController < ApplicationController
+  before_action :set_group
+  before_action :set_category
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   # GET /tasks
   # GET /tasks.json
   def index
-    if session[:category]
-      @category = Category.find(session[:category])
-      @tasks = @category.tasks
-    else
-      # todo: display current_user tasks
-      @tasks = Task.all
-    end
+    @tasks = @category.tasks.all
   end
 
   # GET /tasks/1
@@ -20,7 +16,7 @@ class TasksController < ApplicationController
 
   # GET /tasks/new
   def new
-    @task = Task.new
+    @task = @category.tasks.new()
   end
 
   # GET /tasks/1/edit
@@ -30,14 +26,11 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
-    @task = Task.new(task_params)
+    @task = @category.tasks.new(task_params)
 
     respond_to do |format|
       if @task.save
-        if session[:category]
-          @task.update(category_id: session[:category])
-        end
-        format.html { redirect_to @task, notice: 'Task was successfully created.' }
+        format.html { redirect_to [@group, @category, @task], notice: 'Task was successfully created.' }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new }
@@ -51,7 +44,7 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
-        format.html { redirect_to @task, notice: 'Task was successfully updated.' }
+        format.html { redirect_to [@group, @category, @task], notice: 'Task was successfully updated.' }
         format.json { render :show, status: :ok, location: @task }
       else
         format.html { render :edit }
@@ -65,7 +58,7 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
     respond_to do |format|
-      format.html { redirect_to tasks_url, notice: 'Task was successfully destroyed.' }
+      format.html { redirect_to group_category_tasks_path(@group,@category), notice: 'Task was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -74,7 +67,15 @@ class TasksController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_task
       # raise params.inspect
-      @task = Task.find(params[:id])
+      @task = @category.tasks.find(params[:id])
+    end
+
+    def set_category
+      @category = @group.categories.find(params[:category_id])
+    end
+
+    def set_group
+      @group = Group.find(params[:group_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

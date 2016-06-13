@@ -1,10 +1,5 @@
 Rails.application.routes.draw do
-  resources :task_assignments
-  resources :tasks
-  resources :categories
-  resources :memberships
-  resources :groups
-  
+
   get 'sessions/new'
 
   get 'login', to: 'sessions#new'
@@ -18,8 +13,6 @@ Rails.application.routes.draw do
 
   root 'pages#home'
 
-  get 'cat_task/:cat_id', to: 'tasks#index', as: 'category_tasks'
-
   get 'pages/profile'
 
   get 'pages/calendar'
@@ -29,6 +22,12 @@ Rails.application.routes.draw do
   get 'pages/files'
 
   get 'pages/contacts'
+
+  resources :groups do
+    resources :categories do
+      resources :tasks
+    end
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
