@@ -16,6 +16,12 @@
     <%= "Not yet!" %>
   <% end %>
 
+  <h3>Assigned To</h3>
+  <ul>
+  <%task.task_assignments.each do |assign| %>
+    <li><%= assign.membership.user.username %></li>
+  <%end %>
+  </ul>
   <h3>Actions</h3>
   <p>
     <%= link_to 'See More', [@group,@category,task] %> |

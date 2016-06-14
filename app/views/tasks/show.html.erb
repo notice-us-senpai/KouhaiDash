@@ -19,5 +19,14 @@
   <%= @task.done %>
 </p>
 
+<p>
+  <strong>Assigned To: </strong>
+  <ul>
+  <% @users.each do |user| %>
+  <li><%= user %> </li>
+  <% end %>
+  </ul>
+</p>
+
 <%= link_to 'Edit', edit_group_category_task_path(@group,@category,@task) %> |
 <%= link_to 'Back', group_category_tasks_path(@group,@category) %>

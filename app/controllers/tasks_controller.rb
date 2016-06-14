@@ -6,7 +6,7 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = @category.tasks.all
+    @tasks = @category.tasks.includes(task_assignments: [membership: :user]).all
   end
 
   # GET /tasks/1
@@ -68,6 +68,7 @@ class TasksController < ApplicationController
     def set_task
       # raise params.inspect
       @task = @category.tasks.find(params[:id])
+      @users = @task.task_assignments.all.collect{|assign| assign.membership.user.username}
     end
 
     def set_category
@@ -76,11 +77,12 @@ class TasksController < ApplicationController
 
     def set_group
       @group = Group.find(params[:group_id])
+      @memberships_array = @group.memberships.includes(:user).all.collect{|m|[m.user.username,m.id] }
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
-      params.require(:task).permit(:name, :deadline, :description, :done)
+      params.require(:task).permit(:name, :deadline, :description, :done, task_assignments_attributes: [:id, :membership_id, :_destroy])
     end
 
 end

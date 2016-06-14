@@ -35,7 +35,7 @@ gem 'bcrypt', '~> 3.1.7'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
-  
+
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
 end
@@ -61,7 +61,7 @@ gem 'bootstrap-will_paginate'
 gem 'carrierwave', '~> 0.10.0'
 gem 'mini_magick', '~> 4.3'
 
-gem 'google-api-client', '~> 0.9', 
+gem 'google-api-client', '~> 0.9',
   require: ['google/apis/calendar_v3', 'google/apis/drive_v3']
 gem 'signet', '~> 0.7.2'
 

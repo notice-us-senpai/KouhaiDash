@@ -27,6 +27,23 @@
     <%= f.label :done %><br>
     <%= f.check_box :done %>
   </div>
+  <div id="assignment" class="field">
+    <label for="task_assignments">Assigned to:</label>
+    <ul id="assign_list">
+      <%=f.fields_for :task_assignments do |assign_form| %>
+      <li>
+        <label for="membership_id">User:</label>
+        <%= assign_form.select :membership_id, options_for_select(@memberships_array, assign_form.object.membership_id)%>
+        <%= assign_form.hidden_field :_destroy%>
+        <button type="button" class="assignremovebtn" data-preexisting="true" data-id="<%= assign_form.index %>">Remove</button>
+      </li>
+      <div style='display: none' id='assign_select_template'>
+          <%=options_for_select(@memberships_array)%>
+      </div>
+      <%end%>
+    </ul>
+    <button type="button" class="assignaddbtn">Add Assignment</button>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

@@ -41,12 +41,12 @@ end
 magic_number.times do |n|
   organisation = "#{Faker::Company.name} #{Faker::Company.suffix}"
   Contact.create(
-    name: Faker::Name.name[0...64], 
-    organisation: organisation, 
-    position: Faker::Company.profession, 
-    email: Faker::Internet.email[0...64], 
-    phone: Faker::PhoneNumber.cell_phone, 
-    website: Faker::Internet.url, 
+    name: Faker::Name.name[0...64],
+    organisation: organisation,
+    position: Faker::Company.profession,
+    email: Faker::Internet.email[0...64],
+    phone: Faker::PhoneNumber.cell_phone,
+    website: Faker::Internet.url,
     description: Faker::Lorem.paragraph
   )
 end
@@ -54,7 +54,7 @@ end
 Group.create(name: 'TestGroup')
 Group.create(name: 'NoMember')
 magic_number.times do |i|
-  Membership.create(user_id: i, group_id:1)
+  Membership.create(user_id: i+1, group_id:1)
 end
 
 magic_number.times do |i|
@@ -64,15 +64,19 @@ end
 magic_number.times do |i|
   probably = i % 2
   Task.create(
-    category_id: i,
+    category_id: 4,
     name: "Complete KouhaiDash!",
     description: "Need to settle the login system asap!",
     deadline: Date.new(2016, 12, 25),
     done: probably
     )
+    2.times do |j|
+      TaskAssignment.create(
+        task_id: i+1,
+        membership_id: (13*i+7*j)%10+1
+      )
+    end
 end
 
-# id: nil, name: nil, deadline: nil, description: nil, done: nil, 
+# id: nil, name: nil, deadline: nil, description: nil, done: nil,
 # created_at: nil, updated_at: nil, category_id: nil
-
-
