@@ -33,6 +33,13 @@
           <li>
             <%= link_to "Home", root_path %>
           </li>
+          <% if @group %>
+            <%get_categories_and_path(@group).each do |link| %>
+            <li>
+              <%= link_to link[:name], link[:path] %>
+            </li>
+            <%end%>
+          <%end%>
           <% if logged_in? %>
             <li>
               <%= link_to "Profile", current_user %>
@@ -40,13 +47,7 @@
             <li>
               <%= link_to "Members", users_path %>
             </li>
-            <% if @group %>
-              <%get_categories_and_path(@group).each do |link| %>
-              <li>
-                <%= link_to link[:name], link[:path] %>
-              </li>
-              <%end%>
-            <%end%>
+
             <li>
               <%= link_to "Calendar", google_calendar_path %>
             </li>

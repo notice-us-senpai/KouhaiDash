@@ -2,6 +2,9 @@ class TasksController < ApplicationController
   before_action :set_group
   before_action :set_category
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :check_view_auth
+  before_action :check_edit_auth, only: [:edit, :update, :destroy, :new, :create]
+
 
   # GET /tasks
   # GET /tasks.json
@@ -78,6 +81,20 @@ class TasksController < ApplicationController
     def set_group
       @group = Group.find(params[:group_id])
       @memberships_array = @group.memberships.includes(:user).all.collect{|m|[m.user.username,m.id] }
+    end
+
+    def check_edit_auth
+      unless is_user_of_group? @group
+        flash[:notice] = "Join the group to make a change!"
+        redirect_to group_category_tasks_path(@group,@category)
+      end
+    end
+
+    def check_view_auth
+      unless @category.public || is_user_of_group?(@group)
+        flash[:notice] = "Join the group to see more!"
+        redirect_to @group
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
