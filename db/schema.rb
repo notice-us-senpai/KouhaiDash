@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(version: 20160603012624) do
     t.string   "email"
     t.string   "birthday"
     t.string   "description"
-    t.string   "picture"
+    t.string   "image"
     t.string   "organisation"
     t.string   "position"
     t.datetime "created_at",                      null: false
