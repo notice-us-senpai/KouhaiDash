@@ -1,0 +1,15 @@
+<li>
+  <%= image_tag membership.user.image.thumb.url %>
+  <%= link_to membership.user.username, membership.user %>
+  <% if is_user_of_group?(@group) && !membership.approved %>
+    <%= form_for([@group,membership]) do |f| %>
+      <!-- <%=f.hidden_field :user_id, value: membership.user_id%> -->
+      <%=f.hidden_field :approved, value: true%>
+      <div class="actions">
+        <%= f.submit "Approve"%>
+      </div>
+    <% end %>
+    <%= link_to "delete", [@group,membership], method: :delete,
+    data: { confirm: "Delete #{membership.user.username}?" } %>
+  <% end %>
+</li>

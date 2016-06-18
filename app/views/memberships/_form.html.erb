@@ -1,24 +1,20 @@
-<%= form_for(@membership) do |f| %>
-  <% if @membership.errors.any? %>
+<%= form_for([@group,@new_membership]) do |f| %>
+  <% if @new_membership.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@membership.errors.count, "error") %> prohibited this membership from being saved:</h2>
+      <h2><%= pluralize(@new_membership.errors.count, "error") %> prohibited this membership from being saved:</h2>
 
       <ul>
-      <% @membership.errors.full_messages.each do |message| %>
+      <% @new_membership.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
-
   <div class="field">
-    <%= f.label :group_id %><br>
-    <%= f.number_field :group_id %>
+    <label>Add User:</label><br>
+    <%= f.select :user_id, options_for_select(@users_array)%>
   </div>
-  <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.number_field :user_id %>
-  </div>
+  <%=f.hidden_field :approved, value: true%>
   <div class="actions">
     <%= f.submit %>
   </div>

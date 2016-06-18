@@ -4,7 +4,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :check_view_auth
   before_action :check_edit_auth, only: [:edit, :update, :destroy, :new, :create]
-
+  before_action :get_member_list, only: [:edit, :new]
 
   # GET /tasks
   # GET /tasks.json
@@ -80,6 +80,9 @@ class TasksController < ApplicationController
 
     def set_group
       @group = Group.find(params[:group_id])
+    end
+
+    def get_member_list
       @memberships_array = @group.memberships.includes(:user).all.collect{|m|[m.user.username,m.id] }
     end
 

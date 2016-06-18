@@ -54,7 +54,7 @@ end
 Group.create(name: 'TestGroup')
 Group.create(name: 'NoMember')
 magic_number.times do |i|
-  Membership.create(user_id: i+1, group_id:1, approved: true)
+  Membership.create(user_id: i+1, group_id:1, approved: (i%2==0? false : true))
 end
 
 magic_number.times do |i|

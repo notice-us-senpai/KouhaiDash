@@ -1,10 +1,9 @@
 class MembershipsController < ApplicationController
+  before_action :set_variables
   before_action :set_membership, only: [:show, :edit, :update, :destroy]
-
   # GET /memberships
   # GET /memberships.json
   def index
-    @memberships = Membership.all
   end
 
   # GET /memberships/1
@@ -24,15 +23,15 @@ class MembershipsController < ApplicationController
   # POST /memberships
   # POST /memberships.json
   def create
-    @membership = Membership.new(membership_params)
+    @new_membership = @group.memberships.new(membership_params)
 
     respond_to do |format|
-      if @membership.save
-        format.html { redirect_to @membership, notice: 'Membership was successfully created.' }
-        format.json { render :show, status: :created, location: @membership }
+      if @new_membership.save
+        format.html { redirect_to group_memberships_path(@group), notice: 'Membership was successfully created.' }
+        format.json { render :show, status: :created, location: group_memberships_path(@group) }
       else
-        format.html { render :new }
-        format.json { render json: @membership.errors, status: :unprocessable_entity }
+        format.html { render :index }
+        format.json { render json: @new_membership.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -42,10 +41,10 @@ class MembershipsController < ApplicationController
   def update
     respond_to do |format|
       if @membership.update(membership_params)
-        format.html { redirect_to @membership, notice: 'Membership was successfully updated.' }
-        format.json { render :show, status: :ok, location: @membership }
+        format.html { redirect_to group_memberships_path(@group), notice: 'Membership was successfully updated.' }
+        format.json { render :show, status: :ok, location: group_memberships_path(@group) }
       else
-        format.html { render :edit }
+        format.html { render :index }
         format.json { render json: @membership.errors, status: :unprocessable_entity }
       end
     end
@@ -56,7 +55,7 @@ class MembershipsController < ApplicationController
   def destroy
     @membership.destroy
     respond_to do |format|
-      format.html { redirect_to memberships_url, notice: 'Membership was successfully destroyed.' }
+      format.html { redirect_to group_memberships_url(@group), notice: 'Membership was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -67,8 +66,16 @@ class MembershipsController < ApplicationController
       @membership = Membership.find(params[:id])
     end
 
+    def set_variables
+      @group = Group.find(params[:group_id])
+      @memberships = @group.memberships.includes(:user).order(approved: :asc).all
+      members = @memberships.collect{|member| member.user_id}
+      @users_array = User.where.not(id: members).collect{|user| [user.username,user.id]}
+      @new_membership = @group.memberships.new
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def membership_params
-      params.require(:membership).permit(:group_id, :user_id)
+      params.require(:membership).permit(:group_id, :user_id, :approved)
     end
 end

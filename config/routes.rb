@@ -30,9 +30,11 @@ Rails.application.routes.draw do
   get 'pages/drive-callback', to: 'pages#drive_callback'
 
   resources :groups do
+    resources :memberships, only: [:index, :create, :destroy, :update]
     resources :categories do
       resources :tasks
     end
+
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
