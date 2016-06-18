@@ -17,7 +17,7 @@
 
 <p>
   <strong>Public:</strong>
-  <%= @category.public %>
+  <%= @category.is_public %>
 </p>
 
 <%= link_to 'Edit', edit_group_category_path(@group,@category) %> |

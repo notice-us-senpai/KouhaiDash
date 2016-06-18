@@ -1,6 +1,6 @@
 module GroupsHelper
   def is_user_of_group?(group)
-    logged_in? && !Membership.where(user_id: current_user.id).where(group_id: group.id).empty?
+    logged_in? && !Membership.where(user_id: current_user.id, group_id: group.id, approved: true).empty?
   end
 
   # returns array of hash of category name and associated path

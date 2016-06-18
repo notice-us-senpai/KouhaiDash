@@ -11,6 +11,4 @@ class Category < ActiveRecord::Base
     presence: true
   validates :group_id,
     presence: true
-  validates :is_public,
-    presence: true
 end

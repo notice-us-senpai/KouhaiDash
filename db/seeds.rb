@@ -54,11 +54,11 @@ end
 Group.create(name: 'TestGroup')
 Group.create(name: 'NoMember')
 magic_number.times do |i|
-  Membership.create(user_id: i+1, group_id:1)
+  Membership.create(user_id: i+1, group_id:1, approved: true)
 end
 
 magic_number.times do |i|
-  Category.create(name: ["Cat",i.to_s].join, group_id: 1, type_no: i, is_public: (i%2==0? true : false))
+  Category.create(name: ["Cat",i.to_s].join, group_id: 1, type_no: i, is_public: (i%2==0? false : true))
 end
 
 magic_number.times do |i|
