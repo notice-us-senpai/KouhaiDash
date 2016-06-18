@@ -58,7 +58,7 @@ magic_number.times do |i|
 end
 
 magic_number.times do |i|
-  Category.create(name: ["Cat",i.to_s].join, group_id: 1, type_no: i, public: (i%2==0? true : false))
+  Category.create(name: ["Cat",i.to_s].join, group_id: 1, type_no: i, is_public: (i%2==0? true : false))
 end
 
 magic_number.times do |i|

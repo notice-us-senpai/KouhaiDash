@@ -11,15 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160603012624) do
+ActiveRecord::Schema.define(version: 20160618091449) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
     t.integer  "type_no"
     t.integer  "group_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean  "public"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.boolean  "is_public",  default: true
   end
 
   add_index "categories", ["group_id"], name: "index_categories_on_group_id"

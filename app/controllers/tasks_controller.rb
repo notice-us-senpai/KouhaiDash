@@ -91,7 +91,7 @@ class TasksController < ApplicationController
     end
 
     def check_view_auth
-      unless @category.public || is_user_of_group?(@group)
+      unless @category.is_public || is_user_of_group?(@group)
         flash[:notice] = "Join the group to see more!"
         redirect_to @group
       end

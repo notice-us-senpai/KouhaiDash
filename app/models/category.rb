@@ -3,7 +3,7 @@ class Category < ActiveRecord::Base
   belongs_to :group
   has_many :tasks
   has_many :task_assignments, through: :tasks
-  scope :is_public, ->{ where(public: true)}
+  scope :is_public, ->{ where(is_public: true)}
   # validations
   validates :name,
     presence: true
@@ -11,6 +11,6 @@ class Category < ActiveRecord::Base
     presence: true
   validates :group_id,
     presence: true
-  validates :public,
+  validates :is_public,
     presence: true
 end
