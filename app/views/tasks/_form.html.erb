@@ -37,10 +37,10 @@
         <%= assign_form.hidden_field :_destroy%>
         <button type="button" class="assignremovebtn" data-preexisting="true" data-id="<%= assign_form.index %>">Remove</button>
       </li>
+      <%end%>
       <div style='display: none' id='assign_select_template'>
           <%=options_for_select(@memberships_array)%>
       </div>
-      <%end%>
     </ul>
     <button type="button" class="assignaddbtn">Add Assignment</button>
   </div>

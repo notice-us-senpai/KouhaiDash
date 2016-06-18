@@ -84,17 +84,11 @@ class TasksController < ApplicationController
     end
 
     def check_edit_auth
-      unless is_user_of_group? @group
-        flash[:notice] = "Join the group to make a change!"
-        redirect_to group_category_tasks_path(@group,@category)
-      end
+      check_category_edit_auth(@group,@category)
     end
 
     def check_view_auth
-      unless @category.is_public || is_user_of_group?(@group)
-        flash[:notice] = "Join the group to see more!"
-        redirect_to @group
-      end
+      check_category_view_auth(@group,@category)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

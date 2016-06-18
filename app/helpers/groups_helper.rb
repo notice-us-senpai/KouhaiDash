@@ -17,4 +17,19 @@ module GroupsHelper
     #logger.info array.size.to_s + "number of element(s)\n"
     return array
   end
+
+  def check_category_edit_auth(group,category)
+    unless is_user_of_group? group
+      flash[:notice] = "Join the group to make a change!"
+      redirect_to [group,category]
+    end
+  end
+
+  def check_category_view_auth(group,category)
+    unless category.is_public || is_user_of_group?(group)
+      flash[:notice] = "Join the group to see more!"
+      redirect_to group
+    end
+  end
+
 end

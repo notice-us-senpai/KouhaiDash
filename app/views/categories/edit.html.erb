@@ -2,5 +2,5 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @category %> |
-<%= link_to 'Back', categories_path %>
+<%= link_to 'Show', [@group,@category] %> |
+<%= link_to 'Back', group_categories_path(@group) %>

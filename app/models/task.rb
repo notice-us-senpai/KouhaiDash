@@ -1,7 +1,7 @@
 class Task < ActiveRecord::Base
   # associations
   belongs_to :category
-  has_many :task_assignments
+  has_many :task_assignments, dependent: :destroy
   accepts_nested_attributes_for :task_assignments, allow_destroy: true
   # validations
   validates :name,
