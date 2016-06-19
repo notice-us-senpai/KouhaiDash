@@ -54,3 +54,18 @@ group :production do
   gem 'puma'
 end
 
+gem 'faker'
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
+
+gem 'carrierwave', '~> 0.10.0'
+gem 'mini_magick', '~> 4.3'
+
+gem 'google-api-client', '~> 0.9', 
+  require: ['google/apis/calendar_v3', 'google/apis/drive_v3']
+gem 'signet', '~> 0.7.2'
+
+# gem 'annotate'
+group :development do
+  gem 'rails-erd'
+end

@@ -11,21 +11,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160513121053) do
+ActiveRecord::Schema.define(version: 20160603012624) do
+
+  create_table "contacts", force: :cascade do |t|
+    t.string   "name"
+    t.string   "organisation"
+    t.string   "position"
+    t.string   "email"
+    t.string   "phone"
+    t.string   "website"
+    t.text     "description"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "username"
     t.string   "password"
     t.string   "name"
     t.string   "email"
-    t.string   "birthday"
-    t.string   "description"
-    t.string   "picture"
+    t.date     "birthday"
+    t.text     "description"
+    t.string   "image"
     t.string   "organisation"
     t.string   "position"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.string   "password_digest"
+    t.string   "remember_digest"
+    t.boolean  "admin",           default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

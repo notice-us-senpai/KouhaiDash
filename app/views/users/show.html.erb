@@ -1,0 +1,21 @@
+<% provide(:title, @user.name) %>
+<div class="row">
+	<h1>All About <%= @user.username %></h1>
+</div>
+
+<div class="row">
+  <aside class="col-md-4">
+    <section class="user-info">
+    	<div class="profile-picture">
+    		<p>
+    			<%= image_tag @user.image.thumb.url %>
+  			</p>
+  		</div>
+  		<div class="profile-description">
+      	<h1>
+      		<%= @user.username %>
+    		</h1>
+    	</div>
+    </section>
+  </aside>
+</div>

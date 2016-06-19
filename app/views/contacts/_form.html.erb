@@ -1,0 +1,32 @@
+<div class="col-md-6 col-md-offset-3">
+	<% if @contact.errors.any? %>
+		<% @contact.errors.full_messages.each do | msg | %>
+			<%= msg %>
+		<% end %>
+	<% end %>
+
+	<%= form_for @contact do |f| %>
+		<%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control' %>
+
+		<%= f.label :email %>
+		<%= f.email_field :email, class: 'form-control' %>
+
+		<%= f.label :phone %>
+		<%= f.text_field :phone, class: 'form-control' %>
+
+		<%= f.label :website %>
+		<%= f.text_field :website, class: 'form-control' %>
+
+		<%= f.label :organisation %>
+		<%= f.text_field :organisation, class: 'form-control' %>
+
+		<%= f.label :position %>
+		<%= f.text_field :position, class: 'form-control' %>
+
+		<%= f.label :description %>
+		<%= f.text_field :description, class: 'form-control' %>
+		
+		<%= f.submit class: "btn btn-primary" %>
+	<% end %>
+</div>

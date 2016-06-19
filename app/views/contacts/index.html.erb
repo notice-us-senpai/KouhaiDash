@@ -1,0 +1,49 @@
+<div class="row">
+	<h1>Contacts#index</h1>
+	<p>Find me in app/views/contacts/index.html.erb</p>
+</div>
+
+<div class="row">
+	<%= link_to "Create New Contact", { action: "new" } %> | 
+	<%= link_to "Download as CSV", contacts_path(format: "csv") %>
+</div>
+
+<% row = 0 %>
+
+<% @contacts.each do |contact| %>
+
+	<% if row % 2 == 0 %>
+		<div class="row">
+	<% end %>
+
+	<div class="col-md-6 contact">
+		<ul class="contact-details">
+			<li><%= contact.name %></li>
+
+			<li><%= contact.organisation %></li>
+
+			<li><%= contact.email %></li>
+			<li><%= contact.phone %></li>
+		</ul>
+
+		<%= link_to "Read More", { action: "show", id: contact } %> | 
+		<%= link_to "Update", { action: "edit", id: contact } %> | 
+		<%= link_to "Delete", { action: "destroy", id: contact }, 
+			method: :delete, data: { confirm: "Delete #{contact.name}?" } %>
+	</div>
+
+	<% if row % 2 == 1 %>
+		</div>
+	<% end %>
+
+	<% row += 1 %>
+<% end %>
+
+<% if row % 2 == 1 %>
+	</div>
+<% end %>
+
+<div class="row">
+	<%= link_to "Create New Contact", { action: "new" } %> | 
+	<%= link_to "Download as CSV", contacts_path(format: "csv") %>
+</div>

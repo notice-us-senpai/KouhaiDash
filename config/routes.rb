@@ -1,17 +1,52 @@
 Rails.application.routes.draw do
+# <<<<<<< HEAD
+  # resources :task_assignments
+  # resources :tasks
+  # resources :categories
+  # resources :memberships
+  # resources :groups
+# =======
+  # resources :task_assignments
+  # resources :tasks
+  # resources :categories
+  # resources :memberships
+  # resources :groups
+# >>>>>>> delete-user
+  
+  get 'sessions/new'
+
+  get 'login', to: 'sessions#new'
+  post 'login', to: 'sessions#create'
+  delete 'logout', to: 'sessions#destroy'
+
+  resources :users
+
   get 'register', to: 'users#new', as: 'register'
+  # user_registration_test.rb dependent on register_path too
 
   root 'pages#home'
 
+# <<<<<<< HEAD
+  # get 'cat_task/:cat_id', to: 'tasks#index', as: 'category_tasks'
+# =======
+  # get 'cat_task/:cat_id', to: 'tasks#index', as: 'category_tasks'
+# >>>>>>> delete-user
+
   get 'pages/profile'
 
-  get 'pages/calendar'
+  get 'calendar', to: 'pages#calendar', as: 'calendar'
 
   get 'pages/tasks'
 
-  get 'pages/files'
+  get 'files', to: 'pages#files', as: 'files'
 
   get 'pages/contacts'
+  resources :contacts
+
+  get 'google-calendar', to: 'pages#google_calendar'
+  get 'google-drive', to: 'pages#google_drive'
+  get 'pages/calendar-callback', to: 'pages#calendar_callback'
+  get 'pages/drive-callback', to: 'pages#drive_callback'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
