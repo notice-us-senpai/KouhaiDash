@@ -54,17 +54,14 @@ end
 Group.create(name: 'TestGroup')
 Group.create(name: 'NoMember')
 magic_number.times do |i|
-  Membership.create(user_id: i+1, group_id:1, approved: (i%2==0? false : true))
+  Membership.create(user_id: i+1, group_id:1, approved: (i!=0 && i%2==0? false : true))
 end
-
-magic_number.times do |i|
-  Category.create(name: ["Cat",i.to_s].join, group_id: 1, type_no: i, is_public: (i%2==0? false : true))
-end
-
+Category.create(name: "Private Task List", group_id: 1, type_no: 3, is_public: false)
+Category.create(name: "Public Task List", group_id: 1, type_no: 3, is_public: true)
 magic_number.times do |i|
   probably = i % 2
   Task.create(
-    category_id: 4,
+    category_id: 1+i%2,
     name: "Complete KouhaiDash!",
     description: "Need to settle the login system asap!",
     deadline: Date.new(2016, 12, 25),

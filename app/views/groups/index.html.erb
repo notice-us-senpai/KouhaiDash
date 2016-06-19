@@ -1,26 +1,23 @@
-<p id="notice"><%= notice %></p>
 
 <h1>Listing Groups</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<ul>
+  <% @groups.each do |group| %>
+    <li>
+      <%=link_to "#{group.name}", group %>
+      <%if logged_in? && !is_user_of_group?(group)%>
+        <%if is_a_not_yet_approved_member_of_group?(group)%>
+          <label>Request is sent.</label>
+        <%else%>
+          <%=link_to "Request to Join", join_group_path(group.id), method: :post%>
+        <%end%>
+      <%end%>
+      <% unless !logged_in?||is_user_of_group?(group) %>
 
-  <tbody>
-    <% @groups.each do |group| %>
-      <tr>
-        <td><%= group.name %></td>
-        <td><%= link_to 'Show', group %></td>
-        <td><%= link_to 'Edit', edit_group_path(group) %></td>
-        <td><%= link_to 'Destroy', group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
 
 <br>
 

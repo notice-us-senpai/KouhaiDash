@@ -33,11 +33,24 @@
           <li>
             <%= link_to "Home", root_path %>
           </li>
+          <li>
+            <%= link_to "Groups", groups_path %>
+          </li>
           <% if @group %>
+            <%if @group.id && (@group.members_public || is_user_of_group?(@group)) %>
+              <li>
+                <%= link_to "Group Members", group_memberships_path(@group) %>
+              </li>
+            <%end%>
             <%get_categories_and_path(@group).each do |link| %>
-            <li>
-              <%= link_to link[:name], link[:path] %>
-            </li>
+              <li>
+                <%= link_to link[:name], link[:path] %>
+              </li>
+            <%end%>
+            <%if @group.id && is_user_of_group?(@group) %>
+              <li>
+                <%= link_to "Manage Categories", group_categories_path(@group) %>
+              </li>
             <%end%>
           <%end%>
           <% if logged_in? %>

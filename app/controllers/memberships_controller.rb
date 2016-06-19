@@ -1,6 +1,8 @@
 class MembershipsController < ApplicationController
   before_action :set_variables
   before_action :set_membership, only: [:show, :edit, :update, :destroy]
+  before_action :check_view_auth
+  before_action :check_edit_auth, only: [:edit, :new, :create, :destroy, :update]
   # GET /memberships
   # GET /memberships.json
   def index
@@ -77,5 +79,19 @@ class MembershipsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def membership_params
       params.require(:membership).permit(:group_id, :user_id, :approved)
+    end
+
+    def check_view_auth
+      unless is_user_of_group?(@group) || @group.members_public
+        flash[:notice] = "Join the group to see more!"
+        redirect_to @group
+      end
+    end
+
+    def check_edit_auth
+      unless is_user_of_group?(@group)
+        flash[:notice] = "Join the group to make a change!"
+        redirect_to group_memberships_path(@group)
+      end
     end
 end

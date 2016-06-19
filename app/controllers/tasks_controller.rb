@@ -4,7 +4,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :check_view_auth
   before_action :check_edit_auth, only: [:edit, :update, :destroy, :new, :create]
-  before_action :get_member_list, only: [:edit, :new]
+  before_action :get_member_list, only: [:edit, :new, :create, :update]
 
   # GET /tasks
   # GET /tasks.json

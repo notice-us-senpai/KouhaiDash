@@ -17,7 +17,7 @@
   </div>
   <div class="field">
     <%= f.label :type_no %><br>
-    <%= f.number_field :type_no %>
+    <%= f.select :type_no, options_for_select(@type_no_array, @category.type_no) %>
   </div>
   <div class="field">
     <%= f.label :is_public %><br>

@@ -1,6 +1,7 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:show, :edit, :update, :destroy]
-  before_action :check_user_of_group, only: [:edit]
+  before_action :set_group, only: [:show, :edit, :update, :destroy, :join]
+  before_action :check_user_of_group, only: [:edit, :update, :destroy]
+  before_action :check_logged_in, only:[:new, :create, :join]
 
   # GET /groups
   # GET /groups.json
@@ -30,6 +31,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
+        @group.memberships.create(user_id: current_user.id, approved: true)
         format.html { redirect_to @group, notice: 'Group was successfully created.' }
         format.json { render :show, status: :created, location: @group }
       else
@@ -63,6 +65,18 @@ class GroupsController < ApplicationController
     end
   end
 
+  # POST /join_group/1
+  def join
+    @membership=@group.memberships.new(user_id: current_user.id, approved: false)
+    if @membership.save
+      flash[:notice] = "The request has been sent."
+      redirect_to @group
+    else
+      flash[:error] = @membership.errors.full_messages
+      redirect_to groups_path
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_group
@@ -71,16 +85,25 @@ class GroupsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def group_params
-      params.require(:group).permit(:name)
+      params.require(:group).permit(:name, :members_public)
     end
 
     #checks if user if a member of the group
     def check_user_of_group
       unless logged_in?
+        flash[:notice] = 'Log in as a member of the group.'
         redirect_to login_url
       end
       unless is_user_of_group?(@group)
-        redirect_to root_url
+        flash[:notice] = 'Join the group and wait for your request to be accepted!'
+        redirect_to groups_path
+      end
+    end
+
+    def check_logged_in
+      unless logged_in?
+        flash[:notice] = 'Please log in first.'
+        redirect_to login_url
       end
     end
 end

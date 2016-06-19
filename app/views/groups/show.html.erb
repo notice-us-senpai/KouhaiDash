@@ -1,8 +1,14 @@
-<p id="notice"><%= notice %></p>
 
 <p>
   <strong>Name:</strong>
   <%= @group.name %>
+  <br>
+
+  <%if @group.members_public%>
+  <p> Members list is public. <p>
+  <%else%>
+  <p> Members list is not public. <p>
+  <%end%>
 </p>
 
 <%= link_to 'Edit', edit_group_path(@group) %> |

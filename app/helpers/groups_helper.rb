@@ -3,6 +3,10 @@ module GroupsHelper
     logged_in? && !Membership.where(user_id: current_user.id, group_id: group.id, approved: true).empty?
   end
 
+  def is_a_not_yet_approved_member_of_group?(group)
+    logged_in? && !Membership.where(user_id: current_user.id, group_id: group.id, approved: false).empty?
+  end
+
   # returns array of hash of category name and associated path
   def get_categories_and_path(group)
     categories = if is_user_of_group?(group)

@@ -34,8 +34,9 @@ Rails.application.routes.draw do
     resources :categories do
       resources :tasks
     end
-
   end
+
+  post '/join_group/:id', to: 'groups#join', as: 'join_group'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
