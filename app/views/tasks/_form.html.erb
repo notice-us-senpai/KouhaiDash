@@ -1,50 +1,58 @@
-<%= form_for([@group,@category,@task]) do |f| %>
-  <% if @task.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
-
-      <ul>
-      <% @task.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :deadline %><br>
-    <%= f.date_select :deadline %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_area :description %>
-  </div>
-  <div class="field">
-    <%= f.label :done %><br>
-    <%= f.check_box :done %>
-  </div>
-  <div id="assignment" class="field">
-    <label for="task_assignments">Assigned to:</label>
-    <ul id="assign_list">
-      <%=f.fields_for :task_assignments do |assign_form| %>
-      <li>
-        <label for="membership_id">User:</label>
-        <%= assign_form.select :membership_id, options_for_select(@memberships_array, assign_form.object.membership_id)%>
-        <%= assign_form.hidden_field :_destroy%>
-        <button type="button" class="assignremovebtn" data-preexisting="true" data-id="<%= assign_form.index %>">Remove</button>
-      </li>
-      <%end%>
-      <div style='display: none' id='assign_select_template'>
-          <%=options_for_select(@memberships_array)%>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for([@group,@category,@task]) do |f| %>
+      <% if @task.errors.any? %>
+      <div class="panel panel-danger">
+        <div class="panel-heading"><%= pluralize(@task.errors.count, "error") %> prohibited this group from being saved:</div>
+        <ul class="list-group">
+         <% @task.errors.full_messages.each do |message| %>
+           <li class="list-group-item"><%= message %></li>
+         <% end %>
+        </ul>
       </div>
-    </ul>
-    <button type="button" class="assignaddbtn">Add Assignment</button>
+      <% end %>
+
+      <div class="field">
+        <%= f.label :name %><br>
+        <%= f.text_field :name , class: 'form-control'%>
+      </div>
+      <div class="field">
+        <%= f.label :deadline %><br>
+        <%= f.date_select :deadline , class: 'form-control'%>
+      </div>
+      <div class="field">
+        <%= f.label :description %><br>
+        <%= f.text_area :description , class: 'form-control'%>
+      </div>
+      <div class="field">
+        <%= f.label :done %><br>
+        <%= f.check_box :done , class: 'form-control'%>
+      </div>
+      <div id="assignment" class="field">
+        <label for="task_assignments">Assigned to:</label>
+        <table id="assign_list" class ="table">
+          <tbody>
+            <%=f.fields_for :task_assignments do |assign_form| %>
+            <tr data-id="<%= assign_form.index %>">
+              <td>
+                <%= assign_form.select :membership_id, options_for_select(@memberships_array, assign_form.object.membership_id)%>
+                <%= assign_form.hidden_field :_destroy%>
+              </td>
+              <td>
+                <button type="button" class="assignremovebtn" data-preexisting="true" data-id="<%= assign_form.index %>">Remove</button>
+              </td>
+            </tr>
+            <%end%>
+            <div style='display: none' id='assign_select_template'>
+                <%=options_for_select(@memberships_array)%>
+            </div>
+          </tbody>
+        </table>
+        <button type="button" class="assignaddbtn">Add Assignment</button>
+      </div>
+      <div class="actions">
+        <%= f.submit class: "btn btn-primary" %>
+      </div>
+    <% end %>
   </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>

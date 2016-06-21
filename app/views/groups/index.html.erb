@@ -1,24 +1,31 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <h1>Groups</h1>
+  </div>
+</div>
+<div class="row">
+  <div class = "col-md-6 col-md-offset-3">
+    <table class="table table-hover">
+      <tbody>
+        <% @groups.each do |group| %>
+          <tr>
+            <td><%=link_to "#{group.name}", group%></td>
+            <td>
+              <%if logged_in? && !is_user_of_group?(group)%>
+                <%if is_a_not_yet_approved_member_of_group?(group)%>
+                  Request sent
+                <%else%>
+                  <%=link_to "Request to Join", join_group_path(group.id), method: :post, class: "btn btn-default"%>
+                <%end%>
+              <%end%>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class ="row">
 
-<h1>Listing Groups</h1>
-
-<ul>
-  <% @groups.each do |group| %>
-    <li>
-      <%=link_to "#{group.name}", group %>
-      <%if logged_in? && !is_user_of_group?(group)%>
-        <%if is_a_not_yet_approved_member_of_group?(group)%>
-          <label>Request is sent.</label>
-        <%else%>
-          <%=link_to "Request to Join", join_group_path(group.id), method: :post%>
-        <%end%>
-      <%end%>
-      <% unless !logged_in?||is_user_of_group?(group) %>
-
-      <% end %>
-    </li>
-  <% end %>
-</ul>
-
-<br>
-
-<%= link_to 'New Group', new_group_path %>
+<%= link_to 'New Group', new_group_path , class: "btn btn-default col-md-2 col-md-offset-5"%>
+</div>
