@@ -8,13 +8,17 @@
     <%= form_for(@user) do |f| %>
       <%= render 'shared/error_messages' %>
 
+      <%= f.label :description, 'About Myself' %>
+      <%= f.text_area :description, class: 'form-control' %>
+
       <%= f.label :email %>
       <%= f.email_field :email, class: 'form-control' %>
 
-      <%= f.label :password %>
+      <%= f.label :password, "New Password" %>
       <%= f.password_field :password, class: 'form-control' %>
 
-      <%= f.label :password_confirmation, "Confirm Password" %>
+      <%= f.label :password_confirmation, 
+        "Confirm New Password" %>
       <%= f.password_field :password_confirmation, class: 'form-control' %>
 
       <%= f.label :image, "Profile Picture" %>
