@@ -4,20 +4,25 @@
 $(document).ready ->
 
   $(document).on('click','.assignremovebtn', ( ->
+    id = $(this).data("id")
     if $(this).data("preexisting")
-      $(this).parent().hide()
+      $("*[data-id=" + id + "]").hide()
       $("#task_task_assignments_attributes_"+$(this).data("id")+"__destroy").val("true")
     else
-      $(this).parent().remove()
+      $("*[data-id=" + id + "]").remove()
   ))
   $(document).on('click','.assignaddbtn',(->
     milliseconds = (new Date).getTime()
-    $('#assign_list').append("<li>
-      <label for='membership_id'>User:</label>
-      <select name='task[task_assignments_attributes]["+milliseconds+"][membership_id]' id='task_task_assignments_attributes_"+milliseconds+"_membership_id'>
-      "+$('#assign_select_template').html()+"
-      </select>
-      <button type='button' class='assignremovebtn' data-preexisting='false' data-id='"+milliseconds+"'>Remove</button>
-      </li>"
+    $('#assign_list').append("
+      <tr data-id="+milliseconds+">
+        <td>
+          <select name='task[task_assignments_attributes]["+milliseconds+"][membership_id]' id='task_task_assignments_attributes_"+milliseconds+"_membership_id'>
+          "+$('#assign_select_template').html()+"
+          </select>
+        </td>
+        <td>
+          <button type='button' class='assignremovebtn' data-preexisting='false' data-id='"+milliseconds+"'>Remove</button>
+        </td>
+      </tr>"
     )
   ))

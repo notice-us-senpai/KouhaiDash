@@ -53,9 +53,12 @@ end
 
 Group.create(name: 'TestGroup')
 Group.create(name: 'NoMember')
+Group.create(name: 'Not Approved')
 magic_number.times do |i|
   Membership.create(user_id: i+1, group_id:1, approved: (i!=0 && i%2==0? false : true))
 end
+Membership.create(user_id: 1, group_id:3, approved: false)
+Membership.create(user_id: 2, group_id:3, approved: false)
 Category.create(name: "Private Task List", group_id: 1, type_no: 3, is_public: false)
 Category.create(name: "Public Task List", group_id: 1, type_no: 3, is_public: true)
 magic_number.times do |i|

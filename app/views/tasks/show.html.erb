@@ -1,32 +1,52 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <h1><%=@task.name%></h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <table class="table">
+      <tbody>
+        <tr>
+          <th>Deadline</th>
+          <td><%= @task.deadline %></td>
+        </tr>
+        <tr>
+          <th>Done</th>
+          <td>
+            <% if @task.done %>
+             <%= "Yes!" %>
+           <% else %>
+             <%= "Not yet!" %>
+           <% end %>
+         </td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td><%= @task.description %></td>
+        </tr>
+        <%first=true%>
+        <%@task.task_assignments.each do |assign| %>
+          <tr>
+            <th>
+              <%if first%>
+                Assigned To
+              <%first =false%>
+              <%end%>
+            </th>
+            <td><%= assign.membership.user.username %></td>
+          </tr>
+        <%end %>
+      </tbody>
+     </table>
+  </div>
+</div>
 
-<p>
-  <strong>Name:</strong>
-  <%= @task.name %>
-</p>
-
-<p>
-  <strong>Deadline:</strong>
-  <%= @task.deadline %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @task.description %>
-</p>
-
-<p>
-  <strong>Done:</strong>
-  <%= @task.done %>
-</p>
-
-<p>
-  <strong>Assigned To: </strong>
-  <ul>
-  <% @users.each do |user| %>
-  <li><%= user %> </li>
-  <% end %>
-  </ul>
-</p>
-
-<%= link_to 'Edit', edit_group_category_task_path(@group,@category,@task) %> |
-<%= link_to 'Back', group_category_tasks_path(@group,@category) %>
+<div class="row">
+  <div class=" col-md-4 col-md-offset-4">
+    <div class="btn-group btn-group-justified">
+      <%= link_to 'Edit', edit_group_category_task_path(@group,@category,@task), class: "btn btn-default" %>
+      <%= link_to 'Back', group_category_tasks_path(@group,@category), class: "btn btn-default" %>
+    </div>
+  </div>
+</div>
