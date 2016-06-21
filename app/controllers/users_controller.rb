@@ -65,7 +65,8 @@ class UsersController < ApplicationController
   	end
 
     def get_user
-      @user = User.find(params[:id])
+      # raise params.inspect
+      @user = User.find_by_username(params[:id])
     end
 
     # Confirms a logged-in user.

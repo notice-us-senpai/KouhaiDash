@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   # resources :groups
 # >>>>>>> delete-user
   
+  mount Judge::Engine => '/judge'
+
   get 'sessions/new'
 
   get 'login', to: 'sessions#new'
