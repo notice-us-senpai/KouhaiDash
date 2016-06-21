@@ -90,7 +90,8 @@
     /* color: #fff; */
     border-left: none;
     border-right: none;
-    color: black;
+    /* color: black; */
+    color: midnightblue;
     background: rgba(255,255,255,0.2);
 }
 
@@ -162,11 +163,12 @@
     /* Standard syntax */
     background: linear-gradient(to right, gainsboro, azure);
 
-    border: 0.1em groove snow;
-    border-radius: 0%;
+    /* border: 0.1em groove snow; */
+    /* border-radius: 0%; */
+    border: 0%;
 
-    padding: 0 1em;
-    margin: 0%;
+    /* padding: 0 1em; */
+    /* margin: 0%; */
     text-align: right;
-    text-decoration: none;
+    /* text-decoration: none; */
 }
