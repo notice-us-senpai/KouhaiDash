@@ -1,15 +1,9 @@
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
-	   <h1>New Task</h1>
-   </div>
+	<h1>New Task</h1>
 </div>
-
-<%= render 'form' %>
-
 <div class="row">
-  <div class="col-md-2 col-md-offset-5">
-    <div class="btn-group btn-group-justified">
-      <%= link_to 'Back', group_category_tasks_path(@group,@category), class: "btn btn-default" %>
-    </div>
+  <div class="col-md-6">
+    <%= render 'form' %>
+    <%= link_to 'Back', group_category_tasks_path(@group,@category), class: "btn btn-default" %>
   </div>
 </div>

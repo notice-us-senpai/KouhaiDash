@@ -1,18 +1,19 @@
+<div class="row">
+    <h1><%= @category.name %></h1>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <p>
+      <strong>Type No:</strong>
+      <%= @category.type_no %>
+    </p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @category.name %>
-</p>
+    <p>
+      <strong>Public:</strong>
+      <%= @category.is_public %>
+    </p>
 
-<p>
-  <strong>Type No:</strong>
-  <%= @category.type_no %>
-</p>
-
-<p>
-  <strong>Public:</strong>
-  <%= @category.is_public %>
-</p>
-
-<%= link_to 'Edit', edit_group_category_path(@group,@category) %> |
-<%= link_to 'Back', group_categories_path(@group) %>
+    <%= link_to 'Edit', edit_group_category_path(@group,@category) ,class:"btn btn-default"%>
+    <%= link_to 'Back', group_categories_path(@group) ,class:"btn btn-default"%>
+  </div>
+</div>

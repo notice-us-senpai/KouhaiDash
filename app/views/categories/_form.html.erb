@@ -1,29 +1,28 @@
 <%= form_for([@group,@category]) do |f| %>
   <% if @category.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@category.errors.count, "error") %> prohibited this category from being saved:</h2>
-
-      <ul>
-      <% @category.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+    <div class="panel panel-danger">
+      <div class="panel-heading"><%= pluralize(@category.errors.count, "error") %> prohibited this group from being saved:</div>
+      <ul class="list-group">
+       <% @category.errors.full_messages.each do |message| %>
+         <li class="list-group-item"><%= message %></li>
+       <% end %>
       </ul>
     </div>
   <% end %>
 
   <div class="field">
     <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <%= f.text_field :name ,class:"form-control"%>
   </div>
   <div class="field">
-    <%= f.label :type_no %><br>
+    <label>Type</label><br>
     <%= f.select :type_no, options_for_select(@type_no_array, @category.type_no) %>
   </div>
   <div class="field">
-    <%= f.label :is_public %><br>
-    <%= f.check_box :is_public %>
+    <label>Set to public</label><br>
+    <%= f.check_box :is_public%>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class:"btn btn-default"%>
   </div>
 <% end %>

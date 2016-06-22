@@ -76,6 +76,7 @@
 .sidebar-nav li {
     text-indent: 20px;
     line-height: 40px;
+    font-family: 'Raleway',sans-serif;
 }
 
 .sidebar-nav li a {
@@ -104,8 +105,9 @@
     /* height: 65px; */
     /* font-size: 18px; */
     /* line-height: 60px; */
-    font-size: 1.6em;
+    font-size: 2em;
     line-height: 2em;
+    font-family: 'Pacifico',cursive;
 }
 
 .sidebar-nav > .sidebar-brand a {

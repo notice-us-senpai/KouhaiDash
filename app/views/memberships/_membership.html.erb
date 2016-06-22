@@ -1,18 +1,24 @@
 <%unless !membership.approved && !is_user_of_group?(@group)%>
 <!--Only shows non-approved members if current user is an approved member-->
-  <li>
-    <%= image_tag membership.user.image.thumb.url %>
-    <%= link_to membership.user.username, membership.user %>
+  <tr>
+
+    <td><%= image_tag membership.user.image.thumb.url %></td>
+    <td><%= link_to membership.user.username, membership.user %></td>
     <% if is_user_of_group?(@group) && !membership.approved %>
-      <%= form_for([@group,membership]) do |f| %>
-        <!-- <%=f.hidden_field :user_id, value: membership.user_id%> -->
-        <%=f.hidden_field :approved, value: true%>
-        <div class="actions">
-          <%= f.submit "Approve"%>
-        </div>
-      <% end %>
-      <%= link_to "delete", [@group,membership], method: :delete,
-      data: { confirm: "Delete #{membership.user.username}?" } %>
+      <td>
+        <%= form_for([@group,membership]) do |f| %>
+          <%=f.hidden_field :approved, value: true%>
+          <div class="actions">
+            <%= f.submit "approve",class:"btn btn-primary"%>
+          </div>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to "delete", [@group,membership], method: :delete,
+        data: { confirm: "Kick #{membership.user.username} out?"}, class:"btn btn-danger" %>
+      </td>
+    <%else%>
+      <td colspan="2"></td>
     <% end %>
-  </li>
+  </tr>
 <%end%>

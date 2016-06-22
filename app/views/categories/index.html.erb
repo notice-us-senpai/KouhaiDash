@@ -1,29 +1,31 @@
-<h1>Listing Categories</h1>
+<div class="row">
+  <h1>Categories</h1>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Public</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Public</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @categories.each do |category| %>
-      <tr>
-        <td><%= category.name %></td>
-        <td><%= category.type_no %></td>
-        <td><%= category.is_public %></td>
-        <td><%= link_to 'Show', [@group,category] %></td>
-        <td><%= link_to 'Edit', edit_group_category_path(@group,category) %></td>
-        <td><%= link_to 'Destroy', [@group,category], method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Category', new_group_category_path %>
+      <tbody>
+        <% @categories.each do |category| %>
+          <tr>
+            <td><%= category.name %></td>
+            <td><%= @type_no_array[category.type_no][0] %></td>
+            <td><%= category.is_public %></td>
+            <td><%= link_to 'Show', [@group,category]%></td>
+            <td><%= link_to 'Edit', edit_group_category_path(@group,category)%></td>
+            <td><%= link_to 'Destroy', [@group,category], method: :delete, data: { confirm: 'Are you sure?' }%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= link_to 'New Category', new_group_category_path, class: "btn btn-default" %>
+  </div>
+</div>

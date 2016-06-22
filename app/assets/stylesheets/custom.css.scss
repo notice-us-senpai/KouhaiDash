@@ -10,10 +10,10 @@ body {
   /* background-position: 50% 50%; */
   background-position: 75% 25%;
   background-size: cover;
-  font-family: 'Shadows Into Light Two', cursive; /* Jiayee */
+  font-family: 'Raleway',sans-serif;; /* Jiayee */
   font-size: 1.6em;
-  font-weight: bold;
-  letter-spacing: 0.2em;
+  // font-weight: bold;
+  // letter-spacing: 0.2em;
   min-height: 100%;
   /* padding-top: 60px; */
 }
@@ -42,9 +42,10 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-size: 3em;
+  font-family: 'Pacifico', cursive;
   /* letter-spacing: -2px; */
   margin-bottom: 30px;
-  text-align: center;
+  // text-align: center;
 }
 
 h2 {

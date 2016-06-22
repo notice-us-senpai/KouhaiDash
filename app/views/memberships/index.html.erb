@@ -1,11 +1,17 @@
 
 
-<h1>Listing Memberships</h1>
-<% if is_user_of_group?(@group)%>
-  <%=render 'form' %>
-<%end%>
-<ul>
-  <%=render @memberships%>
-</ul>
-
-<br>
+<div class="row">
+  <h1><%=@group.name+' Members'%></h1>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <% if is_user_of_group?(@group)%>
+      <%=render 'form' %>
+    <%end%>
+    <br>
+    <h2>Members:</h2>
+    <table class='table table-hover'>
+      <%=render @memberships%>
+    </table>
+  </div>
+</div>

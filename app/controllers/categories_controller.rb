@@ -2,7 +2,7 @@ class CategoriesController < ApplicationController
   before_action :set_group
   before_action :set_category, only: [:show, :edit, :update, :destroy]
   before_action :check_edit_auth, only:[:index, :edit, :new, :update, :destroy, :create]
-  before_action :set_type_no_array, only: [:new, :edit, :create, :update]
+  before_action :set_type_no_array, only: [:new, :edit, :create, :update, :index]
   # GET /categories
   # GET /categories.json
   def index
@@ -86,7 +86,7 @@ class CategoriesController < ApplicationController
     end
 
     def set_type_no_array
-      @type_no_array = [[Task,3]]
+      @type_no_array = [["Placeholder0",0],["Placeholder1",1],["Placeholder2",2],["Tasks List",3]]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

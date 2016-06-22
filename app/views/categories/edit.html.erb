@@ -2,13 +2,10 @@
     <h1>Editing Category</h1>
 </div>
 
-<%= render 'form' %>
-
 <div class="row">
-  <div class="col-md-4 col-md-offset-4">
-    <div class="btn-group btn-group-justified">
-      <%= link_to 'Show', [@group,@category], class: "btn btn-default" %>
-      <%= link_to 'Back', group_categories_path(@group), class: "btn btn-default" %>
-    </div>
+  <div class="col-md-6">
+    <%= render 'form' %>
+    <%= link_to 'Show', [@group,@category], class: "btn btn-default" %>
+    <%= link_to 'Back', group_categories_path(@group), class: "btn btn-default" %>
   </div>
 </div>

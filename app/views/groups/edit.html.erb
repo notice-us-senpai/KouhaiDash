@@ -2,13 +2,11 @@
   <h1>Editing Group</h1>
 </div>
 
-<%= render 'form' %>
 
 <div class="row">
-  <div class="col-md-4">
-    <div class="btn-group btn-group-justified">
-      <%= link_to 'Show', @group, class: "btn btn-default"%>
-      <%= link_to 'Back', groups_path, class: "btn btn-default" %>
-    </div>
+  <div class="col-md-6">
+    <%= render 'form' %>
+    <%= link_to 'Show', @group, class: "btn btn-default"%>
+    <%= link_to 'Back', groups_path, class: "btn btn-default" %>
   </div>
 </div>

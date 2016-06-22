@@ -1,5 +1,9 @@
-<h1>New Category</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Back', group_categories_path(@group) %>
+<div class="row">
+    <h1>New Category</h1>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <%= render 'form' %>
+    <%= link_to 'Back', group_categories_path(@group) , class:"btn btn-default"%>
+  </div>
+</div>
