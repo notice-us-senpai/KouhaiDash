@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+  def to_param
+    username
+  end
+
   # 0 - ordinary community user
   # 1 - community administrator
   # 2 - kouhaidash administrator
