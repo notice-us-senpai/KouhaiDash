@@ -44,7 +44,8 @@ class PagesController < ApplicationController
       client_secret: ENV.fetch('GOOGLE_API_CLIENT_SECRET'),
       authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
       scope: Google::Apis::CalendarV3::AUTH_CALENDAR_READONLY,
-      redirect_uri: url_for(:action => :calendar_callback)
+      redirect_uri: url_for(:action => :calendar_callback), 
+      prompt: 'select_account'
     })
     redirect_to client.authorization_uri.to_s
   end
@@ -68,7 +69,8 @@ class PagesController < ApplicationController
       client_secret: ENV.fetch('GOOGLE_API_CLIENT_SECRET'),
       authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
       scope: Google::Apis::DriveV3::AUTH_DRIVE_READONLY,
-      redirect_uri: url_for(:action => :drive_callback)
+      redirect_uri: url_for(:action => :drive_callback), 
+      prompt: 'select_account'
     })
     redirect_to client.authorization_uri.to_s
   end

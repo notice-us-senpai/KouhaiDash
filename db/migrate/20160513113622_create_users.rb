@@ -12,9 +12,6 @@ class CreateUsers < ActiveRecord::Migration
     	t.text :description
     	t.string :image
 
-    	t.string :organisation
-    	t.string :position
-
       t.timestamps null: false
     end
   end

@@ -22,7 +22,9 @@
 /* Jiayee */
 
 .jumbotron {
-  background-color: rgba(255, 255, 255, 0.75);
+  /* background-color: rgba(255, 255, 255, 0.75); */
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 0%;
   font-family: 'Shojumaru', cursive;
   margin-top: 1em;
 }
@@ -34,15 +36,19 @@ footer {
   font-weight: normal;
 }
 
-.form-control, .checkbox, .btn {
+.form-control, .checkbox, {
   font-size: 1.2em;
   letter-spacing: 0.1em;
   margin-bottom: 0.8em;
   padding: 0.4em;
 }
 
-.row {
+.overlay {
   background-color: rgba(255, 255, 255, 0.5);
+}
+
+.row {
+  /* background-color: rgba(255, 255, 255, 0.5); */
   padding: 0.5em 2em;
 }
 
@@ -58,11 +64,11 @@ a {
 
 a:hover {
   background-color: rgba(204, 255, 255, 0.25);
-  border: 0.2em groove mintcream;
+  /* border: 0.2em groove mintcream; */
   color: midnightblue;
-  font-size: 1.2em;
-  line-height: 1.6em;
-  padding: 0.2em default;
+  /* font-size: 1.2em; */
+  /* line-height: 1.6em; */
+  /* padding: 0.2em default; */
   text-decoration: none;
 }
 
