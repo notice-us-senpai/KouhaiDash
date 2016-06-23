@@ -13,6 +13,8 @@ class CategoriesController < ApplicationController
   # GET /categories/1.json
   def show
     case @category.type_no
+    when 2
+      redirect_to group_category_text_page_path(@group,@category)
     when 3
       redirect_to group_category_tasks_path(@group,@category)
     else
@@ -86,7 +88,7 @@ class CategoriesController < ApplicationController
     end
 
     def set_type_no_array
-      @type_no_array = [["Placeholder0",0],["Placeholder1",1],["Placeholder2",2],["Tasks List",3]]
+      @type_no_array = [["Placeholder0",0],["Placeholder1",1],["Text Page",2],["Tasks List",3]]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
