@@ -30,15 +30,16 @@
     /* background-color: azure; */
 
     /* For browsers that do not support gradients */
-    background: azure;
+    /*background: azure;*/
     /* For Safari 5.1 to 6.0 */
-    background: -webkit-linear-gradient(left, gainsboro, azure);
+    /*background: -webkit-linear-gradient(left, gainsboro, azure);*/
     /* For Opera 11.1 to 12.0 */
-    background: -o-linear-gradient(right, gainsboro, azure);
+    /*background: -o-linear-gradient(right, gainsboro, azure);*/
     /* For Firefox 3.6 to 15 */
-    background: -moz-linear-gradient(right, gainsboro, azure);
+    /*background: -moz-linear-gradient(right, gainsboro, azure);*/
     /* Standard syntax */
-    background: linear-gradient(to right, gainsboro, azure);
+    /*background: linear-gradient(to right, white, azure);*/
+    background: white;
     border-radius: 0% 5% 5% 0%;
 
     -webkit-transition: all 0.5s ease;
@@ -83,7 +84,7 @@
     display: block;
     text-decoration: none;
     /* color: #999999; */
-    color: gray;
+    /*color: gray;*/
 }
 
 .sidebar-nav li a:hover {
@@ -157,14 +158,14 @@
     /* For browsers that do not support gradients */
     background-color: rgba(204, 255, 255, 0.2);
     /* For Safari 5.1 to 6.0 */
-    background: -webkit-linear-gradient(left, gainsboro, azure);
+    /*background: -webkit-linear-gradient(left, gainsboro, azure);*/
     /* For Opera 11.1 to 12.0 */
-    background: -o-linear-gradient(right, gainsboro, azure);
+    /*background: -o-linear-gradient(right, gainsboro, azure);*/
     /* For Firefox 3.6 to 15 */
-    background: -moz-linear-gradient(right, gainsboro, azure);
+    /*background: -moz-linear-gradient(right, gainsboro, azure);*/
     /* Standard syntax */
-    background: linear-gradient(to right, gainsboro, azure);
-
+    /*background: linear-gradient(to right, gainsboro, azure);*/
+    background: azure;
     /* border: 0.1em groove snow; */
     /* border-radius: 0%; */
     border: 0%;
