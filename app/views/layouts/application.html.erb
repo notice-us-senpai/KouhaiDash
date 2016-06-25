@@ -76,7 +76,7 @@
               </li>
             <%end%>
           <%end%>
-          <% if logged_in? %>
+          <% if !@group && logged_in? %>
             <li>
               <%= link_to "Profile", current_user %>
             </li>
@@ -93,6 +93,8 @@
             <li>
               <%= link_to "Contacts", contacts_path %>
             </li>
+          <%end%>
+          <%if logged_in?%>
             <li>
               <%= link_to "Settings", edit_user_path(current_user) %>
             </li>

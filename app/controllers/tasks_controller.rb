@@ -87,6 +87,10 @@ class TasksController < ApplicationController
     end
 
     def check_view_auth
+      if @category.type_no!=3
+        flash[:notice]='Did you lost your way?'
+        redirect_to @group
+      end
       check_category_view_auth(@group,@category)
     end
 

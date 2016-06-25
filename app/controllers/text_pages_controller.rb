@@ -1,11 +1,12 @@
 class TextPagesController < ApplicationController
   before_action :set_variables
   # before_action :set_text_page, only: [:show, :edit, :update, :destroy]
-
+  before_action :check_view_auth
+  before_action :check_edit_auth, only: [:edit, :update, :destroy, :new, :create]
   # GET /text_pages
   # GET /text_pages.json
   def index
-    @text_pages = TextPage.all
+    #@text_pages = TextPage.all
   end
 
   # GET /text_pages/1
@@ -77,5 +78,17 @@ class TextPagesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def text_page_params
       params.require(:text_page).permit(:title, :contents, :load_from_google, :file_id)
+    end
+
+    def check_edit_auth
+      check_category_edit_auth(@group,@category)
+    end
+
+    def check_view_auth
+      if @category.type_no!=2
+        flash[:notice]='Did you lost your way?'
+        redirect_to @group
+      end
+      check_category_view_auth(@group,@category)
     end
 end
