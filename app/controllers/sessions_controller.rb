@@ -43,19 +43,25 @@ class SessionsController < ApplicationController
           render_register(google_account)
         end
       elsif user=User.find_by(email: email)
-        if user.google_account
-          #user already has an existing google_account with another gmail address, flash error msg
-          #revoke access for user
-          revoke_google_token(credentials['token'])
-          flash[:notice] = 'The Google email is already associated with another user. Please login with that account or another google account.'
-          redirect_to root_path
-        else
-          #create google_account, log in user
-          google_account=GoogleAccount.create(user_id: user.id, gmail: email)
-          update_tokens(google_account,credentials)
-          log_in user
-          redirect_back_or user
-        end
+        # for enabling direct authorization when user with same email is found
+        # if user.google_account
+        #   #user already has an existing google_account with another gmail address, flash error msg
+        #   #revoke access for user
+        #   revoke_google_token(credentials['token'])
+        #   flash[:notice] = 'The Google email is already associated with another user. Please login with that account or another google account.'
+        #   redirect_to root_path
+        # else
+        #   #create google_account, log in user
+        #   google_account=GoogleAccount.create(user_id: user.id, gmail: email)
+        #   update_tokens(google_account,credentials)
+        #   log_in user
+        #   redirect_back_or user
+        # end
+
+        #disabled direct authorization
+        revoke_google_token(credentials['token'])
+        flash[:notice] = 'The Google email is already associated with another user. Please login with that account or another google account.'
+        redirect_to root_path
       else
         #create google_account with user_id: -1, render register_with_google
         google_account= GoogleAccount.create(user_id: -1, gmail: email)
@@ -68,11 +74,8 @@ class SessionsController < ApplicationController
   def register_with_google
     @user = User.new(user_params)
     gacc_params=params.require(:gacc).permit(:id, :access_token)
-    @google_id = gacc_params.fetch(:id, 0)
-    @token = gacc_params.fetch(:access_token, 0)
-
     google_account=GoogleAccount.find_by(gacc_params)
-    if @user.save && google_account && google_account.user_id == -1
+    if google_account && google_account.user_id == -1 && @user.save
       google_account.update_attributes(user_id: @user.id)
       google_account.refresh!
       log_in @user
@@ -80,6 +83,14 @@ class SessionsController < ApplicationController
     	flash[:success] = "Welcome to KouhaiDash!"
       redirect_to @user
     else
+      @google_id = gacc_params.fetch(:id, 0)
+      @token=0
+      if google_account && google_account.user_id == -1
+        #create new outdated token
+        google_account.refresh!
+        @token = google_account.access_token
+        google_account.request_token_from_google
+      end
       render 'register_with_google'
     end
   end
@@ -88,7 +99,7 @@ class SessionsController < ApplicationController
     def revoke_google_token(access_token)
       require 'net/http'
       uri = URI('https://accounts.google.com/o/oauth2/revoke')
-      params = { :token => auth_client.access_token }
+      params = { :token => access_token }
       uri.query = URI.encode_www_form(params)
       response = Net::HTTP.get_response(uri)
       if response.code == '200'
@@ -110,7 +121,7 @@ class SessionsController < ApplicationController
       @user.email = google_account.gmail
       @google_id = google_account.id
       @token = google_account.access_token
-      # update access_token without storing
+      # make revealed token outdated
       google_account.request_token_from_google
       render 'register_with_google'
     end
