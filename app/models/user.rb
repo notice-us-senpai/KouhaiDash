@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :groups, through: :memberships
   has_many :task_assignments, through: :memberships
   has_many :tasks, through: :memberships
+  has_one :google_account
 
   mount_uploader :image, ImageUploader
   validates_processing_of :image

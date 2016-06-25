@@ -1,0 +1,37 @@
+<%= form_for(@google_account) do |f| %>
+  <% if @google_account.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@google_account.errors.count, "error") %> prohibited this google_account from being saved:</h2>
+
+      <ul>
+      <% @google_account.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :user_id %><br>
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :access_token %><br>
+    <%= f.text_field :access_token %>
+  </div>
+  <div class="field">
+    <%= f.label :refresh_token %><br>
+    <%= f.text_field :refresh_token %>
+  </div>
+  <div class="field">
+    <%= f.label :expires_at %><br>
+    <%= f.datetime_select :expires_at %>
+  </div>
+  <div class="field">
+    <%= f.label :gmail %><br>
+    <%= f.text_field :gmail %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

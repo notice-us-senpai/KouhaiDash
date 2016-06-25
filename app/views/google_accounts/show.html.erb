@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @google_account.user_id %>
+</p>
+
+<p>
+  <strong>Access token:</strong>
+  <%= @google_account.access_token %>
+</p>
+
+<p>
+  <strong>Refresh token:</strong>
+  <%= @google_account.refresh_token %>
+</p>
+
+<p>
+  <strong>Expires at:</strong>
+  <%= @google_account.expires_at %>
+</p>
+
+<p>
+  <strong>Gmail:</strong>
+  <%= @google_account.gmail %>
+</p>
+
+<%= link_to 'Edit', edit_google_account_path(@google_account) %> |
+<%= link_to 'Back', google_accounts_path %>

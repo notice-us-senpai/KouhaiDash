@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160618182745) do
+ActiveRecord::Schema.define(version: 20160625071005) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -35,6 +35,19 @@ ActiveRecord::Schema.define(version: 20160618182745) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
+
+  create_table "google_accounts", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "access_token"
+    t.string   "refresh_token"
+    t.datetime "expires_at"
+    t.string   "gmail"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "google_accounts", ["gmail"], name: "index_google_accounts_on_gmail", unique: true
+  add_index "google_accounts", ["user_id"], name: "index_google_accounts_on_user_id", unique: true
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
@@ -62,7 +75,7 @@ ActiveRecord::Schema.define(version: 20160618182745) do
   end
 
   add_index "task_assignments", ["membership_id"], name: "index_task_assignments_on_membership_id"
-  add_index "task_assignments", ["task_id"], name: "index_task_assignments_on_task_id"
+  add_index "task_assignments", [nil], name: "index_task_assignments_on_tasks"
 
   create_table "tasks", force: :cascade do |t|
     t.string   "name"
@@ -75,6 +88,18 @@ ActiveRecord::Schema.define(version: 20160618182745) do
   end
 
   add_index "tasks", ["category_id"], name: "index_tasks_on_category_id"
+
+  create_table "text_pages", force: :cascade do |t|
+    t.integer  "category_id"
+    t.string   "title"
+    t.text     "contents"
+    t.boolean  "load_from_google"
+    t.string   "file_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "text_pages", ["category_id"], name: "index_text_pages_on_category_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "username"
