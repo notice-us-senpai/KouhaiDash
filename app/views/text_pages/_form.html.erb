@@ -1,0 +1,38 @@
+<%= form_for([@group,@category,@text_page], url: group_category_text_page_path(@group,@category)) do |f| %>
+  <% if @text_page.errors.any? %>
+    <div class="panel panel-danger">
+      <div class="panel-heading"><%= pluralize(@text_page.errors.count, "error") %> prohibited this group from being saved:</div>
+      <ul class="list-group">
+       <% @text_page.errors.full_messages.each do |message| %>
+         <li class="list-group-item"><%= message %></li>
+       <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title, class: 'form-control' %>
+  </div>
+  <div class="field">
+    <%= f.label :contents %><br>
+    <%= f.text_area :contents, class: 'wysiwyg'%>
+  </div>
+  <br>
+  <div class="field">
+    <%= f.label :load_from_google %><br>
+    <%= f.check_box :load_from_google %>
+  </div>
+  <div class="field">
+    <%= f.label :file_id %><br>
+    <%= f.text_field :file_id, class: 'form-control' %>
+  </div>
+  <div class="actions">
+    <%= f.submit class:'btn btn-primary'%>
+  </div>
+<% end %>
+<script>
+  $(function() {
+    $('.wysiwyg').froalaEditor()
+  });
+</script>

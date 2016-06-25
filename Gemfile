@@ -69,3 +69,6 @@ gem 'signet', '~> 0.7.2'
 group :development do
   gem 'rails-erd'
 end
+
+gem 'sanitize'
+gem 'wysiwyg-rails'

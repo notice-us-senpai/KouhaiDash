@@ -1,6 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_group
-  before_action :set_category
+  before_action :set_variables
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :check_view_auth
   before_action :check_edit_auth, only: [:edit, :update, :destroy, :new, :create]
@@ -74,12 +73,9 @@ class TasksController < ApplicationController
       @users = @task.task_assignments.all.collect{|assign| assign.membership.user.username}
     end
 
-    def set_category
-      @category = @group.categories.find(params[:category_id])
-    end
-
-    def set_group
+    def set_variables
       @group = Group.find(params[:group_id])
+      @category = @group.categories.find(params[:category_id])
     end
 
     def get_member_list

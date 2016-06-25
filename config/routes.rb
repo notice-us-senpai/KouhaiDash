@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     resources :memberships, only: [:index, :create, :destroy, :update]
     resources :categories do
       resources :tasks
+      resource :text_page, only: [:create, :new, :show, :update, :edit]
     end
   end
 
