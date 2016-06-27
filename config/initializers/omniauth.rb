@@ -4,3 +4,8 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     :prompt => "select_account"
   }
 end
+
+OmniAuth.config.on_failure = Proc.new do |env|
+  SessionsController.action(:omniauth_failure).call(env)
+  #this will invoke the omniauth_failure action in SessionsController.
+end

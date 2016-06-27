@@ -24,11 +24,39 @@ class SessionsController < ApplicationController
 
   def auth_callback
     auth = request.env['omniauth.auth']
+    email = auth['info']['email'].downcase
+    credentials = auth['credentials']
     if logged_in?
+      #logged in
+      google_account=GoogleAccount.find_by(gmail: email)
+      if google_account
+        #google_account found
+        update_tokens(google_account,credentials)
+        if google_account.user_id == current_user.id
+          #google_account belongs to current user, redirect to original action
+          redirect_back_or root_path
+        elsif google_account.user_id == -1
+          #set google_account to be of current user, redirect to original action
+          google_account.update_attributes( user_id: current_user.id)
+          redirect_back_or root_path
+        else
+          #google_account belongs to another user, flash error message
+          flash[:notice] = 'The google account is already registered with another user. Please use another google account or log in with that user account.'
+          redirect_to root_path
+        end
+      elsif current_user.google_account
+        #user already has another google_account, flash error message
+        revoke_google_token(credentials['token'])
+        flash[:notice] = 'Please sign in with your associated google account or change your associated google account.'
+        redirect_to root_path
+      else
+        #create google_account for user, redirect to original action
+        google_account= GoogleAccount.create(user_id: current_user.id, gmail: email)
+        update_tokens(google_account,credentials)
+        redirect_back_or root_path
+      end
     else
       #not logged in yet
-      email = auth['info']['email'].downcase
-      credentials = auth['credentials']
       google_account=GoogleAccount.find_by(gmail: email)
       if google_account
         #associated with existing google_account, update tokens, log in user if it exists
@@ -93,6 +121,11 @@ class SessionsController < ApplicationController
       end
       render 'register_with_google'
     end
+  end
+
+  def omniauth_failure
+    flash[:notice] = 'Google authenication failed. Please try again.'
+    redirect_to root_path
   end
 
   private
