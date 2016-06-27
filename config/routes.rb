@@ -39,6 +39,9 @@ Rails.application.routes.draw do
 
   post '/join_group/:id', to: 'groups#join', as: 'join_group'
 
+  get '/auth/:provider/callback', to: 'sessions#auth_callback', as: 'auth_callback'
+  post 'register_with_google', to: 'sessions#register_with_google', as: 'register_with_google'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

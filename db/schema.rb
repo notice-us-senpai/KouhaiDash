@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160623085842) do
+
+ActiveRecord::Schema.define(version: 20160625071005) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -35,6 +36,19 @@ ActiveRecord::Schema.define(version: 20160623085842) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
+
+  create_table "google_accounts", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "access_token"
+    t.string   "refresh_token"
+    t.datetime "expires_at"
+    t.string   "gmail"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "google_accounts", ["gmail"], name: "index_google_accounts_on_gmail", unique: true
+  add_index "google_accounts", ["user_id"], name: "index_google_accounts_on_user_id", unique: true
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
