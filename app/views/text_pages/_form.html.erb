@@ -14,7 +14,7 @@
      function createPicker() {
        var picker = new google.picker.PickerBuilder().
            addView(google.picker.ViewId.DOCUMENTS).
-           setOAuthToken('<%=current_user.google_account.access_token%>').
+           setOAuthToken('<%=current_user.google_account.fresh_token if current_user.google_account%>').
            setDeveloperKey(developerKey).
            setCallback(pickerCallback).
            build();
@@ -33,7 +33,7 @@
        document.getElementsByClassName('file_id')[0].value = file_id;
        document.getElementById('name-display').innerHTML = file_name;
        document.getElementById('name-display').href = file_url;
-       document.getElementsByClassName('google_id')[0].value = '<%=current_user.google_account.id%>';
+       document.getElementsByClassName('google_id')[0].value = '<%=current_user.google_account.id if current_user.google_account%>';
      }
 </script>
 <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onLoad"></script>
