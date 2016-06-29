@@ -40,7 +40,7 @@ class PagesController < ApplicationController
   def contacts
   end
 
-  #not in use currently
+  # not in use currently
   # def google_calendar
   #   client = Signet::OAuth2::Client.new({
   #     client_id: ENV.fetch('GOOGLE_API_CLIENT_ID'),

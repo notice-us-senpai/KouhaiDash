@@ -17,8 +17,7 @@
 
 				<li><%= @contact.website %></li>
 				<li><%= @contact.description %></li>
-				
-				<%= link_to "Read More", { action: "show", id: @contact } %> | 
+			  				<%= link_to "Read More", { action: "show", id: @contact } %> | 
 				<%= link_to "Update", { action: "edit", id: @contact } %> | 
 				<%= link_to "Delete", { action: "destroy", id: @contact }, 
 					method: :delete, data: { confirm: "Delete #{@contact.name}?" } %>
