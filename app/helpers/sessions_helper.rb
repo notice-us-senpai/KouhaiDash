@@ -35,24 +35,6 @@ module SessionsHelper
     end
   end
 
-  def current_group
-    if current_user
-# <<<<<<< HEAD
-      # @current_group = Group.where(id:session[:group_id]).first
-# =======
-      # @current_group = Group.where(id:session[:group_id]).first
-# >>>>>>> delete-user
-    end
-  end
-
-  def change_group(group)
-# <<<<<<< HEAD
-    # session[:group_id] = group.id
-# =======
-    # session[:group_id] = group.id
-# >>>>>>> delete-user
-  end
-
 	# Returns true if the user is logged in, false otherwise.
   def logged_in?
     !current_user.nil?
@@ -88,4 +70,10 @@ module SessionsHelper
   def store_location
     session[:forwarding_url] = request.url if request.get?
   end
+
+  # Stores the URL trying to be accessed.
+  def store_location(url)
+    session[:forwarding_url] = url
+  end
+
 end

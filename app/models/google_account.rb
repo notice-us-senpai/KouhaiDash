@@ -5,6 +5,7 @@ class GoogleAccount < ActiveRecord::Base
   before_validation :lower_gmail
   #associations
   belongs_to :user
+  has_many :text_pages
   #validations
   validates :gmail,
 	 presence: true,
@@ -29,6 +30,8 @@ class GoogleAccount < ActiveRecord::Base
       data = JSON.parse(response.body)
       if response.code=='200'
         update_attributes(access_token: data['access_token'],expires_at: Time.now + (data['expires_in'].to_i).seconds)
+      else
+        update_attributes(access_token: '')
       end
     end
 

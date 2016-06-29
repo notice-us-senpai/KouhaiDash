@@ -1,3 +1,43 @@
+<script type="text/javascript">
+     // The Browser API key obtained from the Google Developers Console.
+     var developerKey = "<%=ENV.fetch('GOOGLE_API_KEY')%>";
+
+     // The Client ID obtained from the Google Developers Console. Replace with your own Client ID.
+     var clientId = "<%=ENV.fetch('GOOGLE_API_CLIENT_ID')%>"
+
+     // Use the API Loader script to load google.picker and gapi.auth.
+     function onLoad() {
+       gapi.load('picker');
+     }
+
+     // Create and render a Picker object for picking user Photos.
+     function createPicker() {
+       var picker = new google.picker.PickerBuilder().
+           addView(google.picker.ViewId.DOCUMENTS).
+           setOAuthToken('<%=current_user.google_account.access_token%>').
+           setDeveloperKey(developerKey).
+           setCallback(pickerCallback).
+           build();
+       picker.setVisible(true);
+     }
+
+     // A simple callback implementation.
+     function pickerCallback(data) {
+       var file_id = '', file_name ='', file_url='';
+       if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+         var doc = data[google.picker.Response.DOCUMENTS][0];
+         file_id = doc[google.picker.Document.ID];
+         file_name = doc[google.picker.Document.NAME];
+         file_url = doc[google.picker.Document.URL]
+       }
+       document.getElementsByClassName('file_id')[0].value = file_id;
+       document.getElementById('name-display').innerHTML = file_name;
+       document.getElementById('name-display').href = file_url;
+       document.getElementsByClassName('google_id')[0].value = '<%=current_user.google_account.id%>';
+     }
+</script>
+<script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onLoad"></script>
+
 <%= form_for([@group,@category,@text_page], url: group_category_text_page_path(@group,@category)) do |f| %>
   <% if @text_page.errors.any? %>
     <div class="panel panel-danger">
@@ -19,19 +59,38 @@
     <%= f.text_area :contents, class: 'wysiwyg'%>
   </div>
   <br>
-  <div class="field">
-    <%= f.label :load_from_google %><br>
-    <%= f.check_box :load_from_google %>
+  <div id='google-authenicate'<%if @google_access%>  style= 'display:none' <%end%>>
+    <button id='google-auth-btn'>Sign in and load from Google Docs</button>
   </div>
-  <div class="field">
-    <%= f.label :file_id %><br>
-    <%= f.text_field :file_id, class: 'form-control' %>
-  </div>
+  <div id='load-from-google' <%if !@google_access%>  style= 'display:none' <%end%>>
+    <div class="field">
+      <%= f.label :load_from_google %><br>
+      <%= f.check_box :load_from_google %>
+    </div>
+    <div class="field">
+      <%= f.label :file_id %><br>
+      <p><a id='name-display'<%if @file_link %> href="<%=@file_link%>" <%end%> >
+        <%=@file_name||"No file selected."%>
+      </a></p>
+      <button id='select-btn'>Select from Google Docs</button>
+      <%= f.text_field :file_id, class: 'file_id', style: 'display:none'%>
+
+    </div>
+    <%=f.hidden_field :google_account_id, class: 'google_id'%>
+</div>
   <div class="actions">
     <%= f.submit class:'btn btn-primary'%>
   </div>
 <% end %>
 <script>
+  $('#select-btn').click(function( event ) {
+    event.preventDefault();
+    createPicker();
+  });
+  $('#google-auth-btn').click(function( event ) {
+    event.preventDefault();
+    window.location = "<%=group_category_text_page_auth_path(@group,@category)%>";
+  });
   $(function() {
     $('.wysiwyg').froalaEditor()
   });

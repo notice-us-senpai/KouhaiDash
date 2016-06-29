@@ -3,31 +3,42 @@ class TextPagesController < ApplicationController
   # before_action :set_text_page, only: [:show, :edit, :update, :destroy]
   before_action :check_view_auth
   before_action :check_edit_auth, only: [:edit, :update, :destroy, :new, :create]
-  # GET /text_pages
-  # GET /text_pages.json
+  before_action :google_access_for_edit, only: [:edit, :update, :new, :create]
+
   def index
     #@text_pages = TextPage.all
   end
 
-  # GET /text_pages/1
-  # GET /text_pages/1.json
   def show
-    unless @text_page
+    if @text_page
+      if @text_page.load_from_google
+          begin
+            #load using the uploader's google_account
+            drive_client = Signet::OAuth2::Client.new(access_token: @text_page.google_account.fresh_token)
+            drive_service = Google::Apis::DriveV3::DriveService.new
+            drive_service.authorization = drive_client
+            @contents = drive_service.export_file(@text_page.file_id, 'text/html')
+          rescue
+            #load from contents instead
+            @contents=@text_page.contents
+          end
+      else
+        @contents=@text_page.contents
+      end
+    else
       redirect_to new_group_category_text_page_path(@group,@category)
     end
+
   end
 
-  # GET /text_pages/new
   def new
     @text_page = TextPage.new()
+    @connected_to_google = (current_user.google_account && current_user.google_account.fresh_token.length>0)
   end
 
-  # GET /text_pages/1/edit
   def edit
   end
 
-  # POST /text_pages
-  # POST /text_pages.json
   def create
     @text_page = TextPage.new(text_page_params)
     @text_page.category = @category
@@ -42,8 +53,7 @@ class TextPagesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /text_pages/1
-  # PATCH/PUT /text_pages/1.json
+
   def update
     respond_to do |format|
       if @text_page.update(text_page_params)
@@ -56,14 +66,22 @@ class TextPagesController < ApplicationController
     end
   end
 
-  # DELETE /text_pages/1
-  # DELETE /text_pages/1.json
   def destroy
     @text_page.destroy
     respond_to do |format|
       format.html { redirect_to @group, notice: 'Text page was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def to_authenticate
+    store_location (
+      if @text_page
+        edit_group_category_text_page_path(@group,@category)
+      else
+        new_group_category_text_page_path(@group,@category)
+      end)
+    redirect_to '/auth/google_oauth2'
   end
 
   private
@@ -77,7 +95,7 @@ class TextPagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def text_page_params
-      params.require(:text_page).permit(:title, :contents, :load_from_google, :file_id)
+      params.require(:text_page).permit(:title, :contents, :load_from_google, :file_id, :google_account_id)
     end
 
     def check_edit_auth
@@ -90,5 +108,21 @@ class TextPagesController < ApplicationController
         redirect_to @group
       end
       check_category_view_auth(@group,@category)
+    end
+
+    def google_access_for_edit
+      @google_access = current_user.google_account && current_user.google_account.fresh_token.length>0
+      #fresh_token is '' if refresh token fails ( ie access has failed )
+      if @text_page && @text_page.google_account
+        begin
+          drive_client = Signet::OAuth2::Client.new(access_token: @text_page.google_account.fresh_token)
+          drive_service = Google::Apis::DriveV3::DriveService.new
+          drive_service.authorization = drive_client
+          file= drive_service.get_file(@text_page.file_id, fields: 'name,web_view_link')
+          @file_name=file.name
+          @file_link=file.web_view_link
+        rescue
+        end
+      end
     end
 end

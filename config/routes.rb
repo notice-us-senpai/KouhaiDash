@@ -24,16 +24,18 @@ Rails.application.routes.draw do
   get 'pages/contacts'
   resources :contacts
 
-  get 'google-calendar', to: 'pages#google_calendar'
-  get 'google-drive', to: 'pages#google_drive'
-  get 'pages/calendar-callback', to: 'pages#calendar_callback'
-  get 'pages/drive-callback', to: 'pages#drive_callback'
+  #not in use currently
+  # get 'google-calendar', to: 'pages#google_calendar'
+  # get 'google-drive', to: 'pages#google_drive'
+  # get 'pages/calendar-callback', to: 'pages#calendar_callback'
+  # get 'pages/drive-callback', to: 'pages#drive_callback'
 
   resources :groups do
     resources :memberships, only: [:index, :create, :destroy, :update]
     resources :categories do
       resources :tasks
       resource :text_page, only: [:create, :new, :show, :update, :edit]
+      get 'text_page/to_authenticate', to: 'text_pages#to_authenticate', as: 'text_page_auth'
     end
   end
 
