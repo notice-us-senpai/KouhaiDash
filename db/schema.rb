@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 20160629104934) do
   end
 
   add_index "task_assignments", ["membership_id"], name: "index_task_assignments_on_membership_id"
-  add_index "task_assignments", [nil], name: "index_task_assignments_on_tasks"
+  add_index "task_assignments", ["task_id"], name: "index_task_assignments_on_task_id"
 
   create_table "tasks", force: :cascade do |t|
     t.string   "name"
@@ -111,8 +111,6 @@ ActiveRecord::Schema.define(version: 20160629104934) do
     t.date     "birthday"
     t.text     "description"
     t.string   "image"
-    t.string   "organisation"
-    t.string   "position"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.string   "password_digest"

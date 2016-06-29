@@ -1,3 +1,4 @@
+<% provide(:title, @group.name) %>
 <div class="row">
     <h1><%=@group.name%></h1>
 </div>
@@ -11,6 +12,6 @@
 </div>
 
 <div class="row">
-    <%= link_to 'Edit', edit_group_path(@group), class: "btn btn-default"%>
+    <%= link_to 'Update', edit_group_path(@group), class: "btn btn-default"%>
     <%= link_to 'Back', groups_path, class: "btn btn-default" %>
 </div>
