@@ -42,6 +42,7 @@ class TextPagesController < ApplicationController
   def create
     @text_page = TextPage.new(text_page_params)
     @text_page.category = @category
+    set_name_and_link
     respond_to do |format|
       if @text_page.save
         format.html { redirect_to [@group,@category,@text_page], notice: 'Text page was successfully created.' }
@@ -55,6 +56,7 @@ class TextPagesController < ApplicationController
 
 
   def update
+    set_name_and_link
     respond_to do |format|
       if @text_page.update(text_page_params)
         format.html { redirect_to [@group,@category,@text_page], notice: 'Text page was successfully updated.' }
@@ -113,6 +115,10 @@ class TextPagesController < ApplicationController
     def google_access_for_edit
       @google_access = current_user.google_account && current_user.google_account.fresh_token.length>0
       #fresh_token is '' if refresh token fails ( ie access has failed )
+      set_name_and_link
+    end
+
+    def set_name_and_link
       if @text_page && @text_page.google_account
         begin
           drive_client = Signet::OAuth2::Client.new(access_token: @text_page.google_account.fresh_token)
