@@ -20,19 +20,23 @@
 	<% end %>
 
 	<div class="col-md-6 contact">
-		<ul class="contact-details">
-			<li><%= contact.name %></li>
+		<div class="contact-text">
+			<ul class="contact-details">
+				<li><%= contact.name %></li>
 
-			<li><%= contact.organisation %></li>
+				<li><%= contact.organisation %></li>
 
-			<li><%= contact.email %></li>
-			<li><%= contact.phone %></li>
-		</ul>
+				<li><%= contact.email %></li>
+				<li><%= contact.phone %></li>
+			</ul>
 
-		<%= link_to "Read More", { action: "show", id: contact } %> | 
-		<%= link_to "Update", { action: "edit", id: contact } %> | 
-		<%= link_to "Delete", { action: "destroy", id: contact }, 
-			method: :delete, data: { confirm: "Delete #{contact.name}?" } %>
+			<div class="text-center">
+				<%= link_to "Read More", { action: "show", id: contact } %> | 
+				<%= link_to "Update", { action: "edit", id: contact } %> | 
+				<%= link_to "Delete", { action: "destroy", id: contact }, 
+					method: :delete, data: { confirm: "Delete #{contact.name}?" } %>
+			</div>
+		</div>
 	</div>
 
 	<% if row % 2 == 1 %>
