@@ -3,7 +3,7 @@ class UsersController < ApplicationController
     :correct_user, :destroy, :to_authenticate, :to_revoke]
   before_action :logged_in_user, only: [:index, :edit,
     :update]
-  before_action :correct_user, only: [:edit, :update]
+  before_action :correct_user, only: [:edit, :update, :to_authenticate, :to_revoke]
   before_action :admin_user, only: :destroy
 
   def index
