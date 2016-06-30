@@ -92,10 +92,12 @@ class GroupsController < ApplicationController
       unless logged_in?
         flash[:notice] = 'Log in as a member of the group.'
         redirect_to login_url
+        return
       end
       unless is_user_of_group?(@group)
         flash[:notice] = 'Join the group and wait for your request to be accepted!'
         redirect_to groups_path
+        return
       end
     end
 
