@@ -6,7 +6,12 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
 
-  resources :users
+  resources :users do
+    member do
+      get 'to_authenticate'
+      get 'to_revoke'
+    end
+  end
 
   get 'register', to: 'users#new', as: 'register'
   # user_registration_test.rb dependent on register_path too

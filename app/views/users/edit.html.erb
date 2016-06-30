@@ -17,7 +17,7 @@
       <%= f.label :password, "New Password" %>
       <%= f.password_field :password, class: 'form-control' %>
 
-      <%= f.label :password_confirmation, 
+      <%= f.label :password_confirmation,
         "Confirm New Password" %>
       <%= f.password_field :password_confirmation, class: 'form-control' %>
 
@@ -35,5 +35,26 @@
 
       <%= f.submit "Update", class: "btn btn-default" %>
     <% end %>
+    <!--Manage Google Account-->
+    <h2>Manage Google Account</h2>
+    <%if @user.google_account%>
+      <table class ='table'>
+        <tr><td><%=@user.google_account.gmail%></td><td><button id='revoke-btn'>Sign out from Google</button></td></tr>
+      </table>
+    <%else%>
+    <p>
+      <button id='sign-in-btn'>Sign in with Google</button>
+    </p>
+    <%end%>
   </div>
 </div>
+<script>
+$('#revoke-btn').click(function( event ) {
+  event.preventDefault();
+  window.location = "<%=to_revoke_user_path(@user)%>";
+});
+$('#sign-in-btn').click(function( event ) {
+  event.preventDefault();
+  window.location = "<%=to_authenticate_user_path(@user)%>";
+});
+</script>

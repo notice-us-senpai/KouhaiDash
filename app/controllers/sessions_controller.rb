@@ -88,7 +88,7 @@ class SessionsController < ApplicationController
 
         #disabled direct authorization
         revoke_google_token(credentials['token'])
-        flash[:notice] = 'The Google email is already associated with another user. Please login with that account or another google account.'
+        flash[:notice] = 'The Google email is already associated with an existing user. Please login with that account and authenticate your google account or another google account.'
         redirect_to root_path
       else
         #create google_account with user_id: -1, render register_with_google
@@ -129,20 +129,7 @@ class SessionsController < ApplicationController
   end
 
   private
-    def revoke_google_token(access_token)
-      require 'net/http'
-      uri = URI('https://accounts.google.com/o/oauth2/revoke')
-      params = { :token => access_token }
-      uri.query = URI.encode_www_form(params)
-      response = Net::HTTP.get_response(uri)
-      if response.code == '200'
-        #access is revoked
-        return true
-      else
-        #an error has occurred
-        return false
-      end
-    end
+
     def update_tokens(google_account, credentials)
       google_account.update_attributes(access_token: credentials['token'], expires_at: Time.at(credentials['expires_at']).to_datetime)
       if credentials['refresh_token']

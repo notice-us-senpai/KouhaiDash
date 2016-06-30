@@ -72,8 +72,24 @@ module SessionsHelper
   end
 
   # Stores the URL trying to be accessed.
-  def store_location(url)
+  def store_location_url(url)
     session[:forwarding_url] = url
+  end
+
+  # Revoke google access
+  def revoke_google_token(access_token)
+    require 'net/http'
+    uri = URI('https://accounts.google.com/o/oauth2/revoke')
+    params = { :token => access_token }
+    uri.query = URI.encode_www_form(params)
+    response = Net::HTTP.get_response(uri)
+    if response.code == '200'
+      #access is revoked
+      return true
+    else
+      #an error has occurred
+      return false
+    end
   end
 
 end

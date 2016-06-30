@@ -77,7 +77,7 @@ class TextPagesController < ApplicationController
   end
 
   def to_authenticate
-    store_location (
+    store_location_url(
       if @text_page
         edit_group_category_text_page_path(@group,@category)
       else

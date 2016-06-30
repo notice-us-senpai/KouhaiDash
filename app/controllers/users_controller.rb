@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
-  before_action :get_user, only: [:show, :edit, :update, 
-    :correct_user, :destroy]
-  before_action :logged_in_user, only: [:index, :edit, 
+  before_action :get_user, only: [:show, :edit, :update,
+    :correct_user, :destroy, :to_authenticate, :to_revoke]
+  before_action :logged_in_user, only: [:index, :edit,
     :update]
   before_action :correct_user, only: [:edit, :update]
   before_action :admin_user, only: :destroy
-  
+
   def index
     # raise params.inspect
     # @users = User.paginate(page: params[:page])
@@ -52,14 +52,27 @@ class UsersController < ApplicationController
     redirect_to users_url
   end
 
+  def to_authenticate
+    store_location_url(edit_user_path(@user))
+    redirect_to '/auth/google_oauth2'
+  end
+
+  def to_revoke
+    if revoke_google_token(@user.google_account.fresh_token)
+      flash[:notice] = 'The google account is no longer associated with your account. Permissions for KouhaiDash are also revoked.'
+    end
+    @user.google_account.destroy
+    redirect_to edit_user_path(@user)
+  end
+
  	private
-  
+
    	def user_params
    		params.require(:user).permit(
-   			:username, :email, 
-   			:password, :password_confirmation, 
-   			:name, :birthday, :description, 
-   			:image, :remove_image, 
+   			:username, :email,
+   			:password, :password_confirmation,
+   			:name, :birthday, :description,
+   			:image, :remove_image,
    			:organisation, :position
   		)
   	end
