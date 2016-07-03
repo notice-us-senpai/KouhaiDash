@@ -5,9 +5,9 @@
 </div>
 
 <div class="row">
-	<%= link_to "Create New Contact", { action: "new" } %>  
+	<%= link_to "Create New Contact", { action: "new" } %>
 	<!--
-	| <%= link_to "Download as CSV", contacts_path(format: "csv") %>
+	| <%= link_to "Download as CSV", group_category_contacts_path(@group, @category, format: "csv") %>
 	-->
 </div>
 
@@ -31,9 +31,9 @@
 			</ul>
 
 			<div class="text-center">
-				<%= link_to "Read More", { action: "show", id: contact } %> | 
-				<%= link_to "Update", { action: "edit", id: contact } %> | 
-				<%= link_to "Delete", { action: "destroy", id: contact }, 
+				<%= link_to "Read More", { action: "show", id: contact } %> |
+				<%= link_to "Update", { action: "edit", id: contact } %> |
+				<%= link_to "Delete", { action: "destroy", id: contact },
 					method: :delete, data: { confirm: "Delete #{contact.name}?" } %>
 			</div>
 		</div>
@@ -51,8 +51,8 @@
 <% end %>
 
 <div class="row">
-	<%= link_to "Create New Contact", { action: "new" } %> 
+	<%= link_to "Create New Contact", { action: "new" } %>
 	<!--
-	| <%= link_to "Download as CSV", contacts_path(format: "csv") %>
+	| <%= link_to "Download as CSV", group_category_contacts_path(@group, @category, format: "csv")  %>
 	-->
 </div>

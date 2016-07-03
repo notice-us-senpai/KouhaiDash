@@ -4,6 +4,7 @@ class Category < ActiveRecord::Base
   has_many :tasks, dependent: :destroy
   has_many :task_assignments, through: :tasks
   has_one :text_page, dependent: :destroy
+  has_many :contacts, dependent: :destroy
   scope :is_public, ->{ where(is_public: true)}
   # validations
   validates :name,
