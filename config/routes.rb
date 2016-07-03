@@ -26,8 +26,8 @@ Rails.application.routes.draw do
 
   get 'files', to: 'pages#files', as: 'files'
 
-  # get 'pages/contacts'
-  # resources :contacts
+  get 'pages/contacts'
+  resources :contacts
 
   #not in use currently
   # get 'google-calendar', to: 'pages#google_calendar'
@@ -41,7 +41,6 @@ Rails.application.routes.draw do
       resources :tasks
       resource :text_page, only: [:create, :new, :show, :update, :edit]
       get 'text_page/to_authenticate', to: 'text_pages#to_authenticate', as: 'text_page_auth'
-      resources :contacts
     end
   end
 

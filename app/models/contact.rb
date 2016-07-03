@@ -1,7 +1,5 @@
 class Contact < ActiveRecord::Base
 
-  belongs_to :category
-
   # VALIDATIONS HERE
 
   def self.to_csv(options = {})
