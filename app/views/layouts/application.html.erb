@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width,
       initial-scale=1, maximum-scale=1" />
     <%= stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Raleway|Pacifico|Nosifer',media: 'all'%>
+    <%= stylesheet_link_tag 'https://fonts.googleapis.com/icon?family=Material+Icons',media: 'all'%>
     <%= stylesheet_link_tag 'application',
     		media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application',
@@ -40,117 +41,91 @@
 
   </head>
   <body>
-    <div id="wrapper">
 
+    <header>
       <!-- Sidebar -->
-      <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-          <li class="sidebar-brand">
-            <%= link_to 'KouhaiDash!', root_path %>
-          </li>
-          <li>
-            <a href="#menu-toggle" class="btn btn-default menu-toggle">
-              <h4>Hide Sidebar</h4>
-            </a>
-          </li>
-          <li>
-            <%= link_to "Home", root_path %>
-          </li>
-          <li>
-            <%= link_to "Groups", groups_path %>
-          </li>
-          <% if @group %>
-            <%if @group.id && (@group.members_public || is_user_of_group?(@group)) %>
-              <li>
-                <%= link_to "Group Members", group_memberships_path(@group) %>
-              </li>
-            <%end%>
-            <%get_categories_and_path(@group).each do |link| %>
-              <li>
-                <%= link_to link[:name], link[:path] %>
-              </li>
-            <%end%>
-            <%if @group.id && is_user_of_group?(@group) %>
-              <li>
-                <%= link_to "Manage Categories", group_categories_path(@group) %>
-              </li>
-            <%end%>
-          <%end%>
-          <% if !@group && logged_in? %>
+      <div class="navbar-fixed">
+        <nav>
+          <ul id='slide-out' class='side-nav fixed'>
+            <li><%= link_to 'KouhaiDash!', root_path, id: 'brand'%></li>
             <li>
-              <%= link_to "Profile", current_user %>
+              <%= link_to "Groups", groups_path %>
             </li>
-            <li>
-              <%= link_to "Members", users_path %>
-            </li>
+            <% if @group %>
+              <%if @group.id && (@group.members_public || is_user_of_group?(@group)) %>
+                <li>
+                  <%= link_to "Group Members", group_memberships_path(@group) %>
+                </li>
+              <%end%>
+              <%get_categories_and_path(@group).each do |link| %>
+                <li>
+                  <%= link_to link[:name], link[:path] %>
+                </li>
+              <%end%>
+              <%if @group.id && is_user_of_group?(@group) %>
+                <li>
+                  <%= link_to "Manage Categories", group_categories_path(@group) %>
+                </li>
+              <%end%>
+            <%end%>
+            <% if !@group && logged_in? %>
+              <li>
+                <%= link_to "Profile", current_user %>
+              </li>
+              <li>
+                <%= link_to "Members", users_path %>
+              </li>
 
-            <li>
-              <%= link_to "Calendar", calendar_path %>
-            </li>
-            <li>
-              <%= link_to "Files", files_path %>
-            </li>
-          <%end%>
-          <%if logged_in?%>
-            <li>
-              <%= link_to "Settings", edit_user_path(current_user) %>
-            </li>
-            <li>
-              <%= link_to "Logout", logout_path, method: "delete" %>
-            </li>
-          <% else %>
-            <li>
-              <%= link_to "Login", login_path %>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-      <!-- /#sidebar-wrapper -->
-
-      <!-- Page Content -->
-      <div id="page-content-wrapper">
-        <div class="container-fluid">
-          <div class="container">
-            <% if flash.keys.size > 0 %>
-              <div class="row">
-                <div class="col-lg-12">
-                  <% flash.each do |message_type, message| %>
-                    <div class="alert alert-<%= message_type %>">
-                      <%= message %>
-                    </div>
-                  <% end %>
-                </div>
-              </div>
+              <li>
+                <%= link_to "Calendar", calendar_path %>
+              </li>
+              <li>
+                <%= link_to "Files", files_path %>
+              </li>
+            <%end%>
+            <%if logged_in?%>
+              <li>
+                <%= link_to "Settings", edit_user_path(current_user) %>
+              </li>
+              <li>
+                <%= link_to "Logout", logout_path, method: "delete" %>
+              </li>
             <% else %>
+              <li>
+                <%= link_to "Login", login_path %>
+              </li>
             <% end %>
-            <div class="overlay">
-              <%= yield %>
-            </div>
-            <div class="overlay">
-              <div class="row">
-                <div class="col-lg-12 text-center">
-                  <a href="#menu-toggle" class="btn btn-default menu-toggle">
-                    <h4>Toggle Sidebar</h4>
-                  </a>
-                </div>
-              </div>
-              <%= render 'layouts/footer' %>
-              <% debug(params) if Rails.env.development? %>
-            </div>
-          </div>
-        </div>
+          </ul>
+          <ul class='left'>
+              <li><a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+              </li>
+              <li><a id='page-title'><%=@title||'Title'%></a></li>
+          </ul>
+        </nav>
       </div>
-      <!-- /#page-content-wrapper -->
+    </header>
 
-    </div>
-    <!-- /#wrapper -->
+    <!-- main -->
+    <main>
+      <div class="container">
+        <%= yield %>
+      </div>
+    </main>
+    <!-- /main -->
 
-    <!-- Menu Toggle Script -->
-    <script>
-    $(".menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    </script>
+    <!--footer-->
+    <%= render 'layouts/footer' %>
+    <!-- /footer -->
+
+      <!-- Menu Toggle Script -->
+      <script>
+        $(".button-collapse").sideNav();
+        $("#page-title").click(function(){
+          $('html, body').animate({ scrollTop: 0 }, 'fast');
+        });
+        <% flash.each do |message_type, message| %>
+          Materialize.toast('<%=message%>', 4000);
+        <% end %>
+      </script>
   </body>
 </html>

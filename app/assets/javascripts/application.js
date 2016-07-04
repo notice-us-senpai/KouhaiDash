@@ -14,7 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
-//= require bootstrap
+//= require materialize-sprockets
 //= require froala_editor.min.js
 //= require plugins/align.min.js
 //= require plugins/code_view.min.js

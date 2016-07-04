@@ -41,8 +41,6 @@ GEM
     bcrypt (3.1.11)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bootstrap-will_paginate (0.0.10)
-      will_paginate
     builder (3.2.2)
     byebug (9.0.0)
     carrierwave (0.10.0)
@@ -110,6 +108,8 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
+    materialize-sass (0.97.6)
+      sass (~> 3.3)
     memoist (0.14.0)
     mime-types (3.0)
       mime-types-data (~> 3.2015)
@@ -242,7 +242,6 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt (~> 3.1.7)
-  bootstrap-will_paginate
   byebug
   carrierwave (~> 0.10.0)
   coffee-rails (~> 4.1.0)
@@ -250,6 +249,7 @@ DEPENDENCIES
   google-api-client (~> 0.9)
   jbuilder (~> 2.0)
   jquery-rails
+  materialize-sass
   mini_magick (~> 4.3)
   omniauth-google-oauth2
   pg
