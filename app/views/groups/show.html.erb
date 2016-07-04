@@ -5,11 +5,17 @@
 
 <div class="row">
     <%if @group.members_public%>
-    <p> Members list is public. <p>
+      <p> Members list is public. <p>
     <%else%>
-    <p> Members list is not public. <p>
+      <p> Members list is not public. <p>
+    <%end%>
+    <%if is_a_member_of_group?(@group)%>
+      <br>
+      <%=link_to "Leave Group", [@group, @group.memberships.find_by(user_id: current_user.id)], method: :delete,
+      data: { confirm: "Leave #{@group.name}?"}, class:"btn btn-danger" %>
     <%end%>
 </div>
+
 
 <div class="row">
     <%= link_to 'Update', edit_group_path(@group), class: "btn btn-default"%>

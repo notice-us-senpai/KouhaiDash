@@ -8,6 +8,11 @@
     <% if is_user_of_group?(@group)%>
       <%=render 'form' %>
     <%end%>
+    <%if is_a_member_of_group?(@group)%>
+      <br>
+      <%=link_to "Leave Group", [@group, @group.memberships.find_by(user_id: current_user.id)], method: :delete,
+      data: { confirm: "Leave #{@group.name}?"}, class:"btn btn-danger" %>
+    <%end%>
     <br>
     <h2>Members:</h2>
     <table class='table table-hover'>
