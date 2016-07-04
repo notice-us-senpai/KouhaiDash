@@ -75,7 +75,7 @@ class ContactsController < ApplicationController
     params.require(:contact).permit(
       :name,
       :email,
-      :number,
+      :phone,
       :website,
       :organisation,
       :position,
