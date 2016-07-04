@@ -13,6 +13,8 @@ class CategoriesController < ApplicationController
   # GET /categories/1.json
   def show
     case @category.type_no
+    when 1
+      redirect_to group_category_contacts_path(@group,@category)
     when 2
       redirect_to group_category_text_page_path(@group,@category)
     when 3
