@@ -16,7 +16,11 @@
   </div>
   <div class="field">
     <label>Type</label><br>
-    <%= f.select :type_no, options_for_select(@type_no_array, @category.type_no) %>
+    <%if @category.id%>
+      <p><%=@type_no_array[@category.type_no][0]%></p>
+    <%else%>
+      <%= f.select :type_no, options_for_select(@type_no_array, @category.type_no)%>
+    <%end%>
   </div>
   <div class="field">
     <label>Set to public</label><br>
