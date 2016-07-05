@@ -1,17 +1,19 @@
-<div class="jumbotron text-center">
+<div class='row'>
   <h1>Welcome to KouhaiDash!</h1>
+</div>
+<div class='row'>
   <% if logged_in? %>
-  		<%= link_to "View Profile", current_user, 
-  			class: "btn btn-lg btn-default" %>
-      <%= link_to "Logout", logout_path, method: "delete", 
-      	class: "btn btn-lg btn-default" %>
+  		<%= link_to "View Profile", current_user,
+  			class: "waves-effect waves-light btn" %>
+      <%= link_to "Logout", logout_path, method: "delete",
+      	class: "waves-effect waves-light btn" %>
 	<% else %>
-			<%= link_to "Register", register_path, 
-	  		class: "btn btn-lg btn-default" %>
-			<%= link_to "Login", login_path, 
-	  		class: "btn btn-lg btn-default" %>
-  		<a href="https://github.com/notice-us-senpai/KouhaiDash" 
-  			 class="btn btn-lg btn-default">
+			<%= link_to "Register", register_path,
+	  		class: "waves-effect waves-light btn" %>
+			<%= link_to "Login", login_path,
+	  		class: "waves-effect waves-light btn" %>
+  		<a href="https://github.com/notice-us-senpai/KouhaiDash"
+  			 class="waves-effect waves-light btn">
 				Repository
 			</a>
 	<% end %>

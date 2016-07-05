@@ -24,21 +24,31 @@
  */
 @import "materialize";
 
+//typography
+h1 {
+  font-weight: lighter;
+}
+
 //nav
 nav {
-  @extend .indigo, .lighten-2;
+  @extend .lime;
 }
 #brand {
-  font-weight: bold;
-  font-size: 2em;
+  font-weight:lighter;
+  font-size: 2.2em;
+  @extend .lime-text, .text-darken-4;
+}
+#menu-icon{
+  font-size: 30px;
 }
 #page-title{
-  font-size: 2.5em;
+  font-weight:lighter;
+  font-size: 35px;
 }
 
 //footer
 footer {
-  @extend .indigo, .lighten-1;
+  @extend .lime, .darken-1;
 }
 body {
   display: flex;
@@ -48,15 +58,31 @@ body {
 main {
   flex: 1 0 auto;
 }
+.footer-text{
+  @extend .white-text;
+}
+.footer-link{
+  @extend .grey-text, .text-lighten-4;
+}
+.footer-link:hover{
+  @extend .black-text;
+}
 
-//padding
+//padding and nav height
 header, main, footer {
   padding-left: 240px;
+}
+.navbar-fixed, nav{
+  height:0px;
 }
 
 @media only screen and (max-width : 992px) {
   header, main, footer {
     padding-left: 0;
+  }
+  header, .narbar-fixed, nav,#button-collapse,#menu-icon{
+    height: 40px;
+    line-height: 40px;
   }
 }
 

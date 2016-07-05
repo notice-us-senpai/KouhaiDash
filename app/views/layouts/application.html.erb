@@ -97,16 +97,16 @@
             <% end %>
           </ul>
           <ul class='left'>
-              <li><a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+              <li><a href="#" data-activates="slide-out" class="button-collapse" id='button-collapse'><i class="material-icons" id='menu-icon'>menu</i></a>
               </li>
-              <li><a id='page-title'><%=@title||'Title'%></a></li>
+              <li class='hide-on-large-only'><a id='page-title'>KouhaiDash!</a></li>
           </ul>
         </nav>
       </div>
     </header>
 
     <!-- main -->
-    <main>
+    <main class="valign-wrapper">
       <div class="container">
         <%= yield %>
       </div>
