@@ -28,6 +28,9 @@
 h1 {
   font-weight: lighter;
 }
+.alert {
+  @extend .red-text, .text-darken-4;
+}
 
 //nav
 nav {

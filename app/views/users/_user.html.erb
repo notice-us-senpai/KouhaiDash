@@ -1,8 +1,28 @@
-<li>
-  <%= image_tag user.image.thumb.url %>
+<div class='col m6 s12'>
+  <div class="card small">
+    <div class="card-image waves-effect waves-block waves-light">
+      <%= image_tag user.image.thumb.url, class:'activator' %>
+    </div>
+    <div class="card-content">
+      <span class="card-title activator flow-text"><%=user.username%><i class="material-icons right">more_vert</i></span>
+    </div>
+    <div class='card-action'>
+      <%= link_to "Profile", user %>
+      <% if current_user.admin? && !current_user?(user) %>
+          <%= link_to "delete", user, method: :delete, data: { confirm: "Delete #{user.username}?" } %>
+      <%end%>
+    </div>
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4"><%= link_to user.username, user %><i class="material-icons right">close</i></span>
+      <p><%=user.description%></p>
+    </div>
+  </div>
+
+
+  <!-- <%= image_tag user.image.thumb.url %>
   <%= link_to user.username, user %>
   <% if current_user.admin? && !current_user?(user) %>
-    | <%= link_to "delete", user, method: :delete, 
+    | <%= link_to "delete", user, method: :delete,
     data: { confirm: "Delete #{user.username}?" } %>
-  <% end %>
-</li>
+  <% end %> -->
+</div>
