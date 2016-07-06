@@ -15,16 +15,34 @@
       <%= f.email_field :email, class: 'validate'%>
       <%= f.label :email%>
       </div>
+      <%@user.errors[:email].each do |msg|%>
+        <div class="chip">
+          <%="Email "+msg%>
+          <i class="material-icons">close</i>
+        </div>
+      <%end%>
 
       <div class="input-field col s12">
         <%= f.password_field :password%>
         <%= f.label :password, "New Password"%>
       </div>
+      <%@user.errors[:password].each do |msg|%>
+        <div class="chip">
+          <%="Password "+msg%>
+          <i class="material-icons">close</i>
+        </div>
+      <%end%>
 
       <div class="input-field col s12">
       <%= f.password_field :password_confirmation%>
       <%= f.label :password_confirmation, "Confirm New Password"%>
       </div>
+      <%@user.errors[:password_confirmation].each do |msg|%>
+        <div class="chip">
+          <%="Password confirmation "+msg%>
+          <i class="material-icons">close</i>
+        </div>
+      <%end%>
 
       <div class="file-field input-field col s12">
         <div class="btn">
@@ -35,6 +53,13 @@
           <input class="file-path validate" type="text">
         </div>
       </div>
+      <%@user.errors[:image].each do |msg|%>
+        <div class="chip">
+          <%="Image "+msg%>
+          <i class="material-icons">close</i>
+        </div>
+      <%end%>
+
       <!-- <%= f.label :image, "Profile Picture" %>
       <%= f.file_field :image %> -->
       <% if f.object.image? %>
