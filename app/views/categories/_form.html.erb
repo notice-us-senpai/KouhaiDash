@@ -1,32 +1,44 @@
 <%= form_for([@group,@category]) do |f| %>
   <% if @category.errors.any? %>
-    <div class="panel panel-danger">
-      <div class="panel-heading"><%= pluralize(@category.errors.count, "error") %> prohibited this group from being saved:</div>
-      <ul class="list-group">
+    <div class='col s12'>
+      <div class="alert">
+        <p><%= pluralize(@category.errors.count, "error") %> prohibited this group from being saved:
+        </p>
+      </div>
+      <ul class="alert">
        <% @category.errors.full_messages.each do |message| %>
-         <li class="list-group-item"><%= message %></li>
+         <li><%= message %></li>
        <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name ,class:"form-control"%>
+  <div class="input-field col s12">
+    <%= f.text_field :name%>
+    <%= f.label :name %>
   </div>
-  <div class="field">
-    <label>Type</label><br>
+  <div class="input-field col s12">
     <%if @category.id%>
-      <p><%=@type_no_array[@category.type_no][0]%></p>
+      <%=f.text_field :type_no, disabled: true, value: @type_no_array[@category.type_no][0]%>
+      <!-- <input value='<%=@type_no_array[@category.type_no][0]%>' id='' disabled> -->
     <%else%>
-      <%= f.select :type_no, options_for_select(@type_no_array, @category.type_no)%>
+      <%= f.select :type_no, options_for_select(@type_no_array, @category.type_no),{},{}%>
     <%end%>
+    <%= f.label :type_no,"Type" %>
   </div>
-  <div class="field">
-    <label>Set to public</label><br>
+  <div class="input-field col s12">
     <%= f.check_box :is_public%>
+    <%= f.label :is_public,"Set to public" %>
   </div>
-  <div class="actions">
-    <%= f.submit class:"btn btn-default"%>
+  <div class="actions col s12">
+    <p><br><button class="btn-large waves-effect waves-light" type="submit" name="action">Update
+      <i class="material-icons right">send</i>
+    </button></p>
   </div>
 <% end %>
+<script>
+$(document).ready(function() {
+    $('select').material_select();
+    Materialize.updateTextFields();
+});
+</script>

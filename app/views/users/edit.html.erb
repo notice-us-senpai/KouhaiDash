@@ -83,5 +83,7 @@ $('#sign-in-btn').click(function( event ) {
   event.preventDefault();
   window.location = "<%=to_authenticate_user_path(@user)%>";
 });
-Materialize.updateTextFields();
+$(document).ready(function() {
+  Materialize.updateTextFields();
+});
 </script>

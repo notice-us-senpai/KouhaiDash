@@ -4,29 +4,45 @@
 </div>
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col s12 m9">
     <%= form_for(@user, url: register_with_google_path) do |f| %>
-    	<%= render 'shared/error_messages' %>
-
+      <%= render 'shared/error_messages' %>
+      <div class="input-field col s12">
+      <%= f.text_field :username%>
       <%= f.label :username %>
-      <%= f.text_field :username, class: 'form-control' %>
+      </div>
 
+      <div class="input-field col s12">
+      <%= f.email_field :email, readonly: true%>
       <%= f.label :email %>
-      <%= f.email_field :email, class: 'form-control',readonly:true%>
+      </div>
 
+      <div class="input-field col s12">
+      <%= f.password_field :password%>
       <%= f.label :password %>
-      <%= f.password_field :password, class: 'form-control' %>
+      </div>
 
+      <div class="input-field col s12">
+      <%= f.password_field :password_confirmation %>
       <%= f.label :password_confirmation, "Confirm Password" %>
-      <%= f.password_field :password_confirmation,
-      	class: 'form-control' %>
+      </div>
 
-      <%= f.label :image, "Profile Picture" %><br>
-      <%= f.file_field :image %>
-
+      <div class="file-field input-field col s12">
+        <div class="btn col s12 m6 l5">
+          <span>Profile Picture</span>
+          <%= f.file_field :image %>
+        </div>
+        <div class="file-path-wrapper col s12 m6 l7">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
       <%= hidden_field :gacc, :id, value: @google_id%>
       <%= hidden_field :gacc, :access_token, value: @token%>
-      <%= f.submit "Register", class: "btn btn-primary" %>
+      <div class="actions col s12">
+        <p><button class="btn-large waves-effect waves-light" type="submit" name="action">Register
+          <i class="material-icons right">send</i>
+        </button></p>
+      </div>
     <% end %>
   </div>
 </div>

@@ -1,7 +1,6 @@
 <% provide(:title, @contact.name) %>
 <div class="row">
 	<h1><%= @contact.name %></h1>
-	<p>Please conduct data validation testing on the user and login system instead.</p>
 </div>
 
 <div class="row">
@@ -17,9 +16,9 @@
 
 				<li><%= @contact.website %></li>
 				<li><%= @contact.description %></li>
-			  				<%= link_to "Read More", { action: "show", id: @contact } %> | 
-				<%= link_to "Update", { action: "edit", id: @contact } %> | 
-				<%= link_to "Delete", { action: "destroy", id: @contact }, 
+			  				<%= link_to "Read More", { action: "show", id: @contact } %> |
+				<%= link_to "Update", { action: "edit", id: @contact } %> |
+				<%= link_to "Delete", { action: "destroy", id: @contact },
 					method: :delete, data: { confirm: "Delete #{@contact.name}?" } %>
 		</ul>
 	</div>

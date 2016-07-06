@@ -1,7 +1,6 @@
 <% provide(:title, 'Contacts') %>
 <div class="row">
 	<h1>Contacts</h1>
-	<p>Please conduct data validation testing on the user and login system instead.</p>
 </div>
 
 <div class="row">
@@ -11,15 +10,11 @@
 	-->
 </div>
 
-<% row = 0 %>
 
-<% @contacts.each do |contact| %>
+<div class="row">
+<%@contacts.each do%>
 
-	<% if row % 2 == 0 %>
-		<div class="row">
-	<% end %>
-
-	<div class="col-md-6 contact">
+	<div class="col m6">
 		<div class="contact-text">
 			<ul class="contact-details">
 				<li><%= contact.name %></li>
@@ -38,18 +33,8 @@
 			</div>
 		</div>
 	</div>
-
-	<% if row % 2 == 1 %>
-		</div>
-	<% end %>
-
-	<% row += 1 %>
-<% end %>
-
-<% if row % 2 == 1 %>
-	</div>
-<% end %>
-
+<%end%>
+</div>
 <div class="row">
 	<%= link_to "Create New Contact", { action: "new" } %>
 	<!--

@@ -1,31 +1,50 @@
-<div class="col-md-6 col-md-offset-3">
+<div class="col m9">
 	<% if @contact.errors.any? %>
-		<% @contact.errors.full_messages.each do | msg | %>
-			<%= msg %>
-		<% end %>
+    <div class="col s12">
+      <div class="alert">
+        <p>The form contains <%= pluralize(@contact.errors.count, "error") %>.</p>
+      </div>
+      <ul class='alert'>
+      <% @contact.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
 	<% end %>
 
 	<%= form_for [@group,@category,@contact] do |f| %>
-		<%= f.label :name %>
-    <%= f.text_field :name, class: 'form-control' %>
-
-		<%= f.label :email %>
-		<%= f.email_field :email, class: 'form-control' %>
-
-		<%= f.label :phone %>
-		<%= f.text_field :phone, class: 'form-control' %>
-
-		<%= f.label :website %>
-		<%= f.text_field :website, class: 'form-control' %>
-
-		<%= f.label :organisation %>
-		<%= f.text_field :organisation, class: 'form-control' %>
-
-		<%= f.label :position %>
-		<%= f.text_field :position, class: 'form-control' %>
-
-		<%= f.label :description %>
-		<%= f.text_area :description, class: 'form-control' %>
-	  		<%= f.submit class: "btn btn-primary" %>
+    <div class='input-field col s12'>
+      <%= f.text_field :name%>
+      <%= f.label :name %>
+    </div>
+    <div class='input-field col s12'>
+  		<%= f.email_field :email, class: 'validate' %>
+      <%= f.label :email %>
+    </div>
+    <div class='input-field col s12'>
+  		<%= f.text_field :phone %>
+      <%= f.label :phone %>
+    </div>
+    <div class='input-field col s12'>
+  		<%= f.text_field :website %>
+      <%= f.label :website %>
+    </div>
+    <div class='input-field col s12'>
+  		<%= f.text_field :organisation %>
+      <%= f.label :organisation %>
+    </div>
+    <div class='input-field col s12'>
+  		<%= f.text_field :position %>
+      <%= f.label :position %>
+    </div>
+    <div class='input-field col s12'>
+      <%= f.text_area :description, class: 'materialize-textarea' %>
+  		<%= f.label :description %>
+    </div>
+    <div class="actions col s12">
+      <p><button class="btn-large waves-effect waves-light" type="submit" name="action">Submit
+        <i class="material-icons right">send</i>
+      </button></p>
+    </div>
 	<% end %>
 </div>
