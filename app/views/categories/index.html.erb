@@ -1,13 +1,17 @@
+<% provide(:title, "Categories") %>
 <div class="row">
-  <h1>Categories</h1>
+  <div class="col s12">
+     <h1>Categories</h1>
+   </div>
 </div>
-<div class='row right-align'>
-  <div class="col m9">
-    <%= link_to '<i class="material-icons">add</i>'.html_safe, new_group_category_path, class: "btn-floating btn-large waves-effect waves-light red" %>
+
+<div class='row'>
+  <div class="col s12 m9">
+    <%= link_to '<i class="material-icons left">add</i>New Category'.html_safe, new_group_category_path, class: "btn waves-effect waves-light red" %>
   </div>
 </div>
 <div class="row">
-  <div class="col m9">
+  <div class="col s12 m9">
     <table>
       <thead>
         <tr>

@@ -1,4 +1,4 @@
-<div class="col m9">
+<div class="col s12 m9">
 	<% if @contact.errors.any? %>
     <div class="col s12">
       <div class="alert">
@@ -48,3 +48,9 @@
     </div>
 	<% end %>
 </div>
+
+<script>
+$(document).ready(function() {
+    Materialize.updateTextFields();
+});
+</script>

@@ -31,6 +31,13 @@ h1 {
 .alert {
   @extend .red-text, .text-darken-4;
 }
+.footer-brand{
+  font-weight: lighter;
+  @extend .black-text;
+}
+.footer-brand:hover{
+  @extend .white-text;
+}
 
 //nav
 nav {
@@ -88,6 +95,7 @@ header, main, footer {
     line-height: 40px;
   }
 }
+
 
 
 

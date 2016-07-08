@@ -1,9 +1,12 @@
+<% provide(:title, "Update #{@category.name}") %>
 <div class="row">
-    <h1>Update Category</h1>
+  <div class="col s12">
+	   <h1>Update <%= @category.name %></h1>
+   </div>
 </div>
 
 <div class="row">
-  <div class="col m9 s12">
+  <div class="col s12 m9">
     <%= render 'form' %>
   </div>
 </div>

@@ -1,0 +1,21 @@
+
+<div class='col s12 m6'>
+  <div class="card amber lighten-2">
+    <div class="card-content">
+      <span class="flow-text"><%=link_to contact.name, [@group,@category,contact], class:' deep-orange-text'%></span>
+      <p>
+        <%= contact.organisation %>
+        <br><%= contact.position %>
+        <br><a href='mailto:<%= contact.email%>'><%= contact.email %></a>
+        <br><%= contact.phone %>
+      </p>
+    </div>
+
+    <div class='card-action white'>
+      <%= link_to "<i class='material-icons'>info</i>".html_safe, { action: "show", id: contact } %>
+      <%= link_to "<i class='material-icons'>mode_edit</i>".html_safe, { action: "edit", id: contact } %>
+      <%= link_to "<i class='material-icons'>delete</i>".html_safe, { action: "destroy", id: contact },
+        method: :delete, data: { confirm: "Delete #{contact.name}?" } %>
+    </div>
+  </div>
+</div>

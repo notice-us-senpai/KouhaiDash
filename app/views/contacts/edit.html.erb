@@ -1,6 +1,8 @@
-<% provide(:title, 'Update #{@contact.name}') %>
+<% provide(:title, "Update #{@contact.name}") %>
 <div class="row">
-	<h1>Update <%= @contact.name %></h1>
+  <div class="col s12">
+	   <h1>Update <%= @contact.name %></h1>
+   </div>
 </div>
 <div class="row">
 	<%= render 'form' %>

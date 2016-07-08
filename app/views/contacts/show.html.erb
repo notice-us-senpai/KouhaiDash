@@ -1,33 +1,40 @@
 <% provide(:title, @contact.name) %>
 <div class="row">
-	<h1><%= @contact.name %></h1>
+  <div class="col s12">
+	 <h1><%= @contact.name %></h1>
+ </div>
 </div>
 
 <div class="row">
-	<div class="col-md-12 contact">
-		<ul class="contact-details">
-				<li><%= @contact.name %></li>
+	<div class="col s12 m9 contact">
+    <div class="card amber darken-3">
+      <div class="card-content white-text">
+        <span class="card-title"><%= @contact.name %></span>
+        <p>
+          <ul class="contact-details">
+      				<li><%= @contact.organisation %></li>
+      				<li><%= @contact.position %></li>
 
-				<li><%= @contact.organisation %></li>
-				<li><%= @contact.position %></li>
+      				<li><%= @contact.email %></li>
+      				<li><%= @contact.phone %></li>
 
-				<li><%= @contact.email %></li>
-				<li><%= @contact.phone %></li>
-
-				<li><%= @contact.website %></li>
-				<li><%= @contact.description %></li>
-			  				<%= link_to "Read More", { action: "show", id: @contact } %> |
-				<%= link_to "Update", { action: "edit", id: @contact } %> |
-				<%= link_to "Delete", { action: "destroy", id: @contact },
-					method: :delete, data: { confirm: "Delete #{@contact.name}?" } %>
-		</ul>
+      				<li><%= @contact.website %></li>
+      				<li><%= @contact.description %></li>
+            </ul>
+            </p>
+      </div>
+      <div class="card-action white">
+        <%= link_to "<i class='material-icons'>mode_edit</i>".html_safe, { action: "edit", id: @contact } %>
+        <%= link_to "<i class='material-icons'>delete</i>".html_safe, { action: "destroy", id: @contact },
+          method: :delete, data: { confirm: "Delete #{@contact.name}?" } %>
+      </div>
+    </div>
 	</div>
 </div>
 
 <div class="row">
-	<%= link_to "Create new contact", { action: "new" } %>
-</div>
-
-<div class="row">
-	<%= link_to "Back", { action: "index" } %>
+  <div class ='col s12'>
+    <%= link_to '<i class="material-icons">list</i>'.html_safe, { action: "index" }, class: "btn waves-effect waves-light"%>
+    <%= link_to '<i class="material-icons left">add</i> New Contact'.html_safe, {action: 'new'}, class: "btn waves-effect waves-light red" %>
+  </div>
 </div>
