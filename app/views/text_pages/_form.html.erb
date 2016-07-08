@@ -6,7 +6,7 @@
      var clientId = "<%=ENV.fetch('GOOGLE_API_CLIENT_ID')%>"
 
      // Use the API Loader script to load google.picker and gapi.auth.
-     function onLoad() {
+     function onApiLoad() {
        gapi.load('picker');
      }
 
@@ -14,6 +14,7 @@
      function createPicker() {
        var picker = new google.picker.PickerBuilder().
            addView(google.picker.ViewId.DOCUMENTS).
+           setOrigin(window.location.protocol + '//' + window.location.host).
            setOAuthToken('<%=current_user.google_account.fresh_token if current_user.google_account%>').
            setDeveloperKey(developerKey).
            setCallback(pickerCallback).
@@ -36,50 +37,57 @@
        document.getElementsByClassName('google_id')[0].value = '<%=current_user.google_account.id if current_user.google_account%>';
      }
 </script>
-<script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onLoad"></script>
+<script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
 
 <%= form_for([@group,@category,@text_page], url: group_category_text_page_path(@group,@category)) do |f| %>
   <% if @text_page.errors.any? %>
-    <div class="panel panel-danger">
-      <div class="panel-heading"><%= pluralize(@text_page.errors.count, "error") %> prohibited this group from being saved:</div>
-      <ul class="list-group">
-       <% @text_page.errors.full_messages.each do |message| %>
-         <li class="list-group-item"><%= message %></li>
-       <% end %>
+    <div class="col s12">
+      <div class="alert">
+        <p>The form contains <%= pluralize(@text_page.errors.count, "error") %>.</p>
+      </div>
+      <ul class='alert'>
+      <% @text_page.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_field :title, class: 'form-control' %>
+  <div class="input-field col s12">
+    <%= f.text_field :title%>
+    <%= f.label :title %>
   </div>
-  <div class="field">
-    <%= f.label :contents %><br>
+  <div class="col s12">
+    <label>Contents</label>
     <%= f.text_area :contents, class: 'wysiwyg'%>
   </div>
-  <br>
-  <div id='google-authenicate'<%if @google_access%>  style= 'display:none' <%end%>>
-    <button id='google-auth-btn' class='btn btn-default'>Sign in and load from Google Docs</button>
-  </div>
-  <div id='load-from-google' <%if !@google_access%>  style= 'display:none' <%end%>>
-    <div class="field">
-      <%= f.label :load_from_google %><br>
-      <%= f.check_box :load_from_google %>
-    </div>
-    <div class="field">
-      <%= f.label :file_id %><br>
-      <p><a id='name-display'<%if @file_link %> href="<%=@file_link%>" <%end%> >
-        <%=@file_name||"No file selected."%>
-      </a></p>
-      <button id='select-btn'>Select from Google Docs</button>
-      <%= f.text_field :file_id, class: 'file_id', style: 'display:none'%>
+  <%if @google_access%>
 
-    </div>
+      <div class="input-field col s12">
+        <%= f.check_box :load_from_google %>
+        <%= f.label :load_from_google, "Load from Google Doc" %>
+      </div>
+      <div class="col s12">
+        <br>
+        <p><button id='select-btn' class='btn waves-effect waves-light'>Google Docs</button>
+        <%= f.text_field :file_id, class: 'file_id', style: 'display:none'%>
+        <a id='name-display'<%if @file_link %> href="<%=@file_link%>" <%end%> >
+          <%=@file_name||"No file selected."%>
+        </a></p>
+
+
+      </div>
     <%=f.hidden_field :google_account_id, class: 'google_id'%>
-</div>
-  <div class="actions">
-    <%= f.submit class:'btn btn-primary'%>
+  <%else%>
+    <div id='google-authenicate' class='col s12'>
+      <br>
+      <button id='google-auth-btn' class='btn waves-effect waves-light'>Sign in and load from Google Docs</button>
+    </div>
+  <%end%>
+  <div class="actions col s12">
+    <p><br><button class="btn-large waves-effect waves-light" type="submit" name="action">Submit
+      <i class="material-icons right">send</i>
+    </button></p>
   </div>
 <% end %>
 <script>
@@ -90,6 +98,9 @@
   $('#google-auth-btn').click(function( event ) {
     event.preventDefault();
     window.location = "<%=group_category_text_page_auth_path(@group,@category)%>";
+  });
+  $(document).ready(function() {
+      Materialize.updateTextFields();
   });
   $(function() {
     $('.wysiwyg').froalaEditor()
