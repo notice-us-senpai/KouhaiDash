@@ -1,24 +1,33 @@
 <%= form_for(@group) do |f| %>
   <% if @group.errors.any? %>
-    <div class="panel panel-danger">
-      <div class="panel-heading"><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</div>
-      <ul class="list-group">
-       <% @group.errors.full_messages.each do |message| %>
-         <li class="list-group-item"><%= message %></li>
-       <% end %>
+    <div class="col s12">
+      <div class="alert">
+        <p>The form contains <%= pluralize(@group.errors.count, "error") %>.</p>
+      </div>
+      <ul class='alert'>
+      <% @group.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name, class: 'form-control'%>
+  <div class="input-field col s12">
+    <%= f.text_field :name%>
+    <%= f.label :name %>
   </div>
-  <div class="field">
-    <label>Set members list to be public:</label><br>
-    <%= f.check_box :members_public, class: 'form-control'%>
+  <div class="input-field col s12">
+    <%= f.check_box :members_public%>
+    <%= f.label :members_public, "Set member list to be public"%>
   </div>
-  <div class="actions">
-    <%= f.submit class: "btn btn-primary"%>
+  <div class="actions col s12">
+    <p><br><button class="btn-large waves-effect waves-light" type="submit" name="action">Submit
+      <i class="material-icons right">send</i>
+    </button></p>
   </div>
 <% end %>
+<script>
+$(document).ready(function() {
+    Materialize.updateTextFields();
+});
+</script>

@@ -68,7 +68,7 @@
                 </li>
               <%end%>
             <%end%>
-            <% if !@group && logged_in? %>
+            <% if (!@group || !@group.id) && logged_in? %>
               <li>
                 <%= link_to "Profile", current_user %>
               </li>

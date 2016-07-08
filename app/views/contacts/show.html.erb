@@ -6,19 +6,19 @@
 </div>
 
 <div class="row">
-	<div class="col s12 m9 contact">
-    <div class="card amber darken-3">
-      <div class="card-content white-text">
+	<div class="col s12 m9">
+    <div class="card">
+      <div class="card-content contact-card">
         <span class="card-title"><%= @contact.name %></span>
         <p>
           <ul class="contact-details">
       				<li><%= @contact.organisation %></li>
       				<li><%= @contact.position %></li>
 
-      				<li><%= @contact.email %></li>
+      				<li><a href='mailto:<%= @contact.email%>'><%= @contact.email %></a></li>
       				<li><%= @contact.phone %></li>
 
-      				<li><%= @contact.website %></li>
+      				<li><a href='http://<%= @contact.website%>'><%= @contact.website %></li>
       				<li><%= @contact.description %></li>
             </ul>
             </p>

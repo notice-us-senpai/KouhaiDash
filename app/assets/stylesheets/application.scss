@@ -24,19 +24,31 @@
  */
 @import "materialize";
 
-//typography
+//typography, colour
 h1 {
   font-weight: lighter;
 }
 .alert {
   @extend .red-text, .text-darken-4;
 }
-.footer-brand{
-  font-weight: lighter;
-  @extend .black-text;
+
+//contact
+.contact-card{
+  @extend .amber, .darken-2, .white-text;
 }
-.footer-brand:hover{
-  @extend .white-text;
+.contact-card a{
+  @extend .amber-text, .text-accent-1;
+}
+
+//group
+.group-card{
+  @extend .indigo, .darken-2, .white-text;
+  a{
+    @extend .indigo-text, .text-accent-1;
+  }
+}
+.group-card-actions a{
+  @extend .indigo-text, .text-accent-1;
 }
 
 //nav
@@ -76,6 +88,13 @@ main {
 }
 .footer-link:hover{
   @extend .black-text;
+}
+.footer-brand{
+  font-weight: lighter;
+  @extend .black-text;
+}
+.footer-brand:hover{
+  @extend .white-text;
 }
 
 //padding and nav height
