@@ -1,10 +1,11 @@
+<% provide(:title, "Edit #{@task.name}") %>
 <div class="row">
-  <h1>Editing Task</h1>
+  <div class="col s12">
+    <h1>Edit <%=@task.name%></h1>
+  </div>
 </div>
 <div class="row">
-  <div class="col-md-6">
+  <div class="col s12 m9">
     <%= render 'form' %>
-    <%= link_to 'Show', [@group,@category,@task] , class: "btn btn-default"%>
-    <%= link_to 'Back', group_category_tasks_path(@group,@category), class: "btn btn-default" %>
   </div>
 </div>

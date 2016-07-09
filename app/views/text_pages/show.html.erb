@@ -1,16 +1,23 @@
+<% provide(:title, "#{@text_page.title}") %>
 <div class="row">
   <h1><%=@text_page.title%></h1>
 </div>
+
+<% if is_user_of_group?(@group)%>
+  <div class="fixed-action-btn" style="top: 45px; right: 24px;">
+    <%= link_to "<i class='material-icons'>mode_edit</i>".html_safe,
+      edit_group_category_text_page_path(@group,@category),
+      class: 'btn-floating btn-large waves-effect waves-light red right'%>
+  </div>
+<%end%>
+
+
 <div class="row">
   <div id='contents' class='fr-view'>
     <%=Sanitize.fragment(@contents, Sanitize::Config::RELAXED).html_safe%>
   </div>
 </div>
-<div class="row">
-  <div class='col-md-5'>
-    <%= link_to 'Edit', edit_group_category_text_page_path(@group,@category), class: 'btn btn-default'%>
-  </div>
-</div>
+
 <script>
   //removing style attribute from <p>
   // var rem = document.getElementById("contents").getElementsByTagName("p");

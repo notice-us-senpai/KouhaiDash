@@ -1,27 +1,40 @@
 <% provide(:title, 'Groups') %>
 <div class="row">
-  <h1>Groups</h1>
+  <div class ="col s12">
+    <h1>Groups</h1>
+  </div>
 </div>
 <div class="row">
-  <div class="col-md-8">
-    <table class="table table-hover">
-      <tbody>
-        <% @groups.each do |group| %>
-          <tr>
-            <td><%=link_to "#{group.name}", group%></td>
-            <td>
-              <%if logged_in? && !is_user_of_group?(group)%>
-                <%if is_a_not_yet_approved_member_of_group?(group)%>
-                  Request sent
-                <%else%>
-                  <%=link_to "Request to Join", join_group_path(group.id), method: :post, class: "btn btn-default"%>
-                <%end%>
-              <%end%>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-    <%= link_to 'New Group', new_group_path , class: "btn btn-default"%>
+  <div class='col s12'>
+    <%= link_to '<i class="material-icons left">add</i>New Group'.html_safe, new_group_path , class: "btn waves-effect waves-light red"%>
   </div>
+</div>
+<div class="row">
+  <% @groups.each do |group| %>
+    <div class="col s12 m6">
+      <div class="card">
+        <div class="card-content group-card">
+          <span class="card-title"><%=link_to "#{group.name}", group%></span>
+          <p></p>
+        </div>
+        <div class="card-action group-card-actions">
+          <%=link_to "<i class='material-icons'>info</i>".html_safe, group,
+            data: {position:"bottom", delay:"50",tooltip:"View Group"}, class:"tooltipped" %>
+          <%if is_a_member_of_group?(group)%>
+            <%if is_user_of_group?(group)%>
+              <a class='tooltipped' data-position="bottom" data-delay="50" data-tooltip="Official Member"><i class='material-icons'>person</i></a>
+            <%else%>
+              <a class='tooltipped' data-position="bottom" data-delay="50" data-tooltip="Not approved yet :("><i class='material-icons'>person_outline</i></a>
+            <%end%>
+            <%=link_to "<i class='material-icons'>remove_circle</i>".html_safe, [group, group.memberships.find_by(user_id: current_user.id)], method: :delete,
+            data: { confirm: "Leave #{group.name}?",position:"bottom", delay:"50",tooltip:"Leave Group"}, class:"tooltipped" %>
+
+          <%elsif logged_in?%>
+            <%=link_to "<i class='material-icons'>person_add</i>".html_safe,
+              join_group_path(group.id), method: :post,class:"tooltipped", data:{position:"bottom", delay:"50",tooltip:"Join Group"}  %>
+          <%end%>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>

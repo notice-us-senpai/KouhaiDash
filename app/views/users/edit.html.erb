@@ -4,46 +4,72 @@
 </div>
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col s12 m8">
     <%= form_for(@user) do |f| %>
-      <%= render 'shared/error_messages' %>
-
+      <%=render 'shared/error_messages'%>
+      <div class="input-field col s12">
       <%= f.label :description, 'About Myself' %>
-      <%= f.text_area :description, class: 'form-control' %>
+      <%= f.text_area :description, class: 'materialize-textarea'%>
+      </div>
+      <div class="input-field col s12">
+      <%= f.email_field :email, class: 'validate'%>
+      <%= f.label :email%>
+      </div>
 
-      <%= f.label :email %>
-      <%= f.email_field :email, class: 'form-control' %>
+      <div class="input-field col s12">
+        <%= f.password_field :password%>
+        <%= f.label :password, "New Password"%>
+      </div>
 
-      <%= f.label :password, "New Password" %>
-      <%= f.password_field :password, class: 'form-control' %>
+      <div class="input-field col s12">
+      <%= f.password_field :password_confirmation%>
+      <%= f.label :password_confirmation, "Confirm New Password"%>
+      </div>
 
-      <%= f.label :password_confirmation,
-        "Confirm New Password" %>
-      <%= f.password_field :password_confirmation, class: 'form-control' %>
+      <div class="file-field input-field col s12">
+        <div class="btn">
+          <span>Profile Picture</span>
+          <%= f.file_field :image %>
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
 
-      <%= f.label :image, "Profile Picture" %>
-      <%= f.file_field :image %>
+      <!-- <%= f.label :image, "Profile Picture" %>
+      <%= f.file_field :image %> -->
       <% if f.object.image? %>
-        <p>
-          <%= image_tag f.object.image.thumb.url %>
-        </p>
-        <p>
-          <%= f.label :remove_image %>
-          <%= f.check_box :remove_image %>
-        </p>
+        <div class='col s12'>
+          <p class= 'center-align'>
+            <%= image_tag f.object.image.thumb.url %>
+          <br>
+            <%= f.check_box :remove_image %>
+            <%= f.label :remove_image %>
+          </p>
+        </div>
       <% end %>
 
-      <%= f.submit "Update", class: "btn btn-default" %>
+      <div class="actions col s12">
+        <p><button class="btn-large waves-effect waves-light" type="submit" name="action">Update
+          <i class="material-icons right">send</i>
+        </button></p>
+      </div>
+
     <% end %>
+  </div>
+</div>
+
+<div class = "row">
+  <div class='col s12 m8'>
     <!--Manage Google Account-->
     <h2>Manage Google Account</h2>
     <%if @user.google_account%>
       <table class ='table'>
-        <tr><td><%=@user.google_account.gmail%></td><td><button id='revoke-btn'>Sign out from Google</button></td></tr>
+        <tr><td><%=@user.google_account.gmail%></td><td><button id='revoke-btn' class = 'btn waves-effect waves-light'>Sign out from Google</button></td></tr>
       </table>
     <%else%>
     <p>
-      <button id='sign-in-btn'>Sign in with Google</button>
+      <button id='sign-in-btn' class='btn waves-effect waves-light'>Sign in with Google</button>
     </p>
     <%end%>
   </div>
@@ -56,5 +82,8 @@ $('#revoke-btn').click(function( event ) {
 $('#sign-in-btn').click(function( event ) {
   event.preventDefault();
   window.location = "<%=to_authenticate_user_path(@user)%>";
+});
+$(document).ready(function() {
+  Materialize.updateTextFields();
 });
 </script>

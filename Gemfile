@@ -56,7 +56,6 @@ end
 
 gem 'faker'
 gem 'will_paginate'
-gem 'bootstrap-will_paginate'
 
 gem 'carrierwave', '~> 0.10.0'
 gem 'mini_magick', '~> 4.3'
@@ -74,3 +73,4 @@ end
 gem 'sanitize'
 gem 'wysiwyg-rails'
 gem "omniauth-google-oauth2"
+gem 'materialize-sass'

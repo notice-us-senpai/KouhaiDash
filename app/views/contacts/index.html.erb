@@ -1,58 +1,22 @@
 <% provide(:title, 'Contacts') %>
 <div class="row">
-	<h1>Contacts</h1>
-	<p>Please conduct data validation testing on the user and login system instead.</p>
+  <div class ="col s12">
+	   <h1>Contacts</h1>
+   </div>
 </div>
 
 <div class="row">
-	<%= link_to "Create New Contact", { action: "new" } %>
-	<!--
+  <div class = "col s12 m6">
+    <%= link_to '<i class="material-icons left">add</i> New Contact'.html_safe, {action: 'new'}, class: "btn waves-effect waves-light red" %>
+  </div>
+  <!--
 	| <%= link_to "Download as CSV", group_category_contacts_path(@group, @category, format: "csv") %>
 	-->
 </div>
 
-<% row = 0 %>
-
-<% @contacts.each do |contact| %>
-
-	<% if row % 2 == 0 %>
-		<div class="row">
-	<% end %>
-
-	<div class="col-md-6 contact">
-		<div class="contact-text">
-			<ul class="contact-details">
-				<li><%= contact.name %></li>
-
-				<li><%= contact.organisation %></li>
-
-				<li><%= contact.email %></li>
-				<li><%= contact.phone %></li>
-			</ul>
-
-			<div class="text-center">
-				<%= link_to "Read More", { action: "show", id: contact } %> |
-				<%= link_to "Update", { action: "edit", id: contact } %> |
-				<%= link_to "Delete", { action: "destroy", id: contact },
-					method: :delete, data: { confirm: "Delete #{contact.name}?" } %>
-			</div>
-		</div>
-	</div>
-
-	<% if row % 2 == 1 %>
-		</div>
-	<% end %>
-
-	<% row += 1 %>
-<% end %>
-
-<% if row % 2 == 1 %>
-	</div>
-<% end %>
 
 <div class="row">
-	<%= link_to "Create New Contact", { action: "new" } %>
-	<!--
-	| <%= link_to "Download as CSV", group_category_contacts_path(@group, @category, format: "csv")  %>
-	-->
+  <%@contacts.each do |contact|%>
+    <%=render contact%>
+  <%end%>
 </div>

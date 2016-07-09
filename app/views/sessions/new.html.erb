@@ -4,23 +4,32 @@
 </div>
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col s12 m9">
     <%= form_for(:session, url: login_path) do |f| %>
+      <div class="input-field col s12">
+        <%= f.text_field :username, class: 'form-control' %>
+        <%= f.label :username %>
+      </div>
 
-      <%= f.label :username %>
-      <%= f.text_field :username, class: 'form-control' %>
+      <div class="input-field col s12">
+        <%= f.password_field :password, class: 'form-control' %>
+        <%= f.label :password %>
+      </div>
 
-      <%= f.label :password %>
-      <%= f.password_field :password, class: 'form-control' %>
-
-      <%= f.label :remember_me, class: "checkbox inline" do %>
+      <div class="input-field col s12">
         <%= f.check_box :remember_me %>
-        <span>Remember Me</span>
-      <% end %>
+        <%= f.label :remember_me%>
+      </div>
 
-      <%= f.submit "Login", class: "btn btn-default" %>
+      <div class="actions col s12">
+        <p><br><button class="btn-large waves-effect waves-light" type="submit" name="action">Login
+          <i class="material-icons right">send</i>
+        </button></p>
+      </div>
     <% end %>
-    <p>New user? <%= link_to "Register Here", register_path %></p>
-    <%= link_to "Or Sign in with Google", '/auth/google_oauth2', class: 'btn btn-default' %>
+    <div class='col s12'>
+      <p>New user? <%= link_to "Register Here", register_path %></p>
+      <%= link_to "Or Sign in with Google", '/auth/google_oauth2', class: 'btn btn-default' %>
+    </div>
   </div>
 </div>

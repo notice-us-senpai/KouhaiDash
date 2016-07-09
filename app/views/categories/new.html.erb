@@ -1,9 +1,11 @@
+<% provide(:title, 'New Category') %>
 <div class="row">
-    <h1>New Category</h1>
+  <div class="col s12">
+   <h1>New Category</h1>
+   </div>
 </div>
 <div class="row">
-  <div class="col-md-6">
+  <div class="col s12 m9">
     <%= render 'form' %>
-    <%= link_to 'Back', group_categories_path(@group) , class:"btn btn-default"%>
   </div>
 </div>
