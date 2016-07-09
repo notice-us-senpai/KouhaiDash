@@ -1,34 +1,37 @@
 
 <%= form_for([@group,@category,@task]) do |f| %>
-  <% if @task.errors.any? %>
-  <div class="panel panel-danger">
-    <div class="panel-heading"><%= pluralize(@task.errors.count, "error") %> prohibited this group from being saved:</div>
-    <ul class="list-group">
-     <% @task.errors.full_messages.each do |message| %>
-       <li class="list-group-item"><%= message %></li>
-     <% end %>
+<% if @task.errors.any? %>
+  <div class="col s12">
+    <div class="alert">
+      <p>The form contains <%= pluralize(@task.errors.count, "error") %>.</p>
+    </div>
+    <ul class='alert'>
+    <% @task.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
     </ul>
   </div>
-  <% end %>
+<% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name , class: 'form-control'%>
+  <div class="input-field col s12">
+    <%= f.text_field :name%>
+    <%= f.label :name %>
   </div>
-  <div class="field">
-    <%= f.label :deadline %><br>
-    <%= f.date_select :deadline , class: 'form-control'%>
+  <div class="input-field col s12">
+    <%= f.text_field :deadline, class:'datepicker', type: 'date'%>
+    <%= f.label :deadline %>
   </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_area :description , class: 'form-control'%>
+  <div class="input-field col s12">
+    <%= f.text_area :description , class: 'materialize-textarea'%>
+    <%= f.label :description %>
   </div>
-  <div class="field">
-    <%= f.label :done %><br>
-    <%= f.check_box :done , class: 'form-control'%>
+  <div class="input-field col s12">
+    <%= f.check_box :done%>
+    <%= f.label :done %>
   </div>
-  <div id="assignment" class="field">
-    <label for="task_assignments">Assigned to:</label>
+  <div id="assignment" class="col s12">
+    <br>
+    <p>Assigned to:</p>
     <table id="assign_list" class ="table">
       <tbody>
         <%=f.fields_for :task_assignments do |assign_form| %>
@@ -38,7 +41,7 @@
             <%= assign_form.hidden_field :_destroy%>
           </td>
           <td>
-            <button type="button" class="assignremovebtn" data-preexisting="true" data-id="<%= assign_form.index %>">Remove</button>
+            <button type="button" class="assignremovebtn btn-floating btn-large red" data-preexisting="true" data-id="<%= assign_form.index %>"><i class='material-icons left'>remove</i></button>
           </td>
         </tr>
         <%end%>
@@ -47,9 +50,22 @@
         </div>
       </tbody>
     </table>
-    <button type="button" class="assignaddbtn">Add Assignment</button>
+    <button type="button" class="assignaddbtn btn red"><i class='material-icons left'>add</i>Assignment</button>
   </div>
-  <div class="actions">
-    <%= f.submit class: "btn btn-primary" %>
+  <div class="actions col s12">
+    <p><button class="btn-large waves-effect waves-light" type="submit" name="action">Submit
+      <i class="material-icons right">send</i>
+    </button></p>
   </div>
 <% end %>
+<script>
+
+$(document).ready(function() {
+  $('select').material_select();
+  Materialize.updateTextFields();
+  $('.datepicker').pickadate({
+   selectMonths: true, // Creates a dropdown to control month
+   selectYears: 21 // Creates a dropdown of 15 years to control year
+ });
+});
+</script>

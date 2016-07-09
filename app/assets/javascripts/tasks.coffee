@@ -21,8 +21,9 @@ $(document).ready ->
           </select>
         </td>
         <td>
-          <button type='button' class='assignremovebtn' data-preexisting='false' data-id='"+milliseconds+"'>Remove</button>
+          <button type='button' class='assignremovebtn btn' data-preexisting='false' data-id='"+milliseconds+"'>Remove</button>
         </td>
       </tr>"
     )
+    $('select').material_select()
   ))
