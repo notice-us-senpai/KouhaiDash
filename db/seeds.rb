@@ -38,19 +38,6 @@ magic_number.times do |n|
     )
 end
 
-magic_number.times do |n|
-  organisation = "#{Faker::Company.name} #{Faker::Company.suffix}"
-  Contact.create(
-    name: Faker::Name.name[0...64],
-    organisation: organisation,
-    position: Faker::Company.profession,
-    email: Faker::Internet.email[0...64],
-    phone: Faker::PhoneNumber.cell_phone,
-    website: Faker::Internet.url,
-    description: Faker::Lorem.paragraph
-  )
-end
-
 Group.create(name: 'TestGroup')
 Group.create(name: 'NoMember')
 Group.create(name: 'Not Approved')
@@ -61,6 +48,7 @@ Membership.create(user_id: 1, group_id:3, approved: false)
 Membership.create(user_id: 2, group_id:3, approved: false)
 Category.create(name: "Private Task List", group_id: 1, type_no: 3, is_public: false)
 Category.create(name: "Public Task List", group_id: 1, type_no: 3, is_public: true)
+Category.create(name: "Contacts", group_id: 1, type_no: 1, is_public: true)
 magic_number.times do |i|
   probably = i % 2
   Task.create(
@@ -76,6 +64,20 @@ magic_number.times do |i|
         membership_id: (13*i+7*j)%10+1
       )
     end
+end
+
+magic_number.times do |n|
+  organisation = "#{Faker::Company.name} #{Faker::Company.suffix}"
+  Contact.create(
+    name: Faker::Name.name[0...64],
+    organisation: organisation,
+    position: Faker::Company.profession,
+    email: Faker::Internet.email[0...64],
+    phone: Faker::PhoneNumber.cell_phone,
+    website: Faker::Internet.url,
+    description: Faker::Lorem.paragraph,
+    category_id: 3
+  )
 end
 
 # id: nil, name: nil, deadline: nil, description: nil, done: nil,
