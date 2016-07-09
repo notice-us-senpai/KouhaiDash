@@ -1,21 +1,31 @@
 <%= form_for([@group,@new_membership]) do |f| %>
   <% if @new_membership.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@new_membership.errors.count, "error") %> prohibited this membership from being saved:</h2>
-
-      <ul>
-      <% @new_membership.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+    <div class='col s12'>
+      <div class="alert">
+        <p><%= pluralize(@new_membership.errors.count, "error") %> prohibited this group from being saved:
+        </p>
+      </div>
+      <ul class="alert">
+       <% @new_membership.errors.full_messages.each do |message| %>
+         <li><%= message %></li>
+       <% end %>
       </ul>
     </div>
   <% end %>
-  <div class="field">
-    <label>Add User:</label><br>
+  <div class="input-field col s9">
+
     <%= f.select :user_id, options_for_select(@users_array)%>
+    <%=f.label :user_id, "Add User"%>
   </div>
   <%=f.hidden_field :approved, value: true%>
-  <div class="actions">
-    <%= f.submit class:"btn btn-primary"%>
-  </div>
+  <div class="actions col s3">
+    <p><br><button class="btn waves-effect waves-light red" type="submit" name="action">
+      <i class="material-icons">person_add</i>
+    </button></p>
 <% end %>
+<script>
+$(document).ready(function() {
+    $('select').material_select();
+});
+
+</script>

@@ -12,21 +12,15 @@
     </div>
   </div>
 <%end%>
-<%if is_a_member_of_group?(@group)%>
-  <div class="row">
-    <div class="col s12 m9">
-      <%=link_to "<i class='material-icons'>remove_circle</i>".html_safe, [@group, @group.memberships.find_by(user_id: current_user.id)], method: :delete,
-        data: { confirm: "Leave #{@group.name}?",position:"bottom", delay:"50",tooltip:"Leave Group"}, class:"btn waves-effect waves-light tooltipped red" %>
-    </div>
-  </div>
-<%end%>
 <div class="row">
   <div class="col s12">
-    <h2>Members:</h2>
-  </div>
-  <div class="col s12 m9">
-    <table>
-      <%=render @memberships%>
-    </table>
-  </div>
+    <div class="col s12">
+      <h2>Members:</h2>
+    </div>
+    <div class="col s12 m9">
+      <table>
+        <%=render @memberships%>
+      </table>
+    </div>
+</div>
 </div>
