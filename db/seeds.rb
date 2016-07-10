@@ -38,7 +38,7 @@ magic_number.times do |n|
     )
 end
 
-Group.create(name: 'TestGroup')
+Group.create(name: 'EGroup')
 Group.create(name: 'NoMember')
 Group.create(name: 'Not Approved')
 magic_number.times do |i|
@@ -50,18 +50,17 @@ Category.create(name: "Private Task List", group_id: 1, type_no: 3, is_public: f
 Category.create(name: "Public Task List", group_id: 1, type_no: 3, is_public: true)
 Category.create(name: "Contacts", group_id: 1, type_no: 1, is_public: true)
 magic_number.times do |i|
-  probably = i % 2
   Task.create(
-    category_id: 1+i%2,
-    name: "Complete KouhaiDash!",
-    description: "Need to settle the login system asap!",
-    deadline: Date.new(2016, 12, 25),
-    done: probably
+    category_id: 1+Faker::Number.between(1, 10)%2,
+    name: Faker::Hacker.verb() + " "+Faker::Hacker.adjective() +" "+ Faker::Hacker.noun() ,
+    description: Faker::Lorem.paragraph,
+    deadline: Faker::Date.between(5.year.ago, 5.year.from_now),
+    done: Faker::Boolean.boolean
     )
-    2.times do |j|
+    Faker::Number.between(0, 3).times do |j|
       TaskAssignment.create(
         task_id: i+1,
-        membership_id: (13*i+7*j)%10+1
+        membership_id: Faker::Number.between(1, 10)%10+1
       )
     end
 end

@@ -5,7 +5,7 @@
   </div>
 </div>
 <div class="row">
-  <div class="col s12 m9">
+  <div class="col s12">
     <table class="table">
       <tbody>
         <tr>
@@ -35,7 +35,10 @@
               <%first =false%>
               <%end%>
             </th>
-            <td><%= assign.membership.user.username %></td>
+            <td><div class="chip">
+              <%= image_tag assign.membership.user.image.thumb.url||"default#{assign.membership.user.id%4}.jpg", class:'activator' %>
+              <%= assign.membership.user.username %>
+            </div></td>
           </tr>
         <%end %>
       </tbody>
@@ -45,9 +48,11 @@
 
 <div class="row">
   <div class=" col s12">
-    <div class="btn-group btn-group-justified">
-      <%= link_to 'Edit', edit_group_category_task_path(@group,@category,@task), class: "btn btn-default" %>
-      <%= link_to 'Back', group_category_tasks_path(@group,@category), class: "btn btn-default" %>
-    </div>
+    <%= link_to "<i class='material-icons'>mode_edit</i>".html_safe, edit_group_category_task_path(@group,@category,@task),
+      class: "btn waves-effect waves-light tooltipped", data: {position:"bottom", delay:"50",tooltip:"Update"}%>
+    <%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,@category,@task], method: :delete,
+      data: { confirm: 'Are you sure?',position:"bottom", delay:"50",tooltip:"Delete"}, class: "btn waves-effect waves-light tooltipped red"%>
+    <%= link_to '<i class="material-icons">list</i>'.html_safe, group_category_tasks_path(@group,@category),
+      class: "btn waves-effect waves-light tooltipped",data: {position:"bottom", delay:"50",tooltip:"Return to list"} %>
   </div>
 </div>

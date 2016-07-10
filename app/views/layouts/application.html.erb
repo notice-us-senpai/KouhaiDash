@@ -126,6 +126,7 @@
         <% flash.each do |message_type, message| %>
           Materialize.toast('<%=message%>', 4000);
         <% end %>
+        $('.tooltipped').tooltip({delay: 50})
       </script>
   </body>
 </html>
