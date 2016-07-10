@@ -13,6 +13,8 @@
     		media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application',
     		'data-turbolinks-track' => true %>
+    <%=javascript_include_tag '//cdn.jsdelivr.net/sortable/1.4.2/Sortable.min.js',
+    		'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
     <%= render 'layouts/shim' %>
 
@@ -52,14 +54,14 @@
               <%= link_to "Groups", groups_path %>
             </li>
             <% if @group %>
-              <%if @group.id && (@group.members_public || is_user_of_group?(@group)) %>
-                <li>
-                  <%= link_to "Group Members", group_memberships_path(@group) %>
-                </li>
-              <%end%>
               <%get_categories_and_path(@group).each do |link| %>
                 <li>
                   <%= link_to link[:name], link[:path] %>
+                </li>
+              <%end%>
+              <%if @group.id && (@group.members_public || is_user_of_group?(@group)) %>
+                <li>
+                  <%= link_to "Group Members", group_memberships_path(@group) %>
                 </li>
               <%end%>
               <%if @group.id && is_user_of_group?(@group) %>

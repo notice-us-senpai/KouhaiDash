@@ -16,9 +16,9 @@ module GroupsHelper
   # returns array of hash of category name and associated path
   def get_categories_and_path(group)
     categories = if is_user_of_group?(group)
-      group.categories
+      group.categories.order(:order_no)
     else
-      group.categories.is_public
+      group.categories.is_public.order(:order_no)
     end
     array =[]
     categories.each do |cat|

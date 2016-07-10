@@ -13,4 +13,13 @@ class Category < ActiveRecord::Base
     presence: true
   validates :group_id,
     presence: true
+
+  before_save :set_order_no
+
+  private
+    def set_order_no
+      unless order_no
+        self.order_no=Time.now.to_i
+      end
+    end
 end

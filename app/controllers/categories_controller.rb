@@ -6,7 +6,7 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.json
   def index
-    @categories = @group.categories
+    @categories = @group.categories.order(:order_no)
   end
 
   # GET /categories/1
@@ -69,13 +69,27 @@ class CategoriesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to group_categories_url, notice: 'Category was successfully destroyed.' }
       format.json { head :no_content }
+      format.js
+    end
+  end
+
+  def saveOrder
+    order=params.require(:category).fetch(:order_no)
+    i=1
+    order.each do |category_id|
+      category=@group.categories.find_by(id: category_id)
+      category.update_attributes(order_no: i) if category
+      i+=1
+    end
+    respond_to do |format|
+      format.js
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_group
-      @group = Group.find(params[:group_id])
+      @group = Group.includes(:categories).find(params[:group_id])
     end
 
     def set_category

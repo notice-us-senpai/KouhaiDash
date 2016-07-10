@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       get 'text_page/to_authenticate', to: 'text_pages#to_authenticate', as: 'text_page_auth'
       resources :contacts
     end
+    post '/categories_save_order', to: 'categories#saveOrder', as: 'categories_save_order'
   end
 
   post '/join_group/:id', to: 'groups#join', as: 'join_group'

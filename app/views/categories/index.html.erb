@@ -12,9 +12,10 @@
 </div>
 <div class="row">
   <div class="col s12 m9">
-    <table>
+    <table class='highlight'>
       <thead>
         <tr>
+          <th></th>
           <th>Name</th>
           <th>Type</th>
           <th>Public</th>
@@ -22,17 +23,42 @@
         </tr>
       </thead>
 
-      <tbody>
+      <tbody id='items'>
+
         <% @categories.each do |category| %>
-          <tr>
+          <tr id='<%=dom_id(category)%>'data-order='<%=category.id%>'>
+            <td class='handle'><i class='material-icons'>drag_handle</i></td>
             <td><%= link_to category.name, [@group,category] %></td>
             <td><%= @type_no_array[category.type_no][0] %></td>
             <td><%= category.is_public %></td>
-            <td><%= link_to '<i class="material-icons">mode_edit</i>'.html_safe, edit_group_category_path(@group,category)%></td>
-            <td><%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,category], method: :delete, data: { confirm: 'Are you sure?' }%></td>
+            <td><%= link_to '<i class="material-icons">mode_edit</i>'.html_safe,
+              edit_group_category_path(@group,category)%></td>
+            <td><%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,category],
+              method: :delete,remote: true, data: { confirm: 'Are you sure?' }%></td>
           </tr>
         <% end %>
       </tbody>
     </table>
+    <%= form_tag(group_categories_save_order_path(@group), remote: true, id:'order-form') do %>
+    <!-- <button class="btn waves-effect waves-light tooltipped" type="submit" name="action"
+    data-position="bottom" data-delay="50" data-tooltip="Save Order" id='save-order-btn'>
+      <i class="material-icons">save</i> -->
+    </button>
+    <% end %>
   </div>
 </div>
+<script>
+var el = document.getElementById('items');
+var sortable = Sortable.create(el,{animation: 150,handle: ".handle", dataIdAttr: 'data-order'});
+$(document).ready(function() {
+    sortable.option('onUpdate',function(evt) {
+      var order=sortable.toArray();
+      // sortable.sort(order.reverse());
+      for (var i = 0; i < order.length; i++) {
+        $('#order-form').append("<input type='hidden' name='category[order_no][]' value='"+order[i]+"'>");
+      }
+      $('#order-form').submit();
+      $('#order-form').empty();
+    });
+});
+</script>
