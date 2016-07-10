@@ -46,18 +46,22 @@ magic_number.times do |i|
 end
 Membership.create(user_id: 1, group_id:3, approved: false)
 Membership.create(user_id: 2, group_id:3, approved: false)
+Category.create(name: "Welcome", group_id: 1, type_no: 2, is_public: true)
 Category.create(name: "Private Task List", group_id: 1, type_no: 3, is_public: false)
 Category.create(name: "Public Task List", group_id: 1, type_no: 3, is_public: true)
 Category.create(name: "Contacts", group_id: 1, type_no: 1, is_public: true)
+
+TextPage.create(title: "EGroup", contents: "This is an example group. Take a look to see how this website can be used.", category_id: '1')
+
 magic_number.times do |i|
   Task.create(
-    category_id: 1+Faker::Number.between(1, 10)%2,
+    category_id: 2+Faker::Number.between(1, 10)%2,
     name: Faker::Hacker.verb() + " "+Faker::Hacker.adjective() +" "+ Faker::Hacker.noun() ,
     description: Faker::Lorem.paragraph,
     deadline: Faker::Date.between(5.year.ago, 5.year.from_now),
     done: Faker::Boolean.boolean
     )
-    Faker::Number.between(0, 3).times do |j|
+    Faker::Number.between(1, 3).times do |j|
       TaskAssignment.create(
         task_id: i+1,
         membership_id: Faker::Number.between(1, 10)%10+1
@@ -75,7 +79,7 @@ magic_number.times do |n|
     phone: Faker::PhoneNumber.cell_phone,
     website: Faker::Internet.url,
     description: Faker::Lorem.paragraph,
-    category_id: 3
+    category_id: 4
   )
 end
 
