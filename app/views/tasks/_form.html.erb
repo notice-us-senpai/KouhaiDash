@@ -19,7 +19,7 @@
   </div>
   <div class="input-field col s12">
     <%= f.text_field :deadline, class:'datepicker', type: 'date'%>
-    <%= f.label :deadline %>
+    <%= f.label :deadline, class: 'active'%>
   </div>
   <div class="input-field col s12">
     <%= f.text_area :description , class: 'materialize-textarea'%>
@@ -65,7 +65,7 @@ $(document).ready(function() {
   Materialize.updateTextFields();
   $('.datepicker').pickadate({
    selectMonths: true, // Creates a dropdown to control month
-   selectYears: 21 // Creates a dropdown of 15 years to control year
+   selectYears: 21 // Creates a dropdown of 21 years to control year
  });
 });
 </script>

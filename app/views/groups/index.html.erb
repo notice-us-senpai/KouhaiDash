@@ -12,12 +12,12 @@
 <div class="row">
   <% @groups.each do |group| %>
     <div class="col s12 m6">
-      <div class="card">
-        <div class="card-content group-card">
+      <div class="card group-card">
+        <div class="card-content">
           <span class="card-title"><%=link_to "#{group.name}", group%></span>
           <p></p>
         </div>
-        <div class="card-action group-card-actions">
+        <div class="card-action">
           <%=link_to "<i class='material-icons'>info</i>".html_safe, group,
             data: {position:"bottom", delay:"50",tooltip:"View Group"}, class:"tooltipped" %>
           <%if is_a_member_of_group?(group)%>

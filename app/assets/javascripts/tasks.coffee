@@ -1,6 +1,28 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
+jQuery.expr[':'].icontains = jQuery.expr.createPseudo((arg) ->
+  (elem) ->
+    jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0
+)
+taskFilter = () ->
+  from=Date.parse($('#task-from-date-field').val()+" 00:00:00 UTC")
+  till=Date.parse($('#task-till-date-field').val()+" 00:00:00 UTC")
+  $('.card:not(:icontains('+$('#task-search-field').val()+'))').hide('fast')
+  $('.card:icontains('+$('#task-search-field').val()+')').each((index)->
+    deadline=parseInt($(this).data('deadline'))
+    if !isNaN(from) && deadline<from
+      $(this).hide('fast')
+      return
+    if !isNaN(till) && deadline>till
+      $(this).hide('fast')
+      return
+    if ($('#task-done-field')[0].checked && $(this).data('done')) || ($('#task-not-done-field')[0].checked && !$(this).data('done'))
+      $(this).show('fast')
+    else
+      $(this).hide('fast')
+  )
+
 $(document).ready ->
 
   $(document).on('click','.assignremovebtn', ( ->
@@ -26,4 +48,18 @@ $(document).ready ->
       </tr>"
     )
     $('select').material_select()
+  ))
+  $(document).on('click','.task-filter-btn',(->
+    taskFilter()
+  ))
+  $(document).on('input','.task-filter-field',(->
+    taskFilter()
+  ))
+  $(document).on('change','.task-filter-field',(->
+    taskFilter()
+  ))
+  $(document).on('click','#task-reset-btn',(->
+    $('.task-filter-field').val("")
+    $('.task-filter-btn').prop('checked', true)
+    taskFilter()
   ))

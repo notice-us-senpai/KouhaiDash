@@ -34,26 +34,53 @@ h1 {
 
 //contact
 .contact-card{
-  @extend .amber, .darken-2, .white-text;
-}
-.contact-card a{
-  @extend .amber-text, .text-accent-1;
+  .card-content{
+    a{
+      @extend .amber-text, .text-accent-1;
+    }
+    @extend .amber, .darken-2, .white-text;
+  }
 }
 
 //group
 .group-card{
-  @extend .indigo, .darken-2, .white-text;
-  a{
+  .card-content{
+    @extend .indigo, .darken-2, .white-text;
+    a{
+      @extend .indigo-text, .text-accent-1;
+    }
+  }
+  .card-action a{
     @extend .indigo-text, .text-accent-1;
   }
-}
-.group-card-actions a{
-  @extend .indigo-text, .text-accent-1;
 }
 
 //google-picker
 .picker-dialog-content {
 position: relative;
+}
+
+//task
+.task-done-card{
+  .card-content{
+    @extend .blue, .white-text;
+  }
+  .card-action a{
+    @extend .blue-text;
+  }
+}
+.task-not-done-card{
+  .card-content{
+    @extend .yellow;
+  }
+  .card-action a{
+    @extend .yellow-text;
+  }
+}
+//datepicker-fix
+#datepicker-container {
+  position: fixed;
+  z-index: 10000;
 }
 
 //nav
