@@ -13,8 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
 //= require materialize-sprockets
+//= require_tree .
 //= require froala_editor.min.js
 //= require plugins/align.min.js
 //= require plugins/code_view.min.js

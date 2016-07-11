@@ -1,9 +1,20 @@
-<% provide(:title, 'Register') %>
-<div class="row">
-  <h1>Register</h1>
+<% provide(:title, 'Register/Login') %>
+<div class="row" id="">
+  <div class="col s12 google-register-form">
+    <h1>Register</h1>
+  </div>
+  <div class="col s12 google-login-form" style='display:none'>
+    <h1>Login</h1>
+  </div>
 </div>
 
 <div class="row">
+  <div class="col s12">
+    <a id='google-register-toggle' class='btn waves-effect waves-light'>Or log in with existing account</a>
+  </div>
+</div>
+
+<div class="row google-register-form">
   <div class="col s12 m9">
     <%= form_for(@user, url: register_with_google_path) do |f| %>
       <%= render 'shared/error_messages' %>
@@ -13,7 +24,7 @@
       </div>
 
       <div class="input-field col s12">
-      <%= f.email_field :email, readonly: true%>
+      <%= f.email_field :email%>
       <%= f.label :email %>
       </div>
 
@@ -36,10 +47,50 @@
           <input class="file-path validate" type="text">
         </div>
       </div>
+      <div class="input-field col s12">
+      <input type='email' disabled value='<%=@gmail%>' id='gmail-display'>
+      <label for='gmail-display'>Google Account</label>
+      </div>
       <%= hidden_field :gacc, :id, value: @google_id%>
       <%= hidden_field :gacc, :access_token, value: @token%>
       <div class="actions col s12">
         <p><button class="btn-large waves-effect waves-light" type="submit" name="action">Register
+          <i class="material-icons right">send</i>
+        </button></p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+
+<div class="row google-login-form" style='display:none'>
+  <div class="col s12 m9">
+    <%= form_for(:session, url: login_with_google_path) do |f| %>
+      <div class="input-field col s12">
+        <%= f.text_field :username, class: 'form-control' %>
+        <%= f.label :username %>
+      </div>
+
+      <div class="input-field col s12">
+        <%= f.password_field :password, class: 'form-control' %>
+        <%= f.label :password %>
+      </div>
+
+      <div class="input-field col s12">
+      <input type='email' disabled value='<%=@gmail%>' id='gmail-display'>
+      <label for='gmail-display'>Google Account</label>
+      </div>
+      <%= hidden_field :gacc, :id, value: @google_id%>
+      <%= hidden_field :gacc, :access_token, value: @token%>
+      <div class="input-field col s12">
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me%>
+      </div>
+
+
+      <div class="actions col s12">
+        <p><br><button class="btn-large waves-effect waves-light" type="submit" name="action">Login
           <i class="material-icons right">send</i>
         </button></p>
       </div>

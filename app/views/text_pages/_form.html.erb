@@ -96,9 +96,6 @@
     event.preventDefault();
     window.location = "<%=group_category_text_page_auth_path(@group,@category)%>";
   });
-  $(document).ready(function() {
-      Materialize.updateTextFields();
-  });
   $(function() {
     $('.wysiwyg').froalaEditor()
   });

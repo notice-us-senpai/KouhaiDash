@@ -74,7 +74,7 @@ class CategoriesController < ApplicationController
   end
 
   def saveOrder
-    order=params.require(:category).fetch(:order_no)
+    order=params.require(:category).fetch(:order_no,[])
     i=1
     order.each do |category_id|
       category=@group.categories.find_by(id: category_id)

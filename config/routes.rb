@@ -50,6 +50,7 @@ Rails.application.routes.draw do
 
   get '/auth/:provider/callback', to: 'sessions#auth_callback', as: 'auth_callback'
   post 'register_with_google', to: 'sessions#register_with_google', as: 'register_with_google'
+  post 'login_with_google', to: 'sessions#login_with_google', as: 'login_with_google'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

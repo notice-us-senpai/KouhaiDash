@@ -42,13 +42,13 @@ class SessionsController < ApplicationController
         else
           #google_account belongs to another user, flash error message
           flash[:notice] = 'The google account is already registered with another user. Please use another google account or log in with that user account.'
-          redirect_to root_path
+          redirect_back_or root_path
         end
       elsif current_user.google_account
         #user already has another google_account, flash error message
         revoke_google_token(credentials['token'])
         flash[:notice] = 'Please sign in with your associated google account or change your associated google account.'
-        redirect_to root_path
+        redirect_back_or root_path
       else
         #create google_account for user, redirect to original action
         google_account= GoogleAccount.create(user_id: current_user.id, gmail: email)
@@ -70,26 +70,28 @@ class SessionsController < ApplicationController
           #invalid user, render register_with_google
           render_register(google_account)
         end
-      elsif user=User.find_by(email: email)
-        # for enabling direct authorization when user with same email is found
-        # if user.google_account
-        #   #user already has an existing google_account with another gmail address, flash error msg
-        #   #revoke access for user
-        #   revoke_google_token(credentials['token'])
-        #   flash[:notice] = 'The Google email is already associated with another user. Please login with that account or another google account.'
-        #   redirect_to root_path
-        # else
-        #   #create google_account, log in user
-        #   google_account=GoogleAccount.create(user_id: user.id, gmail: email)
-        #   update_tokens(google_account,credentials)
-        #   log_in user
-        #   redirect_back_or user
-        # end
-
-        #disabled direct authorization
-        revoke_google_token(credentials['token'])
-        flash[:notice] = 'The Google email is already associated with an existing user. Please login with that account and authenticate your google account or another google account.'
-        redirect_to root_path
+      # separate user email and gmail
+      # uncomment for email-gmail procedures
+      # elsif user=User.find_by(email: email)
+      #   # for enabling direct authorization when user with same email is found
+      #   # if user.google_account
+      #   #   #user already has an existing google_account with another gmail address, flash error msg
+      #   #   #revoke access for user
+      #   #   revoke_google_token(credentials['token'])
+      #   #   flash[:notice] = 'The Google email is already associated with another user. Please login with that account or another google account.'
+      #   #   redirect_to root_path
+      #   # else
+      #   #   #create google_account, log in user
+      #   #   google_account=GoogleAccount.create(user_id: user.id, gmail: email)
+      #   #   update_tokens(google_account,credentials)
+      #   #   log_in user
+      #   #   redirect_back_or user
+      #   # end
+      #
+      #   #disabled direct authorization
+      #   revoke_google_token(credentials['token'])
+      #   flash[:notice] = 'The Google email is already associated with an existing user. Please login with that account and authenticate your google account or another google account.'
+      #   redirect_to root_path
       else
         #create google_account with user_id: -1, render register_with_google
         google_account= GoogleAccount.create(user_id: -1, gmail: email)
@@ -117,6 +119,7 @@ class SessionsController < ApplicationController
         #create new outdated token
         google_account.refresh!
         @token = google_account.access_token
+        @gmail = google_account.gmail
         google_account.request_token_from_google
       end
       render 'register_with_google'
@@ -127,6 +130,44 @@ class SessionsController < ApplicationController
     flash[:notice] = 'Google authenication failed. Please try again.'
     redirect_to root_path
   end
+
+  def login_with_google
+  	user = User.find_by(username: params[:session][:username])
+    gacc_params=params.require(:gacc).permit(:id, :access_token)
+    google_account=GoogleAccount.find_by(gacc_params)
+    if user && user.authenticate(params[:session][:password])
+      reset_session
+      log_in user
+      if google_account && google_account.user_id == -1
+        if !user.google_account
+          google_account.update_attributes(user_id: user.id)
+          google_account.refresh!
+          flash[:notice] ='The Google account is now linked to your user account.'
+        else
+          flash[:notice] ='There is an existing Google account associated with your user account.'
+        end
+      end
+      params[:session][:remember_me] == '1' ?
+        remember(user) : forget(user)
+      redirect_back_or user
+    else
+      @user = User.new
+      @user.email = google_account.gmail if google_account
+      @google_id = gacc_params.fetch(:id, 0)
+      @token=0
+      if google_account && google_account.user_id == -1
+        #create new outdated token
+        google_account.refresh!
+        @token = google_account.access_token
+        @gmail = google_account.gmail
+        google_account.request_token_from_google
+      end
+      flash.now[:danger] = 'Invalid username or password'
+      render 'register_with_google'
+    end
+  end
+
+
 
   private
 
@@ -140,6 +181,7 @@ class SessionsController < ApplicationController
       @user = User.new
       @user.email = google_account.gmail
       @google_id = google_account.id
+      @gmail = google_account.gmail
       @token = google_account.access_token
       # make revealed token outdated
       google_account.request_token_from_google

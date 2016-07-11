@@ -121,14 +121,17 @@
 
       <!-- Menu Toggle Script -->
       <script>
+      $(document).ready(function() {
+        Waves.displayEffect();
+        $('select').material_select();
         $(".button-collapse").sideNav();
-        $("#page-title").click(function(){
-          $('html, body').animate({ scrollTop: 0 }, 'fast');
-        });
+        $('.tooltipped').tooltip({delay: 50});
+        Materialize.updateTextFields();
         <% flash.each do |message_type, message| %>
           Materialize.toast('<%=message%>', 4000);
         <% end %>
-        $('.tooltipped').tooltip({delay: 50})
+      });
+
       </script>
   </body>
 </html>
