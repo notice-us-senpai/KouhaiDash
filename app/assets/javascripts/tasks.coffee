@@ -63,3 +63,19 @@ $(document).ready ->
     $('.task-filter-btn').prop('checked', true)
     taskFilter()
   ))
+
+$(document).on "page:change", ->
+  return unless $(".tasks:not(.show,.index)").length > 0
+  $('.datepicker').pickadate({
+   selectMonths: true, #Creates a dropdown to control month
+   selectYears: 21 #Creates a dropdown of 21 years to control year
+ })
+
+$(document).on "page:change", ->
+  return unless $(".tasks.index").length > 0
+  $('.datepicker').pickadate({
+    container: '#datepicker-container',
+    selectMonths: true, #Creates a dropdown to control month
+    selectYears: 21 #Creates a dropdown of 21 years to control year
+  })
+  $('.modal-trigger').leanModal()

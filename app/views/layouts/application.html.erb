@@ -15,6 +15,14 @@
     		'data-turbolinks-track' => true %>
     <%=javascript_include_tag '//cdn.jsdelivr.net/sortable/1.4.2/Sortable.min.js',
     		'data-turbolinks-track' => true %>
+    <script>
+    function onApiLoad() {
+       gapi.load('picker');
+     }
+    </script>
+    <%=javascript_include_tag 'https://apis.google.com/js/api.js?onload=onApiLoad',
+        		'data-turbolinks-track' => true %>
+
     <%= csrf_meta_tags %>
     <%= render 'layouts/shim' %>
 
@@ -42,7 +50,7 @@
     <!-- ****** faviconit.com favicons ****** -->
 
   </head>
-  <body>
+  <body class="<%= controller_name %> <%= action_name %>">
 
     <header>
       <!-- Sidebar -->
@@ -110,6 +118,11 @@
     <!-- main -->
     <main class="valign-wrapper">
       <div class="container">
+        <% flash.each do |message_type, message| %>
+          <div class="message row">
+            <%=message%>
+          </div>
+        <% end %>
         <%= yield %>
       </div>
     </main>
@@ -120,18 +133,5 @@
     <!-- /footer -->
 
       <!-- Menu Toggle Script -->
-      <script>
-      $(document).ready(function() {
-        Waves.displayEffect();
-        $('select').material_select();
-        $(".button-collapse").sideNav();
-        $('.tooltipped').tooltip({delay: 50});
-        Materialize.updateTextFields();
-        <% flash.each do |message_type, message| %>
-          Materialize.toast('<%=message%>', 4000);
-        <% end %>
-      });
-
-      </script>
   </body>
 </html>

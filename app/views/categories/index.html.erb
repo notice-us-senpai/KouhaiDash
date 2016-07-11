@@ -23,7 +23,7 @@
         </tr>
       </thead>
 
-      <tbody id='items'>
+      <tbody id='categories-items'>
 
         <% @categories.each do |category| %>
           <tr id='<%=dom_id(category)%>'data-order='<%=category.id%>'>
@@ -47,18 +47,3 @@
     <% end %>
   </div>
 </div>
-<script>
-var el = document.getElementById('items');
-var sortable = Sortable.create(el,{animation: 150,handle: ".handle", dataIdAttr: 'data-order'});
-$(document).ready(function() {
-    sortable.option('onUpdate',function(evt) {
-      var order=sortable.toArray();
-      // sortable.sort(order.reverse());
-      for (var i = 0; i < order.length; i++) {
-        $('#order-form').append("<input type='hidden' name='category[order_no][]' value='"+order[i]+"'>");
-      }
-      $('#order-form').submit();
-      $('#order-form').empty();
-    });
-});
-</script>
