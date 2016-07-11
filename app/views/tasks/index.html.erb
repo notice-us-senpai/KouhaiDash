@@ -8,7 +8,7 @@
 <div class="fixed-action-btn" style="top: 45px; right: 24px;">
   <a class="modal-trigger waves-effect waves-light btn-large btn-floating" href="#modal1"><i class='material-icons'>filter_list</i></a>
 </div>
-<% if is_user_of_group?(@group)%>
+<% if @authorised_member %>
   <div class='row'>
     <div class="col s12 m9">
       <%= link_to '<i class="material-icons left">add</i>New Task'.html_safe, new_group_category_task_path(@group,@category), class: "btn waves-effect waves-light red" %>
@@ -62,9 +62,11 @@
        <div class="card-action">
          <a class='activator'><i class="material-icons">more_vert</i></a>
          <%= link_to '<i class="material-icons">info</i>'.html_safe, [@group,@category,task]%>
-         <%= link_to '<i class="material-icons">mode_edit</i>'.html_safe, edit_group_category_task_path(@group,@category,task)%>
-         <%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,@category,task], method: :delete,
-           data: { confirm: 'Are you sure?' }%>
+         <% if @authorised_member %>
+           <%= link_to '<i class="material-icons">mode_edit</i>'.html_safe, edit_group_category_task_path(@group,@category,task)%>
+           <%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,@category,task], method: :delete,
+             data: { confirm: 'Are you sure?' }%>
+        <%end%>
        </div>
        <div class="card-reveal">
          <span class="card-title"><%= task.name %><i class="material-icons right">close</i></span>

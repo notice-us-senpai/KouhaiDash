@@ -15,7 +15,7 @@
        var picker = new google.picker.PickerBuilder().
            addView(google.picker.ViewId.DOCUMENTS).
            setOrigin(window.location.protocol + '//' + window.location.host).
-           setOAuthToken('<%=current_user.google_account.fresh_token if current_user.google_account%>').
+           setOAuthToken('<%=@google_token%>').
            setDeveloperKey(developerKey).
            setCallback(pickerCallback).
            build();
@@ -34,7 +34,7 @@
        document.getElementsByClassName('file_id')[0].value = file_id;
        document.getElementById('name-display').innerHTML = file_name;
        document.getElementById('name-display').href = file_url;
-       document.getElementsByClassName('google_id')[0].value = '<%=current_user.google_account.id if current_user.google_account%>';
+       document.getElementsByClassName('google_id')[0].value = '<%=@google_id%>';
      }
 </script>
 <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
@@ -61,8 +61,7 @@
     <label>Contents</label>
     <%= f.text_area :contents, class: 'wysiwyg'%>
   </div>
-  <%if @google_access%>
-
+  <%if @google_token%>
       <div class="input-field col s12">
         <%= f.check_box :load_from_google %>
         <%= f.label :load_from_google, "Load from Google Doc" %>
@@ -74,8 +73,6 @@
         <a id='name-display'<%if @file_link %> href="<%=@file_link%>" <%end%> >
           <%=@file_name||"No file selected."%>
         </a></p>
-
-
       </div>
     <%=f.hidden_field :google_account_id, class: 'google_id'%>
   <%else%>

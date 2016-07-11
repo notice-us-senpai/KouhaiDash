@@ -31,7 +31,7 @@ class GoogleAccount < ActiveRecord::Base
       if response.code=='200'
         update_attributes(access_token: data['access_token'],expires_at: Time.now + (data['expires_in'].to_i).seconds)
       else
-        update_attributes(access_token: '')
+        update_attributes(refresh_token: '')
       end
     end
 

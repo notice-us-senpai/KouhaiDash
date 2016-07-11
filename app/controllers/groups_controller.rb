@@ -1,6 +1,7 @@
 class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :edit, :update, :destroy, :join]
-  before_action :check_user_of_group, only: [:edit, :update, :destroy]
+  before_action :set_auth, only:[:show, :edit, :update, :destroy]
+  before_action :check_edit_auth, only: [:edit, :update, :destroy]
   before_action :check_logged_in, only:[:new, :create, :join]
 
   # GET /groups
@@ -82,19 +83,23 @@ class GroupsController < ApplicationController
       @group = Group.find(params[:id])
     end
 
+    def set_auth
+      @authorised_member= is_user_of_group?(@group)
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def group_params
       params.require(:group).permit(:name, :members_public)
     end
 
     #checks if user if a member of the group
-    def check_user_of_group
+    def check_edit_auth
       unless logged_in?
         flash[:notice] = 'Log in as a member of the group.'
         redirect_to login_url
         return
       end
-      unless is_user_of_group?(@group)
+      unless @authorised_member
         flash[:notice] = 'Join the group and wait for your request to be accepted!'
         redirect_to groups_path
         return

@@ -28,15 +28,13 @@ module GroupsHelper
     return array
   end
 
-  def check_category_edit_auth(group,category)
-    unless is_user_of_group? group
-      flash[:notice] = "Join the group to make a change!"
-      redirect_to [group,category]
-    end
+  def category_edit_auth_redirect(group,category)
+    flash[:notice] = "Join the group to make a change!"
+    redirect_to [group,category]
   end
 
   def check_category_view_auth(group,category)
-    unless category.is_public || is_user_of_group?(group)
+    unless category.is_public
       flash[:notice] = "Join the group to see more!"
       redirect_to group
     end

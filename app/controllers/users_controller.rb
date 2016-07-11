@@ -5,6 +5,7 @@ class UsersController < ApplicationController
     :update]
   before_action :correct_user, only: [:edit, :update, :to_authenticate, :to_revoke]
   before_action :admin_user, only: :destroy
+  before_action :set_google_account, only: [:edit, :update]
 
   def index
     # raise params.inspect
@@ -103,5 +104,17 @@ class UsersController < ApplicationController
     # Confirms an admin user.
     def admin_user
       redirect_to(root_url) unless current_user.admin?
+    end
+
+    def set_google_account
+      @google_account=@user.google_account
+      if @google_account
+        @google_account.refresh!
+        unless @google_account.refresh_token.length>0
+          @revoked = true
+          revoke_google_token(@google_account.access_token)
+          flash.now[:notice] = 'Permissions from your google account has expired. Please sign in with google again to renew the permissions.'
+        end
+      end
     end
 end

@@ -1,7 +1,7 @@
 class CategoriesController < ApplicationController
-  before_action :set_group
+  before_action :set_variables
   before_action :set_category, only: [:show, :edit, :update, :destroy]
-  before_action :check_edit_auth, only:[:index, :edit, :new, :update, :destroy, :create]
+  before_action :check_edit_auth, only:[:index, :edit, :new, :update, :destroy, :create, :saveOrder]
   before_action :set_type_no_array, only: [:new, :edit, :create, :update, :index]
   # GET /categories
   # GET /categories.json
@@ -88,8 +88,9 @@ class CategoriesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_group
+    def set_variables
       @group = Group.includes(:categories).find(params[:group_id])
+      @authorised_member= is_user_of_group?(@group)
     end
 
     def set_category
@@ -97,7 +98,7 @@ class CategoriesController < ApplicationController
     end
 
     def check_edit_auth
-      unless is_user_of_group?@group
+      unless @authorised_member
         flash[:notice] = "Join the group to see more!"
         redirect_to @group
       end

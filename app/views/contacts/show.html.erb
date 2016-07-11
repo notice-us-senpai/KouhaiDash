@@ -23,11 +23,13 @@
             </ul>
             </p>
       </div>
-      <div class="card-action white">
-        <%= link_to "<i class='material-icons'>mode_edit</i>".html_safe, { action: "edit", id: @contact } %>
-        <%= link_to "<i class='material-icons'>delete</i>".html_safe, { action: "destroy", id: @contact },
-          method: :delete, data: { confirm: "Delete #{@contact.name}?" } %>
-      </div>
+      <% if @authorised_member%>
+        <div class="card-action white">
+          <%= link_to "<i class='material-icons'>mode_edit</i>".html_safe, { action: "edit", id: @contact } %>
+          <%= link_to "<i class='material-icons'>delete</i>".html_safe, { action: "destroy", id: @contact },
+            method: :delete, data: { confirm: "Delete #{@contact.name}?" } %>
+        </div>
+      <%end%>
     </div>
 	</div>
 </div>
@@ -35,6 +37,8 @@
 <div class="row">
   <div class ='col s12'>
     <%= link_to '<i class="material-icons">list</i>'.html_safe, { action: "index" }, class: "btn waves-effect waves-light"%>
-    <%= link_to '<i class="material-icons left">add</i> New Contact'.html_safe, {action: 'new'}, class: "btn waves-effect waves-light red" %>
+    <% if @authorised_member%>
+      <%= link_to '<i class="material-icons left">add</i> New Contact'.html_safe, {action: 'new'}, class: "btn waves-effect waves-light red" %>
+    <%end%>
   </div>
 </div>

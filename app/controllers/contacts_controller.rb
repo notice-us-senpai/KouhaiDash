@@ -53,18 +53,24 @@ class ContactsController < ApplicationController
   def set_variables
     @group = Group.find(params[:group_id])
     @category = @group.categories.find(params[:category_id])
+    @authorised_member= is_user_of_group?(@group)
   end
 
   def check_edit_auth
-    check_category_edit_auth(@group,@category)
+    unless @authorised_member
+      category_edit_auth_redirect(@group,@category)
+    end
   end
 
   def check_view_auth
     if @category.type_no!=1
       flash[:notice]='Did you lost your way?'
       redirect_to @group
+      return
     end
-    check_category_view_auth(@group,@category)
+    unless @authorised_member
+      check_category_view_auth(@group,@category)
+    end
   end
 
   def get_contact

@@ -146,8 +146,8 @@ header, main, footer {
     line-height: 40px;
   }
 }
-
-
+// fix for IE11
+:-ms-fullscreen, :root body { height:100vh; }
 
 
 

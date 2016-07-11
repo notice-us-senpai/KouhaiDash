@@ -76,6 +76,7 @@ class TasksController < ApplicationController
     def set_variables
       @group = Group.find(params[:group_id])
       @category = @group.categories.find(params[:category_id])
+      @authorised_member= is_user_of_group?(@group)
     end
 
     def get_member_list
@@ -83,7 +84,9 @@ class TasksController < ApplicationController
     end
 
     def check_edit_auth
-      check_category_edit_auth(@group,@category)
+      unless @authorised_member
+        category_edit_auth_redirect(@group,@category)
+      end
     end
 
     def check_view_auth
@@ -91,7 +94,9 @@ class TasksController < ApplicationController
         flash[:notice]='Did you lost your way?'
         redirect_to @group
       end
-      check_category_view_auth(@group,@category)
+      unless @authorised_member
+        check_category_view_auth(@group,@category)
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

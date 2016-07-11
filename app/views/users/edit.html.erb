@@ -1,10 +1,12 @@
 <% provide(:title, "Update " + @user.username) %>
 <div class="row">
-  <h1>User Settings for <%= @user.username %></h1>
+  <div class='col s12'>
+    <h1>User Settings for <%= @user.username %></h1>
+  </div>
 </div>
 
 <div class="row">
-  <div class="col s12 m8">
+  <div class="col s12 m9">
     <%= form_for(@user) do |f| %>
       <%=render 'shared/error_messages'%>
       <div class="input-field col s12">
@@ -60,13 +62,27 @@
 </div>
 
 <div class = "row">
-  <div class='col s12 m8'>
-    <!--Manage Google Account-->
+  <div class='col s12'>
     <h2>Manage Google Account</h2>
+  </div>
+  <div class='col s12 m9'>
+    <!--Manage Google Account-->
     <%if @user.google_account%>
-      <table class ='table'>
-        <tr><td><%=@user.google_account.gmail%></td><td><button id='revoke-btn' class = 'btn waves-effect waves-light'>Sign out from Google</button></td></tr>
-      </table>
+      <table class ='responsive-table'>
+        <tr>
+          <td><%=@user.google_account.gmail%></td>
+          <td><button id='revoke-btn' class = 'btn waves-effect waves-light red tooltipped'
+            data-position="bottom" data-delay="50" data-tooltip="Sign out from google">
+            <i class='material-icons'>remove_circle</i></button>
+          </td>
+          <%if @revoked%>
+            <td><button id='sign-in-btn'class = 'btn waves-effect waves-light tooltipped'
+              data-position="bottom" data-delay="50" data-tooltip="Renew permissions">
+              <i class='material-icons'>refresh</i></button></td>
+          <%end%>
+          </table>
+        </tr>
+
     <%else%>
     <p>
       <button id='sign-in-btn' class='btn waves-effect waves-light'>Sign in with Google</button>

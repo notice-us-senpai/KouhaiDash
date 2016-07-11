@@ -13,7 +13,7 @@
       <p> Members list is not public. <p>
     <%end%>
 
-    <%if is_user_of_group?(@group)%>
+    <%if @authorised_member %>
       <%= link_to "<i class='material-icons'>mode_edit</i>".html_safe, edit_group_path(@group),
       class: "btn waves-effect waves-light tooltipped", data: {position:"bottom", delay:"50",tooltip:"Update"}%>
     <%end%>

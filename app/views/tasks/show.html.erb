@@ -48,10 +48,12 @@
 
 <div class="row">
   <div class=" col s12">
-    <%= link_to "<i class='material-icons'>mode_edit</i>".html_safe, edit_group_category_task_path(@group,@category,@task),
-      class: "btn waves-effect waves-light tooltipped", data: {position:"bottom", delay:"50",tooltip:"Update"}%>
-    <%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,@category,@task], method: :delete,
-      data: { confirm: 'Are you sure?',position:"bottom", delay:"50",tooltip:"Delete"}, class: "btn waves-effect waves-light tooltipped red"%>
+    <%if @authorised_member %>
+      <%= link_to "<i class='material-icons'>mode_edit</i>".html_safe, edit_group_category_task_path(@group,@category,@task),
+        class: "btn waves-effect waves-light tooltipped", data: {position:"bottom", delay:"50",tooltip:"Update"}%>
+      <%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,@category,@task], method: :delete,
+        data: { confirm: 'Are you sure?',position:"bottom", delay:"50",tooltip:"Delete"}, class: "btn waves-effect waves-light tooltipped red"%>
+    <%end%>
     <%= link_to '<i class="material-icons">list</i>'.html_safe, group_category_tasks_path(@group,@category),
       class: "btn waves-effect waves-light tooltipped",data: {position:"bottom", delay:"50",tooltip:"Return to list"} %>
   </div>

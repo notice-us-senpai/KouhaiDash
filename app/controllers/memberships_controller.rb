@@ -74,6 +74,7 @@ class MembershipsController < ApplicationController
       members = @memberships.collect{|member| member.user_id}
       @users_array = User.where.not(id: members).collect{|user| [user.username,user.id]}
       @new_membership = @group.memberships.new
+      @authorised_member= is_user_of_group?(@group)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -82,21 +83,21 @@ class MembershipsController < ApplicationController
     end
 
     def check_view_auth
-      unless is_user_of_group?(@group) || @group.members_public
+      unless @authorised_member || @group.members_public
         flash[:notice] = "Join the group to see more!"
         redirect_to @group
       end
     end
 
     def check_edit_auth
-      unless is_user_of_group?(@group)
+      unless @authorised_member
         flash[:notice] = "Join the group to make a change!"
         redirect_to group_memberships_path(@group)
       end
     end
 
     def check_destroy_auth
-      unless (is_a_member_of_group?(@group) && @membership.user_id==current_user.id) || is_user_of_group?(@group)
+      unless @authorised_member || @membership.user_id==current_user.id
         flash[:notice] = "Join the group to make a change!"
         redirect_to group_memberships_path(@group)
       end

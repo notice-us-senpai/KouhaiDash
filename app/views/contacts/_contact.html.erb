@@ -13,9 +13,11 @@
 
     <div class='card-action white'>
       <%= link_to "<i class='material-icons'>info</i>".html_safe, { action: "show", id: contact } %>
-      <%= link_to "<i class='material-icons'>mode_edit</i>".html_safe, { action: "edit", id: contact } %>
-      <%= link_to "<i class='material-icons'>delete</i>".html_safe, { action: "destroy", id: contact },
-        method: :delete, data: { confirm: "Delete #{contact.name}?" } %>
+      <% if @authorised_member%>
+        <%= link_to "<i class='material-icons'>mode_edit</i>".html_safe, { action: "edit", id: contact } %>
+        <%= link_to "<i class='material-icons'>delete</i>".html_safe, { action: "destroy", id: contact },
+          method: :delete, data: { confirm: "Delete #{contact.name}?" } %>
+      <%end%>
     </div>
   </div>
 </div>
