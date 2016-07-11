@@ -71,32 +71,22 @@
       <table class ='responsive-table'>
         <tr>
           <td><%=@user.google_account.gmail%></td>
-          <td><button id='revoke-btn' class = 'btn waves-effect waves-light red tooltipped'
-            data-position="bottom" data-delay="50" data-tooltip="Sign out from google">
-            <i class='material-icons'>remove_circle</i></button>
+          <td><%=link_to '<i class="material-icons">remove_circle</i>'.html_safe,to_revoke_user_path(@user),
+              class: "btn waves-effect waves-light tooltipped red", data: {position:"bottom", delay:"50",tooltip:"Sign out from Google"}%>
           </td>
           <%if @revoked%>
-            <td><button id='sign-in-btn'class = 'btn waves-effect waves-light tooltipped'
-              data-position="bottom" data-delay="50" data-tooltip="Renew permissions">
-              <i class='material-icons'>refresh</i></button></td>
+            <td><%=link_to '<i class="material-icons">refresh</i>'.html_safe,to_authenticate_user_path(@user),
+                class: "btn waves-effect waves-light tooltipped", data: {position:"bottom", delay:"50",tooltip:"Renew permissions"}%>
+            </td>
           <%end%>
           </table>
         </tr>
 
     <%else%>
     <p>
-      <button id='sign-in-btn' class='btn waves-effect waves-light'>Sign in with Google</button>
+      <%=link_to 'Sign in with Google',to_authenticate_user_path(@user),
+          class: "btn waves-effect waves-light"%>
     </p>
     <%end%>
   </div>
 </div>
-<script>
-$('#revoke-btn').click(function( event ) {
-  event.preventDefault();
-  window.location = "<%=to_revoke_user_path(@user)%>";
-});
-$('#sign-in-btn').click(function( event ) {
-  event.preventDefault();
-  window.location = "<%=to_authenticate_user_path(@user)%>";
-});
-</script>
