@@ -37,7 +37,7 @@ Rails.application.routes.draw do
 
   resources :groups do
     resources :memberships, only: [:index, :create, :destroy, :update]
-    resources :categories do
+    resources :categories, path: 'c' do
       resources :tasks
       resource :text_page, only: [:create, :new, :show, :update, :edit]
       get 'text_page/to_authenticate', to: 'text_pages#to_authenticate', as: 'text_page_auth'
