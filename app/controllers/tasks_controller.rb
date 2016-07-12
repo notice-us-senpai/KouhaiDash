@@ -8,7 +8,7 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = @category.tasks.includes(task_assignments: [membership: :user]).all
+    @tasks = @category.tasks.includes(task_assignments: [membership: :user]).order(:deadline).all
   end
 
   # GET /tasks/1

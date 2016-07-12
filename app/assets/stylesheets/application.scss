@@ -63,18 +63,18 @@ position: relative;
 //task
 .task-done-card{
   .card-content{
-    @extend .blue, .white-text;
+    @extend .green, .white-text;
   }
   .card-action a{
-    @extend .blue-text;
+    @extend .green-text;
   }
 }
 .task-not-done-card{
   .card-content{
-    @extend .yellow;
+    @extend .red, .accent-1;
   }
   .card-action a{
-    @extend .yellow-text;
+    @extend .red-text, .text-accent-1;
   }
 }
 //datepicker-fix
@@ -144,6 +144,12 @@ header, main, footer {
   header, .narbar-fixed, nav,#button-collapse,#menu-icon{
     height: 40px;
     line-height: 40px;
+  }
+}
+//to fix disappearing sidenav on large screen
+@media only screen and (min-width : 993px) {
+  .drag-target{
+    width: 0px;
   }
 }
 // fix for IE11

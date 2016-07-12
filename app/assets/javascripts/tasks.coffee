@@ -5,26 +5,28 @@ jQuery.expr[':'].icontains = jQuery.expr.createPseudo((arg) ->
   (elem) ->
     jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0
 )
+grid=null
 taskFilter = () ->
   from=Date.parse($('#task-from-date-field').val()+" 00:00:00 UTC")
   till=Date.parse($('#task-till-date-field').val()+" 00:00:00 UTC")
-  $('.card:not(:icontains('+$('#task-search-field').val()+'))').hide('fast')
+  $('.card:not(:icontains('+$('#task-search-field').val()+'))').hide()
   $('.card:icontains('+$('#task-search-field').val()+')').each((index)->
     deadline=parseInt($(this).data('deadline'))
     if !isNaN(from) && deadline<from
-      $(this).hide('fast')
+      $(this).hide()
       return
     if !isNaN(till) && deadline>till
-      $(this).hide('fast')
+      $(this).hide()
       return
-    if ($('#task-done-field')[0].checked && $(this).data('done')) || ($('#task-not-done-field')[0].checked && !$(this).data('done'))
-      $(this).show('fast')
+    if ($('#task-done-field')[0].checked && $(this).parent().data('done')) || ($('#task-not-done-field')[0].checked && !$(this).parent().data('done'))
+      $(this).show()
     else
-      $(this).hide('fast')
+      $(this).hide()
   )
+  grid.isotope('layout')
+
 
 $(document).ready ->
-
   $(document).on('click','.assignremovebtn', ( ->
     id = $(this).data("id")
     if $(this).data("preexisting")
@@ -43,7 +45,8 @@ $(document).ready ->
           </select>
         </td>
         <td>
-          <button type='button' class='assignremovebtn btn' data-preexisting='false' data-id='"+milliseconds+"'>Remove</button>
+          <button type='button' class='assignremovebtn btn-floating btn-large waves-effect waves-light red'
+            data-preexisting='false' data-id='"+milliseconds+"'><i class='material-icons left'>remove</i></button>
         </td>
       </tr>"
     )
@@ -62,6 +65,17 @@ $(document).ready ->
     $('.task-filter-field').val("")
     $('.task-filter-btn').prop('checked', true)
     taskFilter()
+    grid.isotope({
+      sortBy:  'deadline',
+      sortAscending: 'true'
+    })
+  ))
+
+  $(document).on('click','.task-sort-btn',(->
+    grid.isotope({
+      sortBy:  $(this).data('sort'),
+      sortAscending: $(this).data('order')
+    })
   ))
 
 $(document).on "page:change", ->
@@ -79,3 +93,11 @@ $(document).on "page:change", ->
     selectYears: 21 #Creates a dropdown of 21 years to control year
   })
   $('.modal-trigger').leanModal()
+  grid=$('.card-grid').isotope({
+    itemSelector: '.grid-item',
+    percentPosition: true,
+    getSortData: {
+      name: '[data-name]',
+      deadline: '[data-deadline] parseInt'
+    }
+  })

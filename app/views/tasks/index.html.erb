@@ -15,67 +15,60 @@
     </div>
   </div>
 <%end%>
-<div class="row">
-
-  <div class='col s12 m9'>
+<div class="row card-grid">
     <% @tasks.each do |task| %>
-      <div class="card <%if task.done%> task-done-card <%else%> task-not-done-card<%end%>"
-        data-deadline='<%= task.deadline.strftime('%Q') %>' data-done='<%= task.done %>'>
-       <div class="card-content">
-         <span class="card-title activator"><%= task.name %><i class="material-icons right">more_vert</i></span>
-         <table>
-           <tbody>
-             <tr>
-               <th>Deadline</th>
-               <td><%= task.deadline.strftime('%v') %></td>
-             </tr>
-             <tr>
-               <th>Done</th>
-               <td>
-                 <% if task.done %>
-                  <%= "Yes!" %>
-                <% else %>
-                  <%= "Not yet!" %>
-                <% end %>
-              </td>
-             </tr>
-             <%first=true%>
-             <%task.task_assignments.each do |assign| %>
+      <div class='col s12 m6 grid-item' data-name='<%= task.name %>' data-deadline='<%= task.deadline.strftime('%Q') %>' data-done='<%= task.done %>' >
+        <div class="card <%if task.done%> task-done-card <%else%> task-not-done-card<%end%>">
+         <div class="card-content">
+           <span class="card-title activator"><%= task.name %><i class="material-icons right">more_vert</i></span>
+           <table>
+             <tbody>
                <tr>
-                 <th>
-                   <%if first%>
-                    Assigned To
-                    <%first=false%>
-                   <%end%>
-                 </th>
+                 <th>Deadline</th>
+                 <td><%= task.deadline.strftime('%v') %></td>
+               </tr>
+               <tr>
+                 <th>Done</th>
                  <td>
-                  <div class="chip">
-                    <%= image_tag assign.membership.user.image.thumb.url||"default#{assign.membership.user.id%4}.jpg", class:'activator' %>
-                    <%= assign.membership.user.username %>
-                  </div>
+                   <% if task.done %>
+                    <%= "Yes!" %>
+                  <% else %>
+                    <%= "Not yet!" %>
+                  <% end %>
                 </td>
                </tr>
-             <%end %>
-           </tbody>
-         </table>
-       </div>
-       <div class="card-action">
-         <a class='activator'><i class="material-icons">more_vert</i></a>
-         <%= link_to '<i class="material-icons">info</i>'.html_safe, [@group,@category,task]%>
-         <% if @authorised_member %>
-           <%= link_to '<i class="material-icons">mode_edit</i>'.html_safe, edit_group_category_task_path(@group,@category,task)%>
-           <%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,@category,task], method: :delete,
-             data: { confirm: 'Are you sure?' }%>
-        <%end%>
-       </div>
-       <div class="card-reveal">
-         <span class="card-title"><%= task.name %><i class="material-icons right">close</i></span>
-         <p><%=task.description%></p>
-       </div>
+               <%unless task.task_assignments.empty?%>
+                 <tr>
+                   <th>Assigned to</th>
+                   <td>
+                     <%task.task_assignments.each do |assign| %>
+                        <div class="chip">
+                          <%= image_tag assign.membership.user.image.thumb.url||"default#{assign.membership.user.id%4}.jpg", class:'activator' %>
+                          <%= assign.membership.user.username %>
+                        </div>
+                     <%end %>
+                   </td>
+                 </tr>
+              <%end%>
+             </tbody>
+           </table>
+         </div>
+         <div class="card-action">
+           <a class='activator'><i class="material-icons">more_vert</i></a>
+           <%= link_to '<i class="material-icons">info</i>'.html_safe, [@group,@category,task]%>
+           <% if @authorised_member %>
+             <%= link_to '<i class="material-icons">mode_edit</i>'.html_safe, edit_group_category_task_path(@group,@category,task)%>
+             <%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,@category,task], method: :delete,
+               data: { confirm: 'Are you sure?' }%>
+          <%end%>
+         </div>
+         <div class="card-reveal">
+           <span class="card-title"><%= task.name %><i class="material-icons right">close</i></span>
+           <p><%=task.description%></p>
+         </div>
+        </div>
       </div>
     <% end%>
-  </div>
-
 </div>
 <!-- Filter panel -->
 <div id="modal1" class="modal bottom-sheet">
@@ -106,6 +99,11 @@
             <label for='task-not-done-field'>Not yet done</label>
           </div>
         </form>
+        <div class='col s12'>
+          <p><br>Sort by:    <button class='task-sort-btn waves-effect waves-green btn' data-sort='name' data-order='true'>Name</button>
+          <button class='task-sort-btn waves-effect waves-green btn' data-sort='deadline' data-order='true'>Asc. date</button>
+          <button class='task-sort-btn waves-effect waves-green btn' data-sort='deadline' data-order='false'>Desc. date</button></p>
+        </div>
       </div>
     </div>
     <div class="modal-footer">
