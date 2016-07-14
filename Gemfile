@@ -74,3 +74,5 @@ gem 'sanitize'
 gem 'wysiwyg-rails'
 gem "omniauth-google-oauth2"
 gem 'materialize-sass'
+
+gem 'aws-sdk', '~> 2'
