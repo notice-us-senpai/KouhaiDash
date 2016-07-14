@@ -1,15 +1,15 @@
 <% provide(:title, "Calendar") %>
 <div class="row">
-	<h1>Pages#calendar</h1>
+	<h1>Calendar</h1>
 </div>
 
 <div class="row">
-	<p>Find me in app/views/pages/calendar.html.erb</p>
+	<p>Events</p>
 	<% if @authorised %>
-		<ul>
+		<table>
 			<% @calendar_response.items.each do |event| %>
-		  	<li><%= event.summary %></li>
+		  	<tr><td><%= event.summary %></td></tr>
 			<% end %>
-		</ul>
+		</table>
 	<% end %>
 </div>

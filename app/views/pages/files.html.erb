@@ -1,15 +1,18 @@
 <% provide(:title, "Files") %>
 <div class="row">
-	<h1>Pages#files</h1>
+	<h1>Files</h1>
 </div>
 
 <div class="row">
-	<p>Find me in app/views/pages/files.html.erb</p>
+	<p>File Name and ID</p>
 	<% if @drive_authorised %>
-		<ul>
+		<table>
 			<% @drive_response.files.each do |file| %>
-		  	<li><%= file.name %></li>
+		  	<tr>
+		  		<td><%= file.name %></td>
+		  		<td><%= file.id %></td>
+	  		</tr>
 			<% end %>
-		</ul>
+		</table>
 	<% end %>
 </div>
