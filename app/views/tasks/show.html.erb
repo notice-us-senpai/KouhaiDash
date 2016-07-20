@@ -36,7 +36,7 @@
               <%end%>
             </th>
             <td><div class="chip">
-              <%= image_tag assign.membership.user.image.thumb.url||"default#{assign.membership.user.id%4}.jpg", class:'activator' %>
+              <%= image_tag "default#{assign.membership.user.id%4}.jpg", class:'activator' %>
               <%= assign.membership.user.username %>
             </div></td>
           </tr>

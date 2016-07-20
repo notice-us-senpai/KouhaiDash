@@ -4,11 +4,16 @@
 </div>
 
 <div class="row">
-	<p>Events</p>
 	<% if @authorised %>
-		<table>
-			<% @calendar_response.items.each do |event| %>
-		  	<tr><td><%= event.summary %></td></tr>
+		<table class="responsive-table">
+			<% @calendar_response.items.reverse.each do |event| %>
+		  	<tr>
+		  	<td><%= event.summary %></td>
+		  	<% @start = event.start.date || event.start.date_time %>
+
+  			<td><%= @start.strftime("%d %b %Y, %I.%M%p") %></td>
+  			<td width="40%"><%= event.location %></td>
+  			</tr>
 			<% end %>
 		</table>
 	<% end %>

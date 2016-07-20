@@ -1,7 +1,7 @@
 <div class='col s12 m6'>
   <div class="card medium">
     <div class="card-image waves-effect waves-block waves-light">
-      <%= image_tag user.image.url||"default#{user.id%4}.jpg", class:'activator' %>
+      <%= image_tag "default#{user.id%4}.jpg", class:'activator' %>
     </div>
     <div class="card-content">
       <span class="activator flow-text"><%=user.username%><i class="material-icons right">more_vert</i></span>
@@ -19,10 +19,3 @@
     </div>
   </div>
 </div>
-
-  <!-- <%= image_tag user.image.thumb.url %>
-  <%= link_to user.username, user %>
-  <% if current_user.admin? && !current_user?(user) %>
-    | <%= link_to "delete", user, method: :delete,
-    data: { confirm: "Delete #{user.username}?" } %>
-  <% end %> -->

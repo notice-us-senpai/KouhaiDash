@@ -4,13 +4,12 @@ class CreateUsers < ActiveRecord::Migration
 
     	t.string :username
     	t.string :password
-          	t.string :name
+      t.string :name
     	t.string :email
 
     	t.date :birthday
     	t.text :description
-    	t.string :image
-
+      
       t.timestamps null: false
     end
   end

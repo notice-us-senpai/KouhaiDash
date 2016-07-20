@@ -7,7 +7,7 @@
   <div class="col s12 m7">
    <div class="card">
      <div class="card-image">
-       <%= image_tag @user.image.url||"default#{@user.id%4}.jpg" %>
+       <%= image_tag "default#{@user.id%4}.jpg" %>
      </div>
      <div class="card-content">
        <span class="card-title"><%= @user.username %></span>
@@ -16,23 +16,3 @@
    </div>
   </div>
 </div>
-
-<!-- <div class="row">
-  <aside class="col-md-4">
-    <section class="user-info">
-    	<div class="profile-picture">
-    		<p>
-    			<%= image_tag @user.image.thumb.url %>
-  			</p>
-  		</div>
-  		<div class="profile-description">
-      	<h1>
-      		<%= @user.username %>
-    		</h1>
-        <p>
-          <%= @user.description %>
-        </p>
-    	</div>
-    </section>
-  </aside>
-</div> -->

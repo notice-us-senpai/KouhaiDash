@@ -112,7 +112,6 @@ ActiveRecord::Schema.define(version: 20160710191437) do
     t.string   "email"
     t.date     "birthday"
     t.text     "description"
-    t.string   "image"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.string   "password_digest"

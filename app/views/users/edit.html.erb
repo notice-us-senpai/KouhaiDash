@@ -28,29 +28,6 @@
       <%= f.label :password_confirmation, "Confirm New Password"%>
       </div>
 
-      <div class="file-field input-field col s12">
-        <div class="btn">
-          <span>Profile Picture</span>
-          <%= f.file_field :image %>
-        </div>
-        <div class="file-path-wrapper">
-          <input class="file-path validate" type="text">
-        </div>
-      </div>
-
-      <!-- <%= f.label :image, "Profile Picture" %>
-      <%= f.file_field :image %> -->
-      <% if f.object.image? %>
-        <div class='col s12'>
-          <p class= 'center-align'>
-            <%= image_tag f.object.image.thumb.url %>
-          <br>
-            <%= f.check_box :remove_image %>
-            <%= f.label :remove_image %>
-          </p>
-        </div>
-      <% end %>
-
       <div class="actions col s12">
         <p><button class="btn-large waves-effect waves-light" type="submit" name="action">Update
           <i class="material-icons right">send</i>

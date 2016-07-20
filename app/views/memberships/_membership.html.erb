@@ -1,8 +1,6 @@
 <%unless !membership.approved && !@authorised_member %>
 <!--Only shows non-approved members if current user is an approved member-->
   <tr>
-
-    <td><%= image_tag membership.user.image.thumb.url %></td>
     <td><%= link_to membership.user.username, membership.user %></td>
     <% if @authorised_member && !membership.approved %>
       <td>

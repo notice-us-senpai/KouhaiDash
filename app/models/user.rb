@@ -15,10 +15,6 @@ class User < ActiveRecord::Base
   has_many :tasks, through: :memberships
   has_one :google_account
 
-  mount_uploader :image, ImageUploader
-  validates_processing_of :image
-  validate :image_size_validation
-
 	before_save { self.email = email.downcase }
 
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -65,9 +61,5 @@ class User < ActiveRecord::Base
   # Forgets a user.
   def forget
     update_attribute(:remember_digest, nil)
-  end
-
-  def image_size_validation
-    errors[:image] << "should be less than 500KB" if image.size > 0.5.megabytes
   end
 end
