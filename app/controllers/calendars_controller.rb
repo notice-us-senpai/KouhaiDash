@@ -1,0 +1,229 @@
+class CalendarsController < ApplicationController
+  before_action :set_variables
+  before_action :check_view_auth
+  before_action :check_edit_auth, only: [:edit, :update, :destroy, :new, :create]
+  before_action :check_created, only:[:new, :create]
+  before_action :google_access_for_edit, only: [:edit, :update, :new, :create]
+  # GET /calendars/1
+  # GET /calendars/1.json
+  def show
+    unless @calendar
+      redirect_to new_group_category_calendar_path(@group,@category)
+      return
+    end
+    
+  end
+
+  # GET /calendars/new
+  def new
+    @calendar = Calendar.new
+  end
+
+  # GET /calendars/1/edit
+  def edit
+  end
+
+  # POST /calendars
+  # POST /calendars.json
+  def create
+    @calendar = Calendar.new(calendar_params)
+    @calendar.category = @category
+    check_google_calendar
+    respond_to do |format|
+      if @calendar.save
+        google_settings
+        format.html {
+          if @new_cal
+            if @created
+              flash[:google_notice]='New Google Calendar was successfully created.'
+            else
+              flash[:google_notice]='There was an issue with creating the new Google Calendar.'
+            end
+          end
+          flash[:notice]='Calendar was successfully created.'
+          redirect_to group_category_calendar_path(@group,@category)
+        }
+        format.json { render :show, status: :created, location: group_category_calendar_path(@group,@category) }
+      else
+        format.html {
+          if @new_cal
+            if @created
+              flash.now[:google_notice]='New Google Calendar was successfully created.'
+            else
+              flash.now[:google_notice]='There was an issue with creating the new Google Calendar.'
+            end
+          end
+          render :new
+        }
+        format.json { render json: @calendar.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /calendars/1
+  # PATCH/PUT /calendars/1.json
+  def update
+    check_google_calendar
+    respond_to do |format|
+      if @calendar.update(calendar_params)
+        google_settings
+        format.html {
+          if @new_cal
+            if @created
+              flash[:google_notice]='New Google Calendar was successfully created.'
+            else
+              flash[:google_notice]='There was an issue with creating the new Google Calendar.'
+            end
+          end
+          flash[:notice]='Calendar was successfully updated.'
+          redirect_to group_category_calendar_path(@group,@category)
+        }
+        format.json { render :show, status: :ok, location: group_category_calendar_path(@group,@category) }
+      else
+        format.html {
+          if @new_cal
+            if @created
+              flash.now[:google_notice]='New Google Calendar was successfully created.'
+            else
+              flash.now[:google_notice]='There was an issue with creating the new Google Calendar.'
+            end
+          end
+          render :edit }
+        format.json { render json: @calendar.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /calendars/1
+  # DELETE /calendars/1.json
+  def destroy
+    @calendar.destroy
+    respond_to do |format|
+      format.html { redirect_to @group,@category, notice: 'Calendar was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  def to_authenticate
+    store_location_url(
+      if @calendar
+        edit_group_category_calendar_path(@group,@category)
+      else
+        new_group_category_calendar_path(@group,@category)
+      end)
+    redirect_to '/auth/google_oauth2'
+  end
+
+  private
+    def check_google_calendar
+      if params.fetch(:gradio,false)
+        opt=params.fetch(:gradio)
+        case opt
+        when "current"
+        when "no"
+          @calendar.google_calendar_id = nil
+        when "select"
+          if params.fetch(:google,false)
+            @calendar.google_calendar_id=params.fetch(:google).fetch(:calendar_id,@calendar.google_calendar_id)
+          end
+        when "new"
+          @new_cal=true
+          if params.fetch(:google,false)
+            begin
+              calendar_client = Signet::OAuth2::Client.new(access_token: @google_token)
+              calendar_service = Google::Apis::CalendarV3::CalendarService.new
+              calendar_service.authorization = calendar_client
+              cal_name = params.fetch(:google).fetch(:name,@group.name)
+              cal_name = @group.name unless cal_name && cal_name.length>0
+              calendar =  Google::Apis::CalendarV3::Calendar.new(summary: cal_name)
+              result = calendar_service.insert_calendar(calendar)
+              @calendar.google_calendar_id=result.id
+              @created=result.id
+              result = calendar_service.list_calendar_lists(min_access_role: "owner")
+              @calendar_array=result.items.collect{|cal| [cal.summary, cal.id]}
+            rescue
+            end
+          end
+        end
+      end
+    end
+
+    def google_settings
+      if @calendar.google_calendar_id && @calendar.google_calendar_id.length>0
+        begin
+          rule = Google::Apis::CalendarV3::AclRule.new(
+            scope: {
+              type: 'default'
+            },
+            role: 'writer'
+          )
+          calendar_client = Signet::OAuth2::Client.new(access_token: @google_token)
+          calendar_service = Google::Apis::CalendarV3::CalendarService.new
+          calendar_service.authorization = calendar_client
+          client.insert_acl(@calendar.google_calendar_id, rule)
+        rescue
+        end
+      end
+    end
+
+    def set_variables
+      @group = Group.find(params[:group_id])
+      @category = @group.categories.find(params[:category_id])
+      @calendar = @category.calendar
+      @authorised_member= is_user_of_group?(@group)
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def calendar_params
+      params.require(:calendar).permit(:name, :google_calendar_id)
+    end
+
+    def check_edit_auth
+      unless @authorised_member
+        category_edit_auth_redirect(@group,@category)
+      end
+    end
+
+    def check_view_auth
+      if @category.type_no!=0
+        flash[:notice]='Did you lost your way?'
+        redirect_to @group
+      end
+      unless @authorised_member
+        check_category_view_auth(@group,@category)
+      end
+    end
+
+    def check_created
+      if @calendar
+        redirect_to group_category_calendar_path(@group,@category)
+        return
+      end
+    end
+
+    def google_access_for_edit
+      account = current_user.google_account
+      @calendar_array=[];
+      if account
+        account.refresh!
+        unless account.refresh_token.length>0
+          revoke_google_token(account.access_token)
+          flash.now[:notice] = 'Permissions from your google account has expired. Please sign in with google again to renew the permissions.'
+        end
+        @google_token = account && account.refresh_token.length>0 && account.fresh_token
+        if @google_token
+          begin
+            calendar_client = Signet::OAuth2::Client.new(access_token: @google_token)
+            calendar_service = Google::Apis::CalendarV3::CalendarService.new
+            calendar_service.authorization = calendar_client
+            result = calendar_service.list_calendar_lists(min_access_role: "owner")
+            @calendar_array=result.items.collect{|cal| [cal.summary, cal.id]}
+            result= calendar_service.get_calendar(@calendar.google_calendar_id)
+            @google_calendar_name=result.summary
+          rescue
+          end
+        end
+      #google_token, @google_id is nill if refresh fails ( ie access has failed and fresh_token = '')
+      end
+    end
+end

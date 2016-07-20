@@ -42,6 +42,8 @@ Rails.application.routes.draw do
       resource :text_page, only: [:create, :new, :show, :update, :edit]
       get 'text_page/to_authenticate', to: 'text_pages#to_authenticate', as: 'text_page_auth'
       resources :contacts
+      resource :calendar, only: [:create, :new, :show, :update, :edit]
+      get 'calendar/to_authenticate', to: 'calendars#to_authenticate', as: 'calendar_auth'
     end
     post '/categories_save_order', to: 'categories#saveOrder', as: 'categories_save_order'
   end

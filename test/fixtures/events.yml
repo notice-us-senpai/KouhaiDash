@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  calendar_id: 1
+  name: MyString
+  location: MyString
+  description: MyText
+  start: 2016-07-19 18:55:25
+  end: 2016-07-19 18:55:25
+
+two:
+  calendar_id: 1
+  name: MyString
+  location: MyString
+  description: MyText
+  start: 2016-07-19 18:55:25
+  end: 2016-07-19 18:55:25
