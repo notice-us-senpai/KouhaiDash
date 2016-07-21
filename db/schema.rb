@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160719105525) do
+ActiveRecord::Schema.define(version: 20160721094045) do
 
   create_table "calendars", force: :cascade do |t|
     t.string   "name"
@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 20160719105525) do
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
   end
+
+  add_index "calendars", ["category_id"], name: "index_calendars_on_category_id"
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -48,7 +50,7 @@ ActiveRecord::Schema.define(version: 20160719105525) do
 
   create_table "events", force: :cascade do |t|
     t.integer  "calendar_id"
-    t.string   "name"
+    t.string   "summary"
     t.string   "location"
     t.text     "description"
     t.datetime "start"
@@ -56,6 +58,10 @@ ActiveRecord::Schema.define(version: 20160719105525) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
+
+  add_index "events", ["calendar_id"], name: "index_events_on_calendar_id"
+  add_index "events", ["end"], name: "index_events_on_end"
+  add_index "events", ["start"], name: "index_events_on_start"
 
   create_table "google_accounts", force: :cascade do |t|
     t.integer  "user_id"
