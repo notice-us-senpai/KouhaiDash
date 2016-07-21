@@ -12,17 +12,19 @@ class CalendarsController < ApplicationController
       return
     end
     today = DateTime.now.to_date
+    @google_events=[]
     if @calendar.google_calendar_id && @calendar.google_calendar_id.length>0
       #load google calendar events
       begin
         calendar_client = Signet::OAuth2::Client.new(access_token: current_user.google_account.fresh_token)
         calendar_service = Google::Apis::CalendarV3::CalendarService.new
         calendar_service.authorization = calendar_client
-        #google_calendar = calendar_service.get_calendar(@calendar.google_calendar_id)
+        google_calendar = calendar_service.get_calendar(@calendar.google_calendar_id)
+        print "\n",google_calendar.time_zone,"\n"
         result= calendar_service.list_events(@calendar.google_calendar_id, single_events: true,
           order_by: "startTime",time_max: DateTime.new(today.next_month.year,today.next_month.month,1).rfc3339,
           time_min: DateTime.new(today.year,today.month,1).rfc3339)
-        google_events=result.items
+        @google_events=result.items
       rescue
         flash.now[:load_calendar]='There was an issue loading events from the Google Calendar.'
       end
@@ -32,16 +34,15 @@ class CalendarsController < ApplicationController
     day_end=DateTime.new(today.year,today.month,1,23,59,59)
     @start=day_start.cwday%7
     @days_in_month=Time.days_in_month(today.month)
-    google_events|= []
     @events=Array.new(@days_in_month,nil)
     sIdx=0
     for i in (0..@days_in_month-1)
       @events[i]=[]
-      next if sIdx>=google_events.length
-      sIdx+=1 while sIdx< google_events.length && google_events[sIdx].end.date_time<=day_start
+      next if sIdx>=@google_events.length
+      sIdx+=1 while sIdx< @google_events.length && @google_events[sIdx].end.date_time<=day_start
       idx=sIdx
-      while idx<google_events.length && google_events[idx].start.date_time<=day_end
-        @events[i].push(google_events[idx]) if !(google_events[idx].end.date_time<=day_start)
+      while idx<@google_events.length && @google_events[idx].start.date_time<=day_end
+        @events[i].push({event:@google_events[idx],id:idx}) if !(@google_events[idx].end.date_time<=day_start)
         idx+=1
       end
       day_start=day_start.next_day

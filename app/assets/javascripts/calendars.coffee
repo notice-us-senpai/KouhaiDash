@@ -11,3 +11,8 @@ $(document).ready ->
 $(document).on "page:change", ->
   return unless $(".calendars.new, .calendars.edit, .calendars.update, .calendars.create").length > 0
   $('#google_calendar_id, #google_name').prop('disabled',true)
+
+
+$(document).on "page:change", ->
+  return unless $(".calendars.show").length > 0
+  $('.modal-trigger').leanModal()
