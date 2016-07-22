@@ -13,6 +13,18 @@
 <%end%>
 <div class='row'>
   <div class='col s12'>
+    <%=form_for(:period, url: group_category_calendar_period_path(@group, @category),remote: true,  html: {id: "calendar_period_form" }) do |f|%>
+      <div class='input-field col s6 m4'>
+        <%=select_month(Date.today,{ field_name: 'month', prefix:'period'}, {class: 'calendar-period'}) %>
+        <%=f.label :month, 'Month'%>
+      </div>
+      <div class='input-field col s6 m4'>
+        <%=select_year(Date.today, {field_name: 'year', prefix:'period'}, {class: 'calendar-period'})%>
+        <%=f.label :year, 'Year'%>
+      </div>
+    <%end%>
+  </div>
+  <div class='col s12'>
     <table style='table-layout:fixed' class='bordered'>
       <tr>
         <%wdays=['Sun','Mon','Tue','Wed','Thu','Fri','Sat']%>

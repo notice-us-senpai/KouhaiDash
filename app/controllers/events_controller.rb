@@ -1,5 +1,9 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_variables
+  before_action :check_view_auth
+  before_action :check_edit_auth, only: [:edit, :update, :destroy, :new, :create]
+  before_action :check_created
+  before_action :google_access_for_edit, only: [:edit, :update, :new, :create]
 
   # GET /events
   # GET /events.json
@@ -65,6 +69,35 @@ class EventsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_event
       @event = Event.find(params[:id])
+    end
+
+    def set_variables
+      @group = Group.find(params[:group_id])
+      @category = @group.categories.find(params[:category_id])
+      @calendar = @category.calendar
+      @authorised_member= is_user_of_group?(@group)
+    end
+
+    def check_edit_auth
+      unless @authorised_member
+        category_edit_auth_redirect(@group,@category)
+      end
+    end
+
+    def check_view_auth
+      if @category.type_no!=0
+        flash[:notice]='Did you lost your way?'
+        redirect_to @group
+      end
+      unless @authorised_member
+        check_category_view_auth(@group,@category)
+      end
+    end
+
+    def check_created
+      unless @calendar
+        redirect_to new_group_category_calendar_path(@group,@category)
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

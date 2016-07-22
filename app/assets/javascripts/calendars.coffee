@@ -7,6 +7,9 @@ $(document).ready ->
     $('#google_name').prop('disabled',$('#gradio_new').prop('checked')==false)
     $('select').material_select()
   ))
+  $(document).on('change','.calendar-period', ( ->
+    $('#calendar_period_form').submit()
+  ))
 
 $(document).on "page:change", ->
   return unless $(".calendars.new, .calendars.edit, .calendars.update, .calendars.create").length > 0

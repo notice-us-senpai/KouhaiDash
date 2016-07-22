@@ -4,6 +4,7 @@ class CalendarsController < ApplicationController
   before_action :check_edit_auth, only: [:edit, :update, :destroy, :new, :create]
   before_action :check_created, only:[:new, :create]
   before_action :google_access_for_edit, only: [:edit, :update, :new, :create]
+
   # GET /calendars/1
   # GET /calendars/1.json
   def show
@@ -16,7 +17,8 @@ class CalendarsController < ApplicationController
     if @calendar.google_calendar_id && @calendar.google_calendar_id.length>0
       #load google calendar events
       begin
-        calendar_client = Signet::OAuth2::Client.new(access_token: current_user.google_account.fresh_token)
+        token = (current_user && current_user.google_account && current_user.google_account.fresh_token) || @calendar.google_account.fresh_token
+        calendar_client = Signet::OAuth2::Client.new(access_token: token)
         calendar_service = Google::Apis::CalendarV3::CalendarService.new
         calendar_service.authorization = calendar_client
         google_calendar = calendar_service.get_calendar(@calendar.google_calendar_id)
@@ -50,6 +52,17 @@ class CalendarsController < ApplicationController
     end
   end
 
+  # POST /calendar/show_period
+  def show_period
+    puts 'SHOW_PERIOD'
+    respond_to do |format|
+      format.js{
+        month_params=params.require(:period).permit(:month, :year)
+
+      }
+    end
+  end
+
   # GET /calendars/new
   def new
     @calendar = Calendar.new
@@ -76,6 +89,7 @@ class CalendarsController < ApplicationController
               flash[:google_notice]='There was an issue with creating the new Google Calendar.'
             end
           end
+          flash[:google_settings]='Attempt to change ACL for Google Calendar failed.' if @settings_failed
           flash[:notice]='Calendar was successfully created.'
           redirect_to group_category_calendar_path(@group,@category)
         }
@@ -111,6 +125,7 @@ class CalendarsController < ApplicationController
               flash[:google_notice]='There was an issue with creating the new Google Calendar.'
             end
           end
+          flash[:google_settings]='Attempt to change ACL for Google Calendar failed.' if @settings_failed
           flash[:notice]='Calendar was successfully updated.'
           redirect_to group_category_calendar_path(@group,@category)
         }
@@ -151,21 +166,19 @@ class CalendarsController < ApplicationController
   end
 
   private
-    def inclusive(startDateTime, endDateTime, dayDateTime)
-
-
-    end
 
     def check_google_calendar
       if params.fetch(:gradio,false)
         opt=params.fetch(:gradio)
         case opt
         when "current"
+          @calendar.google_account_id=current_user.google_account.id
         when "no"
           @calendar.google_calendar_id = nil
         when "select"
           if params.fetch(:google,false)
             @calendar.google_calendar_id=params.fetch(:google).fetch(:calendar_id,@calendar.google_calendar_id)
+            @calendar.google_account_id=current_user.google_account.id
           end
         when "new"
           @new_cal=true
@@ -182,6 +195,7 @@ class CalendarsController < ApplicationController
               @created=result.id
               result = calendar_service.list_calendar_lists(min_access_role: "owner")
               @calendar_array=result.items.collect{|cal| [cal.summary, cal.id]}
+              @calendar.google_account_id=current_user.google_account.id
             rescue
             end
           end
@@ -191,18 +205,73 @@ class CalendarsController < ApplicationController
 
     def google_settings
       if @calendar.google_calendar_id && @calendar.google_calendar_id.length>0
+        calendar_service = Google::Apis::CalendarV3::CalendarService.new
+        group= Group.includes(memberships:{user: :google_account}).find(@group.id)
+        accounts=group.memberships.collect{|member|
+          {account: member.user.google_account, is_owner: false} if member.approved && member.user.google_account
+        }
+        #try to find an owner account
+        begin
+          #find using stored google_account
+          calendar_client = Signet::OAuth2::Client.new(access_token: @calendar.google_account.fresh_token)
+          calendar_service.authorization = calendar_client
+          result=calendar_service.get_calendar_list(@calendar.google_calendar_id)
+          @owner_found=(result.access_role=='owner')
+        rescue Exception => e
+          #puts e.message
+          #find within members' accounts
+          accounts.each do |item|
+            break if @owner_found
+            next unless item
+            token=item[:account].fresh_token
+            begin
+              calendar_client = Signet::OAuth2::Client.new(access_token: token)
+              calendar_service.authorization=calendar_client
+              result=calendar_service.get_calendar_list(@calendar.google_calendar_id)
+              @owner_found=item[:is_owner]=(result.access_role=='owner')
+              @calendar.update_attributes(google_account_id: member.user.google_account.id) if @owner_found
+            rescue
+            end
+          end
+        end
+        #return if no owner is found
+        @settings_failed = true unless @owner_found
+        return unless @owner_found
+        #add ACL rules
+
+        calendar_client = Signet::OAuth2::Client.new(access_token: @calendar.google_account.fresh_token)
+        calendar_service.authorization = calendar_client
+        # public read access
         begin
           rule = Google::Apis::CalendarV3::AclRule.new(
             scope: {
               type: 'default'
             },
-            role: 'writer'
+            role: 'reader'
           )
-          calendar_client = Signet::OAuth2::Client.new(access_token: @google_token)
-          calendar_service = Google::Apis::CalendarV3::CalendarService.new
-          calendar_service.authorization = calendar_client
-          client.insert_acl(@calendar.google_calendar_id, rule)
-        rescue
+          result=calendar_service.insert_acl(@calendar.google_calendar_id, rule)
+        rescue Exception => e
+          #puts e.message
+          @settings_failed=true
+        end
+        #add individual member
+        accounts.each do |item|
+          next unless item
+          next if item[:is_owner]
+          next if item[:account].id==@calendar.google_account_id
+          begin
+            rule = Google::Apis::CalendarV3::AclRule.new(
+              scope: {
+                type: 'user',
+                value: item[:account].gmail
+              },
+              role: 'owner'
+            )
+            result=calendar_service.insert_acl(@calendar.google_calendar_id, rule)
+          rescue Exception => e
+            #puts e.message
+            @settings_failed=true
+          end
         end
       end
     end
