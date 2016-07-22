@@ -25,66 +25,11 @@
     <%end%>
   </div>
   <div class='col s12'>
-    <table style='table-layout:fixed' class='bordered'>
-      <tr>
-        <%wdays=['Sun','Mon','Tue','Wed','Thu','Fri','Sat']%>
-        <%wdays.each do |day|%>
-          <th><%=day%></th>
-        <%end%>
-      </tr>
-      <%day=0%>
-      <%while day<@days_in_month%>
-        <tr>
-          <%if @start>0%>
-            <td colspan="<%=@start%>"></td>
-          <%end%>
-          <%left=7-@start%>
-          <%@start=0%>
-          <%while left>0 && day<@days_in_month%>
-            <%day+=1%>
-            <%left-=1%>
-            <td class='calendar-td'>
-              <p class='day-<%=left%>'><%=day%><br>
-              <%@events[day-1].each do |hash|%>
-                <a class='modal-trigger calendar-link' href='#modal<%=hash[:id]%>'><%=hash[:event].summary%></a>
-              <%end%>
-              </p>
-            </td>
-          <%end%>
-          <%if left>0%>
-            <td colspan="<%=left%>"></td>
-          <%end%>
-        </tr>
-      <%end%>
+    <table class='bordered calendar-table' id='calendar_table'>
+      <%=render 'table'%>
     </table>
   </div>
 </div>
-
-<%@google_events.each_index do |i|%>
-  <div id="modal<%=i%>" class="modal">
-    <div class="modal-content">
-      <h4><%=@google_events[i].summary%></h4>
-      <table>
-        <tr>
-          <th>Start</th>
-          <td><%=@google_events[i].start.date_time.strftime("%D %R")%></td>
-        </tr>
-        <tr>
-          <th>End</th>
-          <td><%=@google_events[i].end.date_time.strftime("%D %R")%></td>
-        </tr>
-        <tr>
-          <th>Location</th>
-          <td><%=@google_events[i].location%></td>
-        </tr>
-        <tr>
-          <th>Description</th>
-          <td><%=@google_events[i].description%></td>
-        </tr>
-      </table>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><i class='material-icons'>done</i></a>
-    </div>
-  </div>
-<%end%>
+<div id='calendar-modals'>
+  <%=render 'modals'%>
+</div>

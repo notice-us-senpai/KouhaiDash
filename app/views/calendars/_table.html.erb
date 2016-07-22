@@ -1,0 +1,30 @@
+<tr>
+  <%wdays=['Sun','Mon','Tue','Wed','Thu','Fri','Sat']%>
+  <%wdays.each do |day|%>
+    <th><%=day%></th>
+  <%end%>
+</tr>
+<%day=0%>
+<%while day<@days_in_month%>
+  <tr>
+    <%if @start>0%>
+      <td colspan="<%=@start%>"></td>
+    <%end%>
+    <%left=7-@start%>
+    <%@start=0%>
+    <%while left>0 && day<@days_in_month%>
+      <%day+=1%>
+      <%left-=1%>
+      <td class='calendar-td'>
+        <p class='day-<%=left%>'><%=day%><br>
+        <%@events[day-1].each do |hash|%>
+          <a class='modal-trigger calendar-link' href='#modal<%=hash[:id]%>'><%=hash[:event].summary%></a>
+        <%end%>
+        </p>
+      </td>
+    <%end%>
+    <%if left>0%>
+      <td colspan="<%=left%>"></td>
+    <%end%>
+  </tr>
+<%end%>

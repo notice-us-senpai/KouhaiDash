@@ -12,44 +12,7 @@ class CalendarsController < ApplicationController
       redirect_to new_group_category_calendar_path(@group,@category)
       return
     end
-    today = DateTime.now.to_date
-    @google_events=[]
-    if @calendar.google_calendar_id && @calendar.google_calendar_id.length>0
-      #load google calendar events
-      begin
-        token = (current_user && current_user.google_account && current_user.google_account.fresh_token) || @calendar.google_account.fresh_token
-        calendar_client = Signet::OAuth2::Client.new(access_token: token)
-        calendar_service = Google::Apis::CalendarV3::CalendarService.new
-        calendar_service.authorization = calendar_client
-        google_calendar = calendar_service.get_calendar(@calendar.google_calendar_id)
-        print "\n",google_calendar.time_zone,"\n"
-        result= calendar_service.list_events(@calendar.google_calendar_id, single_events: true,
-          order_by: "startTime",time_max: DateTime.new(today.next_month.year,today.next_month.month,1).rfc3339,
-          time_min: DateTime.new(today.year,today.month,1).rfc3339)
-        @google_events=result.items
-      rescue
-        flash.now[:load_calendar]='There was an issue loading events from the Google Calendar.'
-      end
-    end
-
-    day_start=DateTime.new(today.year,today.month,1)
-    day_end=DateTime.new(today.year,today.month,1,23,59,59)
-    @start=day_start.cwday%7
-    @days_in_month=Time.days_in_month(today.month)
-    @events=Array.new(@days_in_month,nil)
-    sIdx=0
-    for i in (0..@days_in_month-1)
-      @events[i]=[]
-      next if sIdx>=@google_events.length
-      sIdx+=1 while sIdx< @google_events.length && @google_events[sIdx].end.date_time<=day_start
-      idx=sIdx
-      while idx<@google_events.length && @google_events[idx].start.date_time<=day_end
-        @events[i].push({event:@google_events[idx],id:idx}) if !(@google_events[idx].end.date_time<=day_start)
-        idx+=1
-      end
-      day_start=day_start.next_day
-      day_end=day_end.next_day
-    end
+    get_events(DateTime.now.to_date)
   end
 
   # POST /calendar/show_period
@@ -57,8 +20,8 @@ class CalendarsController < ApplicationController
     puts 'SHOW_PERIOD'
     respond_to do |format|
       format.js{
-        month_params=params.require(:period).permit(:month, :year)
-
+        period_params=params.require(:period).permit(:month, :year)
+        get_events(Date.new(period_params[:year].to_i, period_params[:month].to_i,1))
       }
     end
   end
@@ -166,6 +129,45 @@ class CalendarsController < ApplicationController
   end
 
   private
+    def get_events(date)
+
+      day_start=DateTime.new(date.year,date.month,1)
+      day_end=DateTime.new(date.year,date.month,1,23,59,59)
+      @start=day_start.cwday%7
+      @days_in_month=Time.days_in_month(date.month,date.year)
+      @events=Array.new(@days_in_month,nil)
+      @google_events=[]
+
+      if @calendar.google_calendar_id && @calendar.google_calendar_id.length>0
+        #load google calendar events
+        begin
+          token = (current_user && current_user.google_account && current_user.google_account.fresh_token) || @calendar.google_account.fresh_token
+          calendar_client = Signet::OAuth2::Client.new(access_token: token)
+          calendar_service = Google::Apis::CalendarV3::CalendarService.new
+          calendar_service.authorization = calendar_client
+          result= calendar_service.list_events(@calendar.google_calendar_id, single_events: true,
+            order_by: "startTime",time_max: DateTime.new(date.next_month.year,date.next_month.month,1).rfc3339,
+            time_min: DateTime.new(date.year,date.month,1).rfc3339)
+          @google_events=result.items
+        rescue
+          @google_msg='There was an issue loading events from the Google Calendar.'
+        end
+      end
+
+      sIdx=0
+      for i in (0..@days_in_month-1)
+        @events[i]=[]
+        next if sIdx>=@google_events.length
+        sIdx+=1 while sIdx< @google_events.length && @google_events[sIdx].end.date_time<=day_start
+        idx=sIdx
+        while idx<@google_events.length && @google_events[idx].start.date_time<=day_end
+          @events[i].push({event:@google_events[idx],id:idx}) if !(@google_events[idx].end.date_time<=day_start)
+          idx+=1
+        end
+        day_start=day_start.next_day
+        day_end=day_end.next_day
+      end
+    end
 
     def check_google_calendar
       if params.fetch(:gradio,false)

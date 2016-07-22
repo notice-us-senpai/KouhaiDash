@@ -1,0 +1,28 @@
+<%@google_events.each_index do |i|%>
+  <div id="modal<%=i%>" class="modal">
+    <div class="modal-content">
+      <h4><%=@google_events[i].summary%></h4>
+      <table>
+        <tr>
+          <th>Start</th>
+          <td><%=@google_events[i].start.date_time.strftime("%D %R")%></td>
+        </tr>
+        <tr>
+          <th>End</th>
+          <td><%=@google_events[i].end.date_time.strftime("%D %R")%></td>
+        </tr>
+        <tr>
+          <th>Location</th>
+          <td><%=@google_events[i].location%></td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td><%=@google_events[i].description%></td>
+        </tr>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><i class='material-icons'>done</i></a>
+    </div>
+  </div>
+<%end%>
