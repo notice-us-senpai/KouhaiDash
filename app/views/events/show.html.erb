@@ -7,7 +7,7 @@
 
 <p>
   <strong>Name:</strong>
-  <%= @event.name %>
+  <%= @event.summary %>
 </p>
 
 <p>
@@ -30,5 +30,5 @@
   <%= @event.end %>
 </p>
 
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %>
+<%= link_to 'Edit', edit_group_category_event_path(@group,@category,@event) %> |
+<%= link_to 'Back', group_category_events_path(@group,@category) %>

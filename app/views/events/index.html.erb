@@ -19,14 +19,14 @@
     <% @events.each do |event| %>
       <tr>
         <td><%= event.calendar_id %></td>
-        <td><%= event.name %></td>
+        <td><%= event.summary %></td>
         <td><%= event.location %></td>
         <td><%= event.description %></td>
         <td><%= event.start %></td>
         <td><%= event.end %></td>
-        <td><%= link_to 'Show', event %></td>
-        <td><%= link_to 'Edit', edit_event_path(event) %></td>
-        <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', [@group,@category,event] %></td>
+        <td><%= link_to 'Edit', edit_group_category_event_path(@group,@category,event) %></td>
+        <td><%= link_to 'Destroy', [@group,@category,event], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -34,4 +34,4 @@
 
 <br>
 
-<%= link_to 'New Event', new_event_path %>
+<%= link_to 'New Event', new_group_category_event_path(@group,@category) %>

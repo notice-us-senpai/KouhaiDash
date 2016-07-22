@@ -43,9 +43,12 @@ Rails.application.routes.draw do
       get 'text_page/to_authenticate', to: 'text_pages#to_authenticate', as: 'text_page_auth'
       resources :contacts
       resource :calendar, only: [:create, :new, :show, :update, :edit]
-      resource :events
+      resources :events
       get 'calendar/to_authenticate', to: 'calendars#to_authenticate', as: 'calendar_auth'
       post 'calendar/show_period', to: 'calendars#show_period', as: 'calendar_period'
+      get 'events/google_edit/:id', to: 'events#google_edit', as: 'edit_google_event_path'
+      get 'events/google/:id', to: 'events#google_show', as: 'google_event_path'
+      post 'events/google/:id', to: 'events#google_update'
     end
     post '/categories_save_order', to: 'categories#saveOrder', as: 'categories_save_order'
   end
