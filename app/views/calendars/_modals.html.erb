@@ -23,6 +23,8 @@
     </div>
     <div class="modal-footer">
       <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><i class='material-icons'>done</i></a>
+      <a href="<%=group_category_google_event_path(@group,@category,@google_events[i].id)%>" class=" modal-action waves-effect
+        waves-green btn-flat teal-text"><i class='material-icons'>info</i></a>
       <% if @authorised_member%>
         <a href="<%=group_category_edit_google_event_path(@group,@category,@google_events[i].id)%>" class=" modal-action waves-effect waves-green btn-flat teal-text"><i class='material-icons'>mode_edit</i></a>
       <% end%>
@@ -54,6 +56,8 @@
     </div>
     <div class="modal-footer">
       <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><i class='material-icons'>done</i></a>
+      <a href="<%=group_category_event_path(@group,@category,@events[i])%>" class=" modal-action waves-effect waves-green 
+        btn-flat teal-text"><i class='material-icons'>info</i></a>
       <% if @authorised_member%>
         <a href="<%=edit_group_category_event_path(@group,@category,@events[i])%>" class=" modal-action waves-effect waves-green btn-flat teal-text"><i class='material-icons'>mode_edit</i></a>
       <% end%>
