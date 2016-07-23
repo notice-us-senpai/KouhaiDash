@@ -18,7 +18,7 @@
   </div>
 
   <div class="input-field col s12">
-    <%= f.select :time_zone, options_for_select(ActiveSupport::TimeZone.all.collect{|zone| [zone.to_s,zone.name]}, 'UTC')%>
+    <%= f.select :time_zone, options_for_select(ActiveSupport::TimeZone.all.collect{|zone| [zone.to_s,zone.name]}, (@calendar && @calendar.time_zone)||'UTC')%>
     <%= f.label :time_zone %>
   </div>
 

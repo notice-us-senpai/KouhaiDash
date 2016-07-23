@@ -1,3 +1,7 @@
+$(document).ready ->
+  $(document).on('focus','textarea',(->
+    $('textarea').trigger('autoresize')
+  ))
 $(document).on "page:change", ->
   Waves.displayEffect()
   $('select').material_select()

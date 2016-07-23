@@ -1,3 +1,6 @@
 document.getElementById("calendar_table").innerHTML = "<%= escape_javascript(render 'table') %>";
 document.getElementById("calendar-modals").innerHTML = "<%= escape_javascript(render 'modals') %>";
 $('.modal-trigger').leanModal();
+<% if @google_msg %>
+  Materialize.toast('<%=@google_msg%>');
+<% end%>

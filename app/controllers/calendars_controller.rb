@@ -12,7 +12,8 @@ class CalendarsController < ApplicationController
       redirect_to new_group_category_calendar_path(@group,@category)
       return
     end
-    get_events(DateTime.now.to_date)
+    get_events(Time.now.in_time_zone(@calendar.time_zone).to_datetime)
+    flash.now[:google_msg]=@google_msg if @google_msg
   end
 
   # POST /calendar/show_period
@@ -133,10 +134,13 @@ class CalendarsController < ApplicationController
 
       day_start=DateTime.new(date.year,date.month,1,0,0, 0, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
       day_end=DateTime.new(date.year,date.month,1,23,59,59, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
+      month_start = DateTime.new(date.year,date.month,1,0,0, 0, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
+      month_end = DateTime.new(date.next_month.year,date.next_month.month,1,0,0, 0, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
       @start=day_start.cwday%7
       @days_in_month=Time.days_in_month(date.month,date.year)
-      @events=Array.new(@days_in_month,nil)
+      @day_events=Array.new(@days_in_month,nil)
       @google_events=[]
+      @events= @calendar.events.where.not("start >= ?", month_end).where.not("end <= ?", month_start).order(:start).all
 
       if @calendar.google_calendar_id && @calendar.google_calendar_id.length>0
         #load google calendar events
@@ -146,23 +150,46 @@ class CalendarsController < ApplicationController
           calendar_service = Google::Apis::CalendarV3::CalendarService.new
           calendar_service.authorization = calendar_client
           result= calendar_service.list_events(@calendar.google_calendar_id, single_events: true,
-            order_by: "startTime",time_max: DateTime.new(date.next_month.year,date.next_month.month,1,0,0, 0, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset).rfc3339,
-            time_min: DateTime.new(date.year,date.month,1,0,0, 0, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset).rfc3339)
+            order_by: "startTime",time_max: month_end.rfc3339,
+            time_min: month_start.rfc3339)
           @google_events=result.items
         rescue
-          @google_msg='There was an issue loading events from the Google Calendar.'
+          #tries reset google calendar settings
+          google_settings
+          begin
+            token = (current_user && current_user.google_account && current_user.google_account.fresh_token) || @calendar.google_account.fresh_token
+            calendar_client = Signet::OAuth2::Client.new(access_token: token)
+            calendar_service = Google::Apis::CalendarV3::CalendarService.new
+            calendar_service.authorization = calendar_client
+            result= calendar_service.list_events(@calendar.google_calendar_id, single_events: true,
+              order_by: "startTime",time_max: month_end.rfc3339,
+              time_min: month_start.rfc3339)
+            @google_events=result.items
+          rescue
+            @google_msg='There was an issue loading events from the Google Calendar.'
+          end
         end
       end
 
-      sIdx=0
+      gIdx=0
+      eIdx=0
       for i in (0..@days_in_month-1)
-        @events[i]=[]
-        next if sIdx>=@google_events.length
-        sIdx+=1 while sIdx< @google_events.length && @google_events[sIdx].end.date_time<=day_start
-        idx=sIdx
-        while idx<@google_events.length && @google_events[idx].start.date_time<=day_end
-          @events[i].push({event:@google_events[idx],id:idx}) if !(@google_events[idx].end.date_time<=day_start)
-          idx+=1
+        @day_events[i]=[]
+        if gIdx<@google_events.length
+          gIdx+=1 while gIdx< @google_events.length && @google_events[gIdx].end.date_time<=day_start
+          idx=gIdx
+          while idx<@google_events.length && @google_events[idx].start.date_time<=day_end
+            @day_events[i].push({event:@google_events[idx],id:idx, google:true}) if !(@google_events[idx].end.date_time<=day_start)
+            idx+=1
+          end
+        end
+        if eIdx<@events.length
+          eIdx+=1 while eIdx< @events.length && @events[eIdx].end<=day_start
+          idx=eIdx
+          while idx<@events.length && @events[idx].start<=day_end
+            @day_events[i].push({event:@events[idx],id:idx, google:false}) if !(@events[idx].end<=day_start)
+            idx+=1
+          end
         end
         day_start=day_start.next_day
         day_end=day_end.next_day
@@ -231,7 +258,7 @@ class CalendarsController < ApplicationController
               calendar_service.authorization=calendar_client
               result=calendar_service.get_calendar_list(@calendar.google_calendar_id)
               @owner_found=item[:is_owner]=(result.access_role=='owner')
-              @calendar.update_attributes(google_account_id: member.user.google_account.id) if @owner_found
+              @calendar.update_attributes(google_account_id: item[:account].id) if @owner_found
             rescue
             end
           end
@@ -253,7 +280,6 @@ class CalendarsController < ApplicationController
           puts e.message
           @settings_failed=true
         end
-
 
         # public read access
         begin

@@ -26,7 +26,7 @@
   </div>
   <div>
     <div class="input-field col s12 m4">
-      <%= f.text_field :start, class:'datepicker', type: 'date', value: "#{(@event.start && @event.start.to_time.in_time_zone(@calendar.time_zone).strftime('%F') )|| Time.now.in_time_zone(@calendar.time_zone).strftime('%F')}"%>
+      <%= f.text_field :start, class:'datepicker', type: 'date', value: "#{(@event.start && @event.start.to_time.in_time_zone(@calendar.time_zone).to_date )|| Time.now.in_time_zone(@calendar.time_zone).to_date}"%>
       <%= f.label :start, "Start Date",class: 'active'%>
     </div>
     <div class="input-field col s6 m4">
@@ -40,15 +40,15 @@
   </div>
   <div>
     <div class="input-field col s12 m4">
-      <%= f.text_field :end, class:'datepicker', type: 'date',value: "#{(@event.end && @event.end.to_time.in_time_zone(@calendar.time_zone).strftime('%F') )|| Time.now.in_time_zone(@calendar.time_zone).strftime('%F')}"%>
-      <%= f.label :start, "End Date",class: 'active'%>
+      <%= f.text_field :end, class:'datepicker', type: 'date',value: "#{(@event.end && @event.end.to_time.in_time_zone(@calendar.time_zone).to_date )|| Time.now.in_time_zone(@calendar.time_zone).to_date}"%>
+      <%= f.label :end, "End Date",class: 'active'%>
     </div>
     <div class="input-field col s6 m4">
       <%=select_hour(@event.end && @event.end.to_time.in_time_zone(@calendar.time_zone),{ field_name: 'hour', prefix:'end'})%>
       <%=label :end, :hour, "hour"%>
     </div>
     <div class="input-field col s6 m4">
-      <%=select_minute(@event.end && @event.end.to_time.in_time_zone(@calendar.time_zone).to_i,{ field_name: 'min', prefix:'end'})%>
+      <%=select_minute(@event.end && @event.end.to_time.in_time_zone(@calendar.time_zone),{ field_name: 'min', prefix:'end'})%>
       <%=label :end, :min, "minute"%>
     </div>
   </div>

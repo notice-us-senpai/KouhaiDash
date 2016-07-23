@@ -3,24 +3,28 @@
   <h1><%=@calendar.name.length>0? @calendar.name : @category.name%></h1>
 </div>
 
-<% if @authorised_member%>
-  <div class="row">
-    <div class = "col s12">
+
+<div class="row">
+  <div class = "col s12">
+    <% if @authorised_member%>
       <%= link_to '<i class="material-icons">settings</i>'.html_safe,edit_group_category_calendar_path(@group,@category),
         class: "btn waves-effect waves-light tooltipped", data:{position:"bottom", delay:"50",tooltip:"Settings"}  %>
       <a class= "red btn waves-effect waves-light" href='<%=new_group_category_event_path(@group,@category)%>'><i class="material-icons left">add</i> New Event</a>
-    </div>
+    <% end%>
+    <%= link_to '<i class="material-icons">list</i>'.html_safe,group_category_events_path(@group,@category),
+      class: "btn waves-effect waves-light tooltipped", data:{position:"bottom", delay:"50",tooltip:"List View"}  %>
+
   </div>
-<%end%>
+</div>
 <div class='row'>
   <div class='col s12'>
     <%=form_for(:period, url: group_category_calendar_period_path(@group, @category),remote: true,  html: {id: "calendar_period_form" }) do |f|%>
       <div class='input-field col s6 m4'>
-        <%=select_month(Date.today,{ field_name: 'month', prefix:'period'}, {class: 'calendar-period'}) %>
+        <%=select_month(Time.now.in_time_zone(@calendar.time_zone).to_date,{ field_name: 'month', prefix:'period'}, {class: 'calendar-period'}) %>
         <%=f.label :month, 'Month'%>
       </div>
       <div class='input-field col s6 m4'>
-        <%=select_year(Date.today, {field_name: 'year', prefix:'period'}, {class: 'calendar-period'})%>
+        <%=select_year(Time.now.in_time_zone(@calendar.time_zone).to_date, {field_name: 'year', prefix:'period'}, {class: 'calendar-period'})%>
         <%=f.label :year, 'Year'%>
       </div>
     <%end%>

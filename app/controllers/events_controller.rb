@@ -4,6 +4,7 @@ class EventsController < ApplicationController
   before_action :check_edit_auth, only: [:edit, :update, :destroy, :new, :create]
   before_action :check_created
   before_action :set_event, only: [:edit, :update, :show, :destroy]
+  before_action :set_google_event, only:[:google_edit, :google_show, :google_update]
 
   # GET /events
   # GET /events.json
@@ -109,6 +110,7 @@ class EventsController < ApplicationController
   end
 
   def google_edit
+    @google
   end
 
   def google_update
@@ -146,6 +148,152 @@ class EventsController < ApplicationController
     def check_created
       unless @calendar
         redirect_to new_group_category_calendar_path(@group,@category)
+      end
+    end
+
+    # edited from get_events from calendars_controller
+    def get_events(period_start, period_end)
+
+      day_start= period_start
+      day_end= period_start.to_time.at_time_zone(@calendar.time_zone).end_of_day.to_datetime
+      @events= @calendar.events.where.not("start >= ?", month_end).where.not("end <= ?", month_start).order(:start).all
+      @mixed_events=@events.collect{|event|{google:false, event: event } }
+      @google_events=[]
+      if @calendar.google_calendar_id && @calendar.google_calendar_id.length>0
+        #load google calendar events
+        begin
+          token = (current_user && current_user.google_account && current_user.google_account.fresh_token) || @calendar.google_account.fresh_token
+          calendar_client = Signet::OAuth2::Client.new(access_token: token)
+          calendar_service = Google::Apis::CalendarV3::CalendarService.new
+          calendar_service.authorization = calendar_client
+          result= calendar_service.list_events(@calendar.google_calendar_id, single_events: true,
+            order_by: "startTime",time_max: period_end.rfc3339,
+            time_min: period_start.rfc3339)
+          @google_events=result.items
+        rescue
+          #tries reset google calendar settings
+          google_settings
+          begin
+            token = (current_user && current_user.google_account && current_user.google_account.fresh_token) || @calendar.google_account.fresh_token
+            calendar_client = Signet::OAuth2::Client.new(access_token: token)
+            calendar_service = Google::Apis::CalendarV3::CalendarService.new
+            calendar_service.authorization = calendar_client
+            result= calendar_service.list_events(@calendar.google_calendar_id, single_events: true,
+              order_by: "startTime",time_max: period_end.rfc3339,
+              time_min: period_start.rfc3339)
+            @google_events=result.items
+          rescue
+            @google_msg='There was an issue loading events from the Google Calendar.'
+          end
+        end
+      end
+      addition=@google_events.collect{|event|{google:true, event: event }}
+      @mixed_events.concat(addition) if addition && !addition.empty?
+    end
+
+    # copied from google_settings from calendars_controller
+    def google_settings
+      if @calendar.google_calendar_id && @calendar.google_calendar_id.length>0
+        calendar_service = Google::Apis::CalendarV3::CalendarService.new
+        group= Group.includes(memberships:{user: :google_account}).find(@group.id)
+        accounts=group.memberships.collect{|member|
+          {account: member.user.google_account, is_owner: false} if member.approved && member.user.google_account
+        }
+        #try to find an owner account
+        begin
+          #find using stored google_account
+          calendar_client = Signet::OAuth2::Client.new(access_token: @calendar.google_account.fresh_token)
+          calendar_service.authorization = calendar_client
+          result=calendar_service.get_calendar_list(@calendar.google_calendar_id)
+          @owner_found=(result.access_role=='owner')
+        rescue Exception => e
+          #puts e.message
+          #find within members' accounts
+          accounts.each do |item|
+            break if @owner_found
+            next unless item
+            token=item[:account].fresh_token
+            begin
+              calendar_client = Signet::OAuth2::Client.new(access_token: token)
+              calendar_service.authorization=calendar_client
+              result=calendar_service.get_calendar_list(@calendar.google_calendar_id)
+              @owner_found=item[:is_owner]=(result.access_role=='owner')
+              @calendar.update_attributes(google_account_id: item[:account].id) if @owner_found
+            rescue
+            end
+          end
+        end
+        #return if no owner is found
+        @settings_failed = true unless @owner_found
+        return unless @owner_found
+        #add ACL rules
+
+        calendar_client = Signet::OAuth2::Client.new(access_token: @calendar.google_account.fresh_token)
+        calendar_service.authorization = calendar_client
+
+        #time_zone
+        begin
+          result=calendar_service.get_calendar(@calendar.google_calendar_id)
+          result.time_zone=ActiveSupport::TimeZone[@calendar.time_zone].tzinfo.identifier
+          result=calendar_service.update_calendar(@calendar.google_calendar_id,result)
+        rescue Exception => e
+          puts e.message
+          @settings_failed=true
+        end
+
+        # public read access
+        begin
+          rule = Google::Apis::CalendarV3::AclRule.new(
+            scope: {
+              type: 'default'
+            },
+            role: 'reader'
+          )
+          result=calendar_service.insert_acl(@calendar.google_calendar_id, rule)
+        rescue Exception => e
+          #puts e.message
+          @settings_failed=true
+        end
+        #add individual member
+        accounts.each do |item|
+          next unless item
+          next if item[:is_owner]
+          next if item[:account].id==@calendar.google_account_id
+          begin
+            rule = Google::Apis::CalendarV3::AclRule.new(
+              scope: {
+                type: 'user',
+                value: item[:account].gmail
+              },
+              role: 'owner'
+            )
+            result=calendar_service.insert_acl(@calendar.google_calendar_id, rule)
+          rescue Exception => e
+            #puts e.message
+            @settings_failed=true
+          end
+        end
+      end
+    end
+
+    def set_google_event
+      begin
+        calendar_client = Signet::OAuth2::Client.new(access_token: current_user.google_account.fresh_token)
+        calendar_service = Google::Apis::CalendarV3::CalendarService.new
+        calendar_service.authorization = calendar_client
+        @google_event=calendar_service.get_event(@calendar.google_calendar_id, params[:id])
+      rescue Exception => e
+        puts e.message
+        begin
+          google_settings
+          calendar_client = Signet::OAuth2::Client.new(access_token: current_user.google_account.fresh_token)
+          calendar_service = Google::Apis::CalendarV3::CalendarService.new
+          calendar_service.authorization = calendar_client
+          @google_event=calendar_service.get_event(@calendar.google_calendar_id, params[:id])
+        rescue
+          redirect_to group_category_calendar_path(@group, @category), notice: 'Unable to access event. Please sign in with Google through Settings if you have not done so or check the Google Calendar settings.'
+          return
+        end
       end
     end
 

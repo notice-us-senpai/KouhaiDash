@@ -99,6 +99,13 @@ position: relative;
   table-layout:fixed
 }
 
+//fix for textarea resizing issue
+textarea.materialize-textarea{
+  min-height: 100px;
+  overflow-y: scroll;
+  resize: none;
+}
+
 //nav
 nav {
   @extend .lime;
