@@ -42,7 +42,7 @@ class EventsController < ApplicationController
           calendar_client = Signet::OAuth2::Client.new(access_token: current_user.google_account.fresh_token)
           calendar_service = Google::Apis::CalendarV3::CalendarService.new
           calendar_service.authorization = calendar_client
-          event = Google::Apis::CalendarV3::Event.new({
+          event = Google::Apis::CalendarV3::Event.new(
             summary: @event.summary,
             location: @event.location,
             description: @event.description,
@@ -52,7 +52,7 @@ class EventsController < ApplicationController
             end: {
               date_time: @event.end.rfc3339
             }
-          })
+          )
           result = calendar_service.insert_event(@calendar.google_calendar_id, event)
           puts @event.start.rfc3339
           puts @event.end.rfc3339
@@ -110,14 +110,55 @@ class EventsController < ApplicationController
   end
 
   def google_edit
-    @google
   end
 
   def google_update
+    google_event_params=params.require(:google_event).permit(:summary, :location, :description, :start, :end)
+    begin
+      day= DateTime.parse(google_event_params['start'])
+      google_event_params['start']= DateTime.new(day.year, day.month, day.day,
+        params[:start][:hour].to_i, params[:start][:min].to_i, 0, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
+    rescue
+      @date_failed=true
+    end
+    begin
+    day= DateTime.parse(google_event_params['end'])
+    google_event_params['end']= DateTime.new(day.year, day.month, day.day,
+      params[:end][:hour].to_i, params[:end][:min].to_i, 0, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
+    rescue
+      @date_failed=true
+    end
+    google_update_failed if @date_failed
+    unless @date_failed
+      begin
+        @google_event.update!(summary: google_event_params['summary'],
+          location: google_event_params['location'],
+          description: google_event_params['description'],
+        )
+        @google_event.start = Google::Apis::CalendarV3::EventDateTime.new(time_zone: @calendar.time_zone,
+          date_time: google_event_params['start'])
+        @google_event.end = Google::Apis::CalendarV3::EventDateTime.new(time_zone: @calendar.time_zone,
+          date_time: google_event_params['end'])
+        calendar_client = Signet::OAuth2::Client.new(access_token: current_user.google_account.fresh_token)
+        calendar_service = Google::Apis::CalendarV3::CalendarService.new
+        calendar_service.authorization = calendar_client
+        @google_event=calendar_service.update_event(@calendar.google_calendar_id, @google_event.id, @google_event)
+        redirect_to group_category_calendar_path(@group,@category), notice: 'Google Event was successfully updated.'
+      rescue Exception =>e
+        puts e.message
+        google_update_failed
+      end
+    end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def google_update_failed
+      flash.now[:notice]='Update was unsuccessful'
+      render 'google_edit'
+
+    end
+
     def set_event
       @event = @calendar.events.find(params[:id])
     end
