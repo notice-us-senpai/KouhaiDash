@@ -131,8 +131,8 @@ class CalendarsController < ApplicationController
   private
     def get_events(date)
 
-      day_start=DateTime.new(date.year,date.month,1)
-      day_end=DateTime.new(date.year,date.month,1,23,59,59)
+      day_start=DateTime.new(date.year,date.month,1,0,0, 0, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
+      day_end=DateTime.new(date.year,date.month,1,23,59,59, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
       @start=day_start.cwday%7
       @days_in_month=Time.days_in_month(date.month,date.year)
       @events=Array.new(@days_in_month,nil)
@@ -146,8 +146,8 @@ class CalendarsController < ApplicationController
           calendar_service = Google::Apis::CalendarV3::CalendarService.new
           calendar_service.authorization = calendar_client
           result= calendar_service.list_events(@calendar.google_calendar_id, single_events: true,
-            order_by: "startTime",time_max: DateTime.new(date.next_month.year,date.next_month.month,1).rfc3339,
-            time_min: DateTime.new(date.year,date.month,1).rfc3339)
+            order_by: "startTime",time_max: DateTime.new(date.next_month.year,date.next_month.month,1,0,0, 0, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset).rfc3339,
+            time_min: DateTime.new(date.year,date.month,1,0,0, 0, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset).rfc3339)
           @google_events=result.items
         rescue
           @google_msg='There was an issue loading events from the Google Calendar.'
@@ -243,6 +243,18 @@ class CalendarsController < ApplicationController
 
         calendar_client = Signet::OAuth2::Client.new(access_token: @calendar.google_account.fresh_token)
         calendar_service.authorization = calendar_client
+
+        #time_zone
+        begin
+          result=calendar_service.get_calendar(@calendar.google_calendar_id)
+          result.time_zone=ActiveSupport::TimeZone[@calendar.time_zone].tzinfo.identifier
+          result=calendar_service.update_calendar(@calendar.google_calendar_id,result)
+        rescue Exception => e
+          puts e.message
+          @settings_failed=true
+        end
+
+
         # public read access
         begin
           rule = Google::Apis::CalendarV3::AclRule.new(
@@ -287,7 +299,7 @@ class CalendarsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def calendar_params
-      params.require(:calendar).permit(:name, :google_calendar_id)
+      params.require(:calendar).permit(:name, :google_calendar_id, :time_zone)
     end
 
     def check_edit_auth

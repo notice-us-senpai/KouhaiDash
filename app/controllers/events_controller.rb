@@ -31,9 +31,9 @@ class EventsController < ApplicationController
     @event = Event.new(event_params)
     @event.calendar_id=@category.calendar.id
     @event.start &&= DateTime.new(@event.start.year, @event.start.month, @event.start.day,
-      params[:start][:hour].to_i, params[:start][:min].to_i)
+      params[:start][:hour].to_i, params[:start][:min].to_i, 0, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
     @event.end &&= DateTime.new(@event.end.year, @event.end.month, @event.end.day,
-      params[:end][:hour].to_i, params[:end][:min].to_i)
+      params[:end][:hour].to_i, params[:end][:min].to_i, 0, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
     respond_to do |format|
       if @event.save
         begin
@@ -71,21 +71,20 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
-
+    update_params=event_params.to_h
+    begin
+      day= DateTime.parse(update_params['start'])
+      update_params['start']= DateTime.new(day.year, day.month, day.day,
+        params[:start][:hour].to_i, params[:start][:min].to_i, 0, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
+    rescue
+    end
+    begin
+    day= DateTime.parse(update_params['end'])
+    update_params['end']= DateTime.new(day.year, day.month, day.day,
+      params[:end][:hour].to_i, params[:end][:min].to_i, 0, ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
+    rescue
+    end
     respond_to do |format|
-      update_params=event_params.to_h
-      begin
-        day= DateTime.parse(update_params['start'])
-        update_params['start']= DateTime.new(day.year, day.month, day.day,
-          params[:start][:hour].to_i, params[:start][:min].to_i)
-      rescue
-      end
-      begin
-      day= DateTime.parse(update_params['end'])
-      update_params['end']= DateTime.new(day.year, day.month, day.day,
-        params[:end][:hour].to_i, params[:end][:min].to_i)
-      rescue
-      end
       if @event.update(update_params)
         format.html { redirect_to [@group,@category,@event], notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: [@group,@category,@event] }

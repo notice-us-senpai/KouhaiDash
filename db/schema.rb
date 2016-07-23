@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160722050046) do
+ActiveRecord::Schema.define(version: 20160723033811) do
 
   create_table "calendars", force: :cascade do |t|
     t.string   "name"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20160722050046) do
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.integer  "google_account_id"
+    t.string   "time_zone"
   end
 
   add_index "calendars", ["category_id"], name: "index_calendars_on_category_id"

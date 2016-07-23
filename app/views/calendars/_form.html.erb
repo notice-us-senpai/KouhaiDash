@@ -17,6 +17,11 @@
     <%= f.label :name %>
   </div>
 
+  <div class="input-field col s12">
+    <%= f.select :time_zone, options_for_select(ActiveSupport::TimeZone.all.collect{|zone| [zone.to_s,zone.name]}, 'UTC')%>
+    <%= f.label :time_zone %>
+  </div>
+
   <%if @google_token%>
     <div class= 'col s12'>
       <h5>Connect to Google Calendar</h5>
