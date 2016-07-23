@@ -1,37 +1,43 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, "#{@calendar.name.length>0? @calendar.name : @category.name}") %>
+<div class="row">
+  <h1><%=@calendar.name.length>0? @calendar.name : @category.name%></h1>
+</div>
 
-<h1>Listing Events</h1>
+<div class="row">
+  <div class = "col s12">
+    <% if @authorised_member%>
+      <%= link_to '<i class="material-icons">settings</i>'.html_safe,edit_group_category_calendar_path(@group,@category),
+        class: "btn waves-effect waves-light tooltipped", data:{position:"bottom", delay:"50",tooltip:"Settings"}  %>
+      <a class= "red btn waves-effect waves-light" href='<%=new_group_category_event_path(@group,@category)%>'><i class="material-icons left">add</i> New Event</a>
+    <% end%>
+    <%= link_to '<i class="material-icons">date_range</i>'.html_safe,group_category_calendar_path(@group,@category),
+      class: "btn waves-effect waves-light tooltipped", data:{position:"bottom", delay:"50",tooltip:"Calendar View"}  %>
+  </div>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Calendar</th>
-      <th>Name</th>
-      <th>Location</th>
-      <th>Description</th>
-      <th>Start</th>
-      <th>End</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class='row'>
+  <div class='col s12'>
+    <table>
+      <thead>
+        <tr>
+          <th>Summary</th>
+          <th>Start</th>
+          <th>End</th>
+          <th colspan="2"></th>
+        </tr>
+      </thead>
 
-  <tbody>
-    <% @events.each do |event| %>
-      <tr>
-        <td><%= event.calendar_id %></td>
-        <td><%= event.summary %></td>
-        <td><%= event.location %></td>
-        <td><%= event.description %></td>
-        <td><%= event.start %></td>
-        <td><%= event.end %></td>
-        <td><%= link_to 'Show', [@group,@category,event] %></td>
-        <td><%= link_to 'Edit', edit_group_category_event_path(@group,@category,event) %></td>
-        <td><%= link_to 'Destroy', [@group,@category,event], method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Event', new_group_category_event_path(@group,@category) %>
+      <tbody>
+        <% @events.each do |event| %>
+          <tr>
+            <td><%= link_to event.summary, [@group,@category,event] %></td>
+            <td><%= event.start %></td>
+            <td><%= event.end %></td>
+            <td><%= link_to '<i class="material-icons">mode_edit</i>'.html_safe, edit_group_category_event_path(@group,@category,event) %></td>
+            <td><%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,@category,event], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

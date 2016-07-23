@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_variables
   before_action :check_view_auth
-  before_action :check_edit_auth, only: [:edit, :update, :destroy, :new, :create]
+  before_action :check_edit_auth, except: [:index, :show, :google_show]
   before_action :check_created
   before_action :set_event, only: [:edit, :update, :show, :destroy]
   before_action :set_google_event, only:[:google_edit, :google_show, :google_update]
@@ -101,8 +101,20 @@ class EventsController < ApplicationController
   def destroy
     @event.destroy
     respond_to do |format|
-      format.html { redirect_to group_category_events_path(@group,@category), notice: 'Event was successfully destroyed.' }
+      format.html { redirect_to group_category_calendar_path(@group,@category), notice: 'Event was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def google_destroy
+    begin
+      calendar_client = Signet::OAuth2::Client.new(access_token: current_user.google_account.fresh_token)
+      calendar_service = Google::Apis::CalendarV3::CalendarService.new
+      calendar_service.authorization = calendar_client
+      @google_event=calendar_service.delete_event(@calendar.google_calendar_id, params[:id])
+      redirect_to group_category_calendar_path(@group,@category), notice: 'Google Event was successfully deleted'
+    rescue
+      redirect_to group_category_google_event_path(@group,@category,params[id]), notice: 'Attempt to delete Google Event was unsuccessful'
     end
   end
 
