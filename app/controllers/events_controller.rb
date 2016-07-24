@@ -78,8 +78,11 @@ class EventsController < ApplicationController
           puts e.message
         end
         format.html {
-          redirect_to [@group,@category,@event], notice: 'Event was successfully created.' if @event
-          redirect_to group_category_google_event_path(@group,@category,@google_event.id), notice: 'Google event was successfully created.' if @event
+          if @event
+            redirect_to [@group,@category,@event], notice: 'Event was successfully created.'
+          else
+            redirect_to group_category_google_event_path(@group,@category,@google_event.id), notice: 'Google event was successfully created.'
+          end
         }
         format.json { render :show, status: :created, location: [@group,@category,@event] }
       else
@@ -121,8 +124,9 @@ class EventsController < ApplicationController
   def destroy
     @event.destroy
     respond_to do |format|
-      format.html { redirect_to group_category_events_path(@group,@category), notice: 'Event was successfully destroyed.' }
+      format.html { redirect_to group_category_calendar_path(@group,@category), notice: 'Event was successfully destroyed.' }
       format.json { head :no_content }
+      format.js{}
     end
   end
 
@@ -176,15 +180,89 @@ class EventsController < ApplicationController
     end
   end
 
+  def export_all_events
+    begin
+      #create with google calendar and destroy
+      @events= @calendar.events
+      calendar_client = Signet::OAuth2::Client.new(access_token: current_user.google_account.fresh_token)
+      calendar_service = Google::Apis::CalendarV3::CalendarService.new
+      calendar_service.authorization = calendar_client
+      @events.each do |event|
+        g_event = Google::Apis::CalendarV3::Event.new(
+          summary: event.summary,
+          location: event.location,
+          description: event.description,
+          start: {
+            date_time: event.start.to_datetime.rfc3339
+          },
+          end: {
+            date_time: event.end.to_datetime.rfc3339
+          }
+        )
+        result = calendar_service.insert_event(@calendar.google_calendar_id, g_event)
+        event.destroy if result.id
+      end
+      @success=true
+    rescue Exception => e
+      puts e.message
+      # try again after resetting google settings
+      google_settings
+      begin
+        #create with google calendar and destroy
+        @events= @calendar.events
+        calendar_client = Signet::OAuth2::Client.new(access_token: current_user.google_account.fresh_token)
+        calendar_service = Google::Apis::CalendarV3::CalendarService.new
+        calendar_service.authorization = calendar_client
+        @events.each do |event|
+          g_event = Google::Apis::CalendarV3::Event.new(
+            summary: event.summary,
+            location: event.location,
+            description: event.description,
+            start: {
+              date_time: event.start.to_datetime.rfc3339
+            },
+            end: {
+              date_time: event.end.to_datetime.rfc3339
+            }
+          )
+          result = calendar_service.insert_event(@calendar.google_calendar_id, g_event)
+          event.destroy if result.id
+        end
+        @success=true
+      rescue Exception => e
+        puts e.message
+        @success=false
+      end
+    end
+    respond_to do |format|
+      format.html {
+        flash[:notice]=( @success ?
+        'Events were successfully exported to Google Calendar.':'Unable to export all events. Please sign in with Google through Settings if you have not done so or check the Google Calendar settings.')
+        redirect_to group_category_events_path(@group,@category)
+      }
+    end
+  end
+
   def google_destroy
     begin
       calendar_client = Signet::OAuth2::Client.new(access_token: current_user.google_account.fresh_token)
       calendar_service = Google::Apis::CalendarV3::CalendarService.new
       calendar_service.authorization = calendar_client
       @google_event=calendar_service.delete_event(@calendar.google_calendar_id, params[:id])
-      redirect_to group_category_events_path(@group,@category), notice: 'Google Event was successfully deleted'
+      @id=params[:id]
+      @success=true
     rescue
-      redirect_to group_category_google_event_path(@group,@category,params[:id]), notice: 'Attempt to delete Google Event was unsuccessful'
+      @success=false
+    end
+    respond_to do |format|
+      format.html {
+        if @success
+          redirect_to group_category_calendar_path(@group,@category), notice: 'Google Event was successfully deleted.'
+        else
+          redirect_to group_category_google_event_path(@group,@category,params[:id]), notice: 'Attempt to delete Google Event was unsuccessful.'
+        end
+      }
+      format.js{}
     end
   end
 

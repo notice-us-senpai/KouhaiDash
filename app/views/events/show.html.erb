@@ -37,7 +37,7 @@
         class: "btn waves-effect waves-light tooltipped", data: {position:"bottom", delay:"50",tooltip:"Update"}%>
       <%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,@category,@event], method: :delete,
         data: { confirm: 'Are you sure?',position:"bottom", delay:"50",tooltip:"Delete"}, class: "btn waves-effect waves-light tooltipped red"%>
-      <%= link_to '<i class="material-icons">send</i>'.html_safe, group_category_export_event_path(@group,@category,@event), method: :post,
+      <%= link_to '<i class="material-icons">import_export</i>'.html_safe, group_category_export_event_path(@group,@category,@event), method: :post,
         data: { position:"bottom", delay:"50",tooltip:"Export to Google Calendar"}, class: "btn waves-effect waves-light tooltipped"%>
     <%end%>
     <%= link_to '<i class="material-icons">date_range</i>'.html_safe, group_category_calendar_path(@group,@category),

@@ -1,0 +1,5 @@
+<%if @success%>
+  $('#g_<%=@id%>_row').hide('fast');
+<%else%>
+  Materialize.toast('Attempt to delete Google Event was unsuccessful.');
+<%end%>
