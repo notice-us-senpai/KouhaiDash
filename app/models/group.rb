@@ -8,4 +8,10 @@ class Group < ActiveRecord::Base
   # validations
   validates :name,
     presence: true
+  validates :string_id,
+    uniqueness: { case_sensitive: false },
+    format: { with: /\A[a-zA-Z0-9_-]+\Z/, message: "only allows letters, digits, hyphens and underscores"}
+
+  before_save { self.string_id = string_id.downcase }
+
 end

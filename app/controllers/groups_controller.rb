@@ -10,6 +10,15 @@ class GroupsController < ApplicationController
     @groups = Group.all
   end
 
+  def show_by_string_id
+    @group=Group.find_by(string_id: params[:string_id].downcase)
+    if @group
+      redirect_to @group
+    else
+      redirect_to groups_path
+    end
+  end
+
   # GET /groups/1
   # GET /groups/1.json
   def show
@@ -89,7 +98,7 @@ class GroupsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def group_params
-      params.require(:group).permit(:name, :members_public)
+      params.require(:group).permit(:name, :members_public,:description,:string_id)
     end
 
     #checks if user if a member of the group

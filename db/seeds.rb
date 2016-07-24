@@ -24,23 +24,25 @@ User.create(
   )
 
 magic_number.times do |n|
-
-  username = ""
-  until username.length >= 4
-    username = Faker::Internet.user_name[0...16]
+  user=false
+  until user
+    username = ""
+    until username.length >= 4
+      username = Faker::Internet.user_name(%w(_ -))[0...16]
+    end
+    password = Faker::Internet.password(8)
+    user=User.create(
+    	username: username,
+      email: Faker::Internet.email[0...64],
+      password: password,
+      password_confirmation: password
+    ).id
   end
-  password = Faker::Internet.password(8)
-  User.create(
-  	username: username,
-    email: Faker::Internet.email[0...64],
-    password: password,
-    password_confirmation: password
-    )
 end
 
-Group.create(name: 'EGroup')
-Group.create(name: 'NoMember')
-Group.create(name: 'Not Approved')
+Group.create(name: 'EGroup', string_id: 'EGroup')
+Group.create(name: 'NoMember', string_id: 'nomember')
+Group.create(name: 'Not Approved', string_id: 'notapproved')
 magic_number.times do |i|
   Membership.create(user_id: i+1, group_id:1, approved: (i!=0 && i%2==0? false : true))
 end

@@ -62,6 +62,7 @@
             <li><%= link_to 'KouhaiDash!', root_path, id: 'brand'%></li>
 
             <% if @group && @group.id %>
+              <li><%= link_to @group.name, group_path(@group) %></li>
               <%get_categories_and_path(@group).each do |link| %>
                 <li>
                   <%= link_to link[:name], link[:path] %>

@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   # get 'google-drive', to: 'pages#google_drive'
   # get 'pages/calendar-callback', to: 'pages#calendar_callback'
   # get 'pages/drive-callback', to: 'pages#drive_callback'
-
+  get 'g/:string_id', to: 'groups#show_by_string_id'
   resources :groups do
     resources :memberships, only: [:index, :create, :destroy, :update]
     resources :categories, path: 'c' do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160724112651) do
+ActiveRecord::Schema.define(version: 20160724163601) do
 
   create_table "calendars", force: :cascade do |t|
     t.string   "name"
@@ -84,7 +84,11 @@ ActiveRecord::Schema.define(version: 20160724112651) do
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.boolean  "members_public", default: true
+    t.string   "string_id"
+    t.text     "description"
   end
+
+  add_index "groups", ["string_id"], name: "index_groups_on_string_id", unique: true
 
   create_table "memberships", force: :cascade do |t|
     t.integer  "group_id"

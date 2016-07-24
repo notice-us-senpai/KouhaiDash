@@ -21,7 +21,8 @@ class User < ActiveRecord::Base
 	validates :username,
 						presence: true,
 						length: { minimum: 4, maximum: 16 },
-						uniqueness: { case_sensitive: false }
+						uniqueness: { case_sensitive: false },
+            format: { with: /\A[a-zA-Z0-9_-]+\Z/, message: "only allows letters, digits, hyphens and underscores"}
 	validates :email,
 						presence: true,
 						format: { with: VALID_EMAIL_REGEX },

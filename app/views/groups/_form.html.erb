@@ -17,6 +17,14 @@
     <%= f.label :name %>
   </div>
   <div class="input-field col s12">
+    <%= f.text_field :string_id%>
+    <%= f.label :string_id, 'Group ID' %>
+  </div>
+  <div class="input-field col s12">
+    <%= f.text_area :description, class: 'materialize-textarea'%>
+    <%= f.label :description %>
+  </div>
+  <div class="input-field col s12">
     <%= f.check_box :members_public%>
     <%= f.label :members_public, "Set member list to be public"%>
   </div>
