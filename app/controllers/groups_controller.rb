@@ -7,7 +7,7 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.json
   def index
-    @groups = Group.all
+    @groups = Group.limit(10).all
   end
 
   def show_by_string_id
@@ -16,6 +16,13 @@ class GroupsController < ApplicationController
       redirect_to @group
     else
       redirect_to groups_path
+    end
+  end
+
+  def search
+    @groups = Group.where('LOWER(name) LIKE ?',"%#{params.require(:search)[:input]}%".downcase).order("LENGTH(name) ASC").limit(10)
+    respond_to do |format|
+      format.js{}
     end
   end
 

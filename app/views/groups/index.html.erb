@@ -10,31 +10,15 @@
   </div>
 </div>
 <div class="row">
-  <% @groups.each do |group| %>
-    <div class="col s12 m6">
-      <div class="card group-card">
-        <div class="card-content">
-          <span class="card-title"><%=link_to "#{group.name}", group%></span>
-          <p></p>
-        </div>
-        <div class="card-action">
-          <%=link_to "<i class='material-icons'>info</i>".html_safe, group,
-            data: {position:"bottom", delay:"50",tooltip:"View Group"}, class:"tooltipped" %>
-          <%if is_a_member_of_group?(group)%>
-            <%if is_user_of_group?(group)%>
-              <a class='tooltipped' data-position="bottom" data-delay="50" data-tooltip="Official Member"><i class='material-icons'>person</i></a>
-            <%else%>
-              <a class='tooltipped' data-position="bottom" data-delay="50" data-tooltip="Not approved yet :("><i class='material-icons'>person_outline</i></a>
-            <%end%>
-            <%=link_to "<i class='material-icons'>remove_circle</i>".html_safe, [group, group.memberships.find_by(user_id: current_user.id)], method: :delete,
-            data: { confirm: "Leave #{group.name}?",position:"bottom", delay:"50",tooltip:"Leave Group"}, class:"tooltipped" %>
-
-          <%elsif logged_in?%>
-            <%=link_to "<i class='material-icons'>person_add</i>".html_safe,
-              join_group_path(group.id), method: :post,class:"tooltipped", data:{position:"bottom", delay:"50",tooltip:"Join Group"}  %>
-          <%end%>
-        </div>
+  <div>
+    <%=form_for(:search, url: groups_search_path(@group),remote: true,  html: {id: "groups_search_form" }) do |f|%>
+      <div class='input-field col s12'>
+        <%=f.text_field :input, class:'groups-search' %>
+        <%=f.label :input, "Search"%>
       </div>
-    </div>
-  <% end %>
+    <%end%>
+  </div>
+</div>
+<div class="row card-grid" id ='groups_grid'>
+  <%= render 'cards'%>
 </div>

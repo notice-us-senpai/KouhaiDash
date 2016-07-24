@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   # get 'pages/calendar-callback', to: 'pages#calendar_callback'
   # get 'pages/drive-callback', to: 'pages#drive_callback'
   get 'g/:string_id', to: 'groups#show_by_string_id'
+  post 'groups/search', to: 'groups#search', as: 'groups_search'
   resources :groups do
     resources :memberships, only: [:index, :create, :destroy, :update]
     resources :categories, path: 'c' do
