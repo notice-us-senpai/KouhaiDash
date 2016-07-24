@@ -215,8 +215,8 @@ class CalendarsController < ApplicationController
               calendar_client = Signet::OAuth2::Client.new(access_token: @google_token)
               calendar_service = Google::Apis::CalendarV3::CalendarService.new
               calendar_service.authorization = calendar_client
-              cal_name = params.fetch(:google).fetch(:name,@group.name)
-              cal_name = @group.name unless cal_name && cal_name.length>0
+              cal_name = params.fetch(:google).fetch(:name,@calendar.name)
+              cal_name = @category.name unless cal_name && cal_name.length>0
               calendar =  Google::Apis::CalendarV3::Calendar.new(summary: cal_name)
               result = calendar_service.insert_calendar(calendar)
               @calendar.google_calendar_id=result.id
