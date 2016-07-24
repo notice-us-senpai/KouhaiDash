@@ -83,6 +83,29 @@ position: relative;
   z-index: 10000;
 }
 
+//calendar
+.day-6, .day-0{
+  @extend .orange-text, .text-darken-2;
+}
+.day-5,.day-4,.day-3,.day-2,.day-1{
+  @extend .lime-text, .text-darken-2;
+}
+.calendar-td{
+  vertical-align: top;
+  overflow: hidden;
+  padding: 0px 2px;
+}
+.calendar-table{
+  table-layout:fixed
+}
+
+//fix for textarea resizing issue
+textarea.materialize-textarea{
+  min-height: 80px;
+  overflow-y: scroll;
+  resize: none;
+}
+
 //nav
 nav {
   @extend .lime;

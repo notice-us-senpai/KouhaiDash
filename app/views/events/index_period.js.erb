@@ -1,0 +1,4 @@
+document.getElementById("events_table").innerHTML = "<%= escape_javascript(render 'table') %>";
+<% if @google_msg %>
+  Materialize.toast('<%=@google_msg%>');
+<% end%>

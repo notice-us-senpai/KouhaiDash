@@ -1,0 +1,41 @@
+<% provide(:title, "#{@calendar.name.length>0? @calendar.name : @category.name}") %>
+<div class="row">
+  <h1><%=@calendar.name.length>0? @calendar.name : @category.name%></h1>
+</div>
+
+<div class="row">
+  <div class = "col s12">
+    <% if @authorised_member%>
+      <%= link_to '<i class="material-icons">settings</i>'.html_safe,edit_group_category_calendar_path(@group,@category),
+        class: "btn waves-effect waves-light tooltipped", data:{position:"bottom", delay:"50",tooltip:"Settings"}  %>
+      <a class= "red btn waves-effect waves-light" href='<%=new_group_category_event_path(@group,@category)%>'><i class="material-icons left">add</i> New Event</a>
+      <% unless @calendar.events.empty? ||@calendar.google_calendar_id.nil? || @calendar.google_calendar_id.length==0%>
+        <%= link_to '<i class="material-icons">import_export</i>'.html_safe,group_category_export_all_events_path(@group,@category), method: :post,
+          class: "btn waves-effect waves-light tooltipped",
+          data:{position:"bottom", delay:"50",tooltip:"Export all local events to Google Calendar"}  %>
+      <% end %>
+    <% end%>
+    <%= link_to '<i class="material-icons">date_range</i>'.html_safe,group_category_calendar_path(@group,@category),
+      class: "btn waves-effect waves-light tooltipped", data:{position:"bottom", delay:"50",tooltip:"Calendar View"}  %>
+  </div>
+</div>
+
+<div class='row'>
+  <div>
+    <%=form_for(:period, url: group_category_events_period_path(@group, @category),remote: true,  html: {id: "events_period_form" }) do |f|%>
+      <div class='input-field col s6 m4'>
+        <%= f.text_field :start, class:'datepicker events-period', type: 'date', value: @period_start.to_date%>
+        <%= f.label :start, "From",class: 'active'%>
+      </div>
+      <div class='input-field col s6 m4'>
+        <%= f.text_field :end, class:'datepicker events-period', type: 'date', value: @period_end.to_date.yesterday%>
+        <%= f.label :end, "Until", class: 'active'%>
+      </div>
+    <%end%>
+  </div>
+  <div class='col s12'>
+    <table id='events_table'>
+      <%=render 'table'%>
+    </table>
+  </div>
+</div>

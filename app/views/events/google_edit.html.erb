@@ -1,0 +1,57 @@
+<% provide(:title, "Edit #{@google_event.summary}") %>
+<div class="row">
+  <div class="col s12">
+    <h1>Edit <%=@google_event.summary%></h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col s12 m9">
+    <%= form_tag group_category_google_event_path(@group,@category,@google_event.id) do %>
+      <div class="input-field col s12">
+        <%= text_field :google_event, :summary %>
+        <%= label :google_event, :summary %>
+      </div>
+      <div class="input-field col s12">
+        <%= text_field :google_event, :location %>
+        <%= label :google_event, :location %>
+      </div>
+      <div class="input-field col s12">
+        <%= text_area :google_event, :description, class: 'materialize-textarea' %>
+        <%= label :google_event, :description %>
+      </div>
+      <div>
+        <div class="input-field col s12 m4">
+          <%= text_field :google_event, :start, class:'datepicker', type: 'date', value: "#{@google_event.start.date_time.to_date}"%>
+          <%= label :google_event, :start, "Start Date",class: 'active'%>
+        </div>
+        <div class="input-field col s6 m4">
+          <%=select_hour(@google_event.start.date_time,{ field_name: 'hour', prefix:'start'})%>
+          <%=label :start, :hour, "hour"%>
+        </div>
+        <div class="input-field col s6 m4">
+          <%=select_minute(@google_event.start.date_time,{ field_name: 'min', prefix:'start'})%>
+          <%=label :start, :min, "minute"%>
+        </div>
+      </div>
+      <div>
+        <div class="input-field col s12 m4">
+          <%= text_field :google_event, :end, class:'datepicker', type: 'date',value: "#{@google_event.end.date_time.to_date}"%>
+          <%= label :google_event, :end, "End Date",class: 'active'%>
+        </div>
+        <div class="input-field col s6 m4">
+          <%=select_hour(@google_event.end.date_time,{ field_name: 'hour', prefix:'end'})%>
+          <%=label :end, :hour, "hour"%>
+        </div>
+        <div class="input-field col s6 m4">
+          <%=select_minute(@google_event.end.date_time,{ field_name: 'min', prefix:'end'})%>
+          <%=label :end, :min, "minute"%>
+        </div>
+      </div>
+      <div class="actions col s12">
+        <p><button class="btn-large waves-effect waves-light" type="submit" name="action">Submit
+          <i class="material-icons right">send</i>
+        </button></p>
+      </div>
+    <% end %>
+  </div>
+</div>

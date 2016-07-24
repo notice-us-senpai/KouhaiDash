@@ -1,0 +1,49 @@
+<% provide(:title, "#{@google_event.summary||'(No Title)'}") %>
+<div class="row">
+  <div class="col s12">
+    <h1><%=@google_event.summary||'(No Title)'%></h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col s12">
+    <table class="table">
+      <tbody>
+        <tr>
+          <th>Start</th>
+          <td><%= @google_event.start.date_time.to_time.in_time_zone(@calendar.time_zone).strftime('%e %B %4Y %R') %></td>
+        </tr>
+        <tr>
+          <th>End</th>
+          <td><%= @google_event.end.date_time.to_time.in_time_zone(@calendar.time_zone).strftime('%e %B %4Y %R') %></td>
+        </tr>
+        <tr>
+          <th>Location</th>
+          <td><%= @google_event.location %></td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td><%= @google_event.description %></td>
+        </tr>
+        <tr>
+          <th>Google link</th>
+          <td><div ><%=link_to 'Google Event link', @google_event.html_link%></div></td>
+        </tr>
+      </tbody>
+     </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class=" col s12">
+    <%if @authorised_member %>
+      <%= link_to "<i class='material-icons'>mode_edit</i>".html_safe, group_category_edit_google_event_path(@group,@category,@google_event.id),
+        class: "btn waves-effect waves-light tooltipped", data: {position:"bottom", delay:"50",tooltip:"Update"}%>
+        <%= link_to '<i class="material-icons">delete</i>'.html_safe, group_category_google_event_path(@group,@category,@google_event.id), method: :delete,
+          data: { confirm: 'Are you sure?',position:"bottom", delay:"50",tooltip:"Delete"}, class: "btn waves-effect waves-light tooltipped red"%>
+    <%end%>
+    <%= link_to '<i class="material-icons">date_range</i>'.html_safe, group_category_calendar_path(@group,@category),
+      class: "btn waves-effect waves-light tooltipped",data: {position:"bottom", delay:"50",tooltip:"Return to calendar"} %>
+    <%= link_to '<i class="material-icons">list</i>'.html_safe, group_category_events_path(@group,@category),
+      class: "btn waves-effect waves-light tooltipped",data: {position:"bottom", delay:"50",tooltip:"Return to list"} %>
+  </div>
+</div>

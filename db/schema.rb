@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160710191437) do
+ActiveRecord::Schema.define(version: 20160723033811) do
+
+  create_table "calendars", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "category_id"
+    t.string   "google_calendar_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.integer  "google_account_id"
+    t.string   "time_zone"
+  end
+
+  add_index "calendars", ["category_id"], name: "index_calendars_on_category_id"
+  add_index "calendars", ["google_account_id"], name: "index_calendars_on_google_account_id"
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -37,6 +50,21 @@ ActiveRecord::Schema.define(version: 20160710191437) do
     t.datetime "updated_at",   null: false
     t.integer  "category_id"
   end
+
+  create_table "events", force: :cascade do |t|
+    t.integer  "calendar_id"
+    t.string   "summary"
+    t.string   "location"
+    t.text     "description"
+    t.datetime "start"
+    t.datetime "end"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "events", ["calendar_id"], name: "index_events_on_calendar_id"
+  add_index "events", ["end"], name: "index_events_on_end"
+  add_index "events", ["start"], name: "index_events_on_start"
 
   create_table "google_accounts", force: :cascade do |t|
     t.integer  "user_id"

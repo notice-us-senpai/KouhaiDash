@@ -1,0 +1,76 @@
+<%= form_for([@group,@category,@calendar], url: group_category_calendar_path(@group,@category)) do |f| %>
+  <% if @calendar.errors.any? %>
+    <div class="col s12">
+      <div class="alert">
+        <p>The form contains <%= pluralize(@calendar.errors.count, "error") %>.</p>
+      </div>
+      <ul class='alert'>
+      <% @calendar.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="input-field col s12">
+    <%= f.text_field :name , placeholder: @category.name%>
+    <%= f.label :name %>
+  </div>
+
+  <div class="input-field col s12">
+    <%= f.select :time_zone, options_for_select(ActiveSupport::TimeZone.all.collect{|zone| [zone.to_s,zone.name]}, (@calendar && @calendar.time_zone)||'UTC')%>
+    <%= f.label :time_zone %>
+  </div>
+
+  <%if @google_token%>
+    <div class= 'col s12'>
+      <h5>Connect to Google Calendar</h5>
+    </div>
+    <%if @calendar.google_calendar_id%>
+      <div class="input-field col s12">
+        <p>
+          <input name="gradio" type="radio" id="gradio_current" class='calendar_radio' checked value='current'/>
+          <label for="gradio_current">Current Google Calendar: <%=@google_calendar_name||@calendar.google_calendar_id%></label>
+        </p>
+      </div>
+    <%end%>
+    <div class="input-field col s12">
+      <p>
+        <input name="gradio" type="radio" id="gradio_no" class='calendar_radio' value='no'/>
+        <label for="gradio_no">Not to connect with Google Calendar</label>
+      </p>
+    </div>
+    <div class="input-field col s12">
+      <p>
+        <input name="gradio" type="radio" id="gradio_select" class='calendar_radio' value='select'/>
+        <label for="gradio_select">Choose Google Calendar</label>
+        <br><br>
+      </p>
+    </div>
+    <div class="input-field col s11 offset-s1">
+      <%= select :google, :calendar_id, options_for_select(@calendar_array, @calendar.google_calendar_id)%>
+      <%= label :google, :calendar_id, 'Google Calendar'%>
+    </div>
+    <div class="input-field col s12">
+      <p>
+        <input name="gradio" type="radio" id="gradio_new" class='calendar_radio' value='new'/>
+        <label for="gradio_new">Create new Google Calendar</label>
+        <br><br>
+      </p>
+    </div>
+    <div class="input-field col s11 offset-s1">
+      <%= text_field :google, :name %>
+      <%= label :google, :name , "New Google Calendar Name"%>
+    </div>
+  <%else%>
+    <div id='google-authenicate' class='col s12'>
+      <br>
+      <%=link_to 'Sign in and load from Google Docs',group_category_calendar_auth_path(@group,@category),class:'btn waves-effect waves-light'%>
+    </div>
+  <%end%>
+  <div class="actions col s12">
+    <p><br><button class="btn-large waves-effect waves-light" type="submit" name="action">Submit
+      <i class="material-icons right">send</i>
+    </button></p>
+  </div>
+<% end %>

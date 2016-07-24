@@ -1,0 +1,50 @@
+<% provide(:title, "#{@event.summary}") %>
+<div class="row">
+  <div class="col s12">
+    <h1><%=@event.summary%></h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col s12">
+    <table class="table">
+      <tbody>
+        <tr>
+          <th>Start</th>
+          <td><%= @event.start.to_time.in_time_zone(@calendar.time_zone).strftime('%e %B %4Y %R') %></td>
+        </tr>
+        <tr>
+          <th>End</th>
+          <td><%= @event.end.to_time.in_time_zone(@calendar.time_zone).strftime('%e %B %4Y %R') %></td>
+        </tr>
+        <tr>
+          <th>Location</th>
+          <td><%= @event.location %></td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td><%= @event.description %></td>
+        </tr>
+
+      </tbody>
+     </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class=" col s12">
+    <%if @authorised_member %>
+      <%= link_to "<i class='material-icons'>mode_edit</i>".html_safe, edit_group_category_event_path(@group,@category,@event),
+        class: "btn waves-effect waves-light tooltipped", data: {position:"bottom", delay:"50",tooltip:"Update"}%>
+      <%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,@category,@event], method: :delete,
+        data: { confirm: 'Are you sure?',position:"bottom", delay:"50",tooltip:"Delete"}, class: "btn waves-effect waves-light tooltipped red"%>
+      <% unless (@calendar.google_calendar_id.nil? || @calendar.google_calendar_id.length==0)%>
+        <%= link_to '<i class="material-icons">import_export</i>'.html_safe, group_category_export_event_path(@group,@category,@event), method: :post,
+          data: { position:"bottom", delay:"50",tooltip:"Export to Google Calendar"}, class: "btn waves-effect waves-light tooltipped"%>
+      <%end%>
+    <%end%>
+    <%= link_to '<i class="material-icons">date_range</i>'.html_safe, group_category_calendar_path(@group,@category),
+      class: "btn waves-effect waves-light tooltipped",data: {position:"bottom", delay:"50",tooltip:"Return to calendar"} %>
+    <%= link_to '<i class="material-icons">list</i>'.html_safe, group_category_events_path(@group,@category),
+      class: "btn waves-effect waves-light tooltipped",data: {position:"bottom", delay:"50",tooltip:"Return to list"} %>
+  </div>
+</div>

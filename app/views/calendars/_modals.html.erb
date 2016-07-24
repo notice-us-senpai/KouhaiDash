@@ -1,0 +1,66 @@
+<%@google_events.each_index do |i|%>
+  <div id="google_modal<%=i%>" class="modal">
+    <div class="modal-content">
+      <h4><%=@google_events[i].summary%></h4>
+      <table>
+        <tr>
+          <th>Start</th>
+          <td><%=@google_events[i].start.date_time.strftime("%D %R")%></td>
+        </tr>
+        <tr>
+          <th>End</th>
+          <td><%=@google_events[i].end.date_time.strftime("%D %R")%></td>
+        </tr>
+        <tr>
+          <th>Location</th>
+          <td><%=@google_events[i].location%></td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td><%=@google_events[i].description%></td>
+        </tr>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><i class='material-icons'>done</i></a>
+      <a href="<%=group_category_google_event_path(@group,@category,@google_events[i].id)%>" class=" modal-action waves-effect
+        waves-green btn-flat teal-text"><i class='material-icons'>info</i></a>
+      <% if @authorised_member%>
+        <a href="<%=group_category_edit_google_event_path(@group,@category,@google_events[i].id)%>" class=" modal-action waves-effect waves-green btn-flat teal-text"><i class='material-icons'>mode_edit</i></a>
+      <% end%>
+    </div>
+  </div>
+<%end%>
+<%@events.each_index do |i|%>
+  <div id="modal<%=i%>" class="modal">
+    <div class="modal-content">
+      <h4><%=@events[i].summary%></h4>
+      <table>
+        <tr>
+          <th>Start</th>
+          <td><%=@events[i].start.to_time.in_time_zone(@calendar.time_zone).strftime("%D %R")%></td>
+        </tr>
+        <tr>
+          <th>End</th>
+          <td><%=@events[i].end.to_time.in_time_zone(@calendar.time_zone).strftime("%D %R")%></td>
+        </tr>
+        <tr>
+          <th>Location</th>
+          <td><%=@events[i].location%></td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td><%=@events[i].description%></td>
+        </tr>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><i class='material-icons'>done</i></a>
+      <a href="<%=group_category_event_path(@group,@category,@events[i])%>" class=" modal-action waves-effect waves-green 
+        btn-flat teal-text"><i class='material-icons'>info</i></a>
+      <% if @authorised_member%>
+        <a href="<%=edit_group_category_event_path(@group,@category,@events[i])%>" class=" modal-action waves-effect waves-green btn-flat teal-text"><i class='material-icons'>mode_edit</i></a>
+      <% end%>
+    </div>
+  </div>
+<%end%>

@@ -34,7 +34,7 @@
             <td><%= link_to '<i class="material-icons">mode_edit</i>'.html_safe,
               edit_group_category_path(@group,category)%></td>
             <td><%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,category],
-              method: :delete,remote: true, data: { confirm: 'Are you sure?' }%></td>
+              method: :delete,remote: true, data: { confirm: 'Are you sure?' }, class: 'red-text' %></td>
           </tr>
         <% end %>
       </tbody>
