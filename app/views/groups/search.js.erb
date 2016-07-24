@@ -1,5 +1,5 @@
-document.getElementById("groups_grid").innerHTML = "<%= escape_javascript(render 'cards') %>";
-grid=$('.card-grid').isotope({
+$("#groups_div").html("<%= escape_javascript(render 'cards') %>");
+$('.card-grid').isotope({
   itemSelector: '.grid-item',
   percentPosition: true
 });

@@ -40,7 +40,7 @@ magic_number.times do |n|
   end
 end
 
-Group.create(name: 'EGroup', string_id: 'EGroup')
+Group.create(name: 'EGroup', string_id: 'EGroup', description: 'This is an example group. Take a look to see how this website can be used.')
 Group.create(name: 'NoMember', string_id: 'nomember')
 Group.create(name: 'Not Approved', string_id: 'notapproved')
 magic_number.times do |i|
@@ -97,6 +97,20 @@ magic_number.times do |n|
     location: Faker::Company.name() +" room",
     description: Faker::Company.bs
   )
+end
+
+magic_number.times do |i|
+  name=Faker::Team.name
+  group=Group.create(name: Faker::Team.name,
+    string_id: Faker::Internet.user_name(name, %w(_ -)),
+    description: Faker::StarWars.quote
+  )
+  Membership.create(user_id: 1, group_id:group.id, approved: true)
+  Membership.create(user_id: 2, group_id:group.id, approved: true)
+  no=Faker::Number.between(1, 5)
+  no.times do |n|
+    Membership.create(user_id: Faker::Number.between(3, 13), group_id:group.id, approved:Faker::Boolean.boolean)
+  end
 end
 
 # id: nil, name: nil, deadline: nil, description: nil, done: nil,
