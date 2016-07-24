@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160723033811) do
+ActiveRecord::Schema.define(version: 20160724112651) do
 
   create_table "calendars", force: :cascade do |t|
     t.string   "name"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 20160723033811) do
   end
 
   add_index "google_accounts", ["gmail"], name: "index_google_accounts_on_gmail", unique: true
-  add_index "google_accounts", ["user_id"], name: "index_google_accounts_on_user_id", unique: true
+  add_index "google_accounts", ["user_id"], name: "index_google_accounts_on_user_id"
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
