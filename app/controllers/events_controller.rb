@@ -10,6 +10,24 @@ class EventsController < ApplicationController
   # GET /events.json
   def index
     @events = @calendar.events
+    today = Time.now.in_time_zone(@calendar.time_zone).to_datetime
+    @period_start= DateTime.new(today.year,today.month,1, 0,0,0,ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
+    @period_end= DateTime.new(today.next_month.year,today.next_month.month,1, 0,0,0,ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
+    get_mixed_events(@period_start,@period_end)
+    flash.now[:google_msg]=@google_msg if @google_msg
+  end
+
+  def index_period
+    respond_to do |format|
+      format.js{
+        period_params=params.require(:period).permit(:start, :end)
+        date_start= Date.parse(period_params[:start])
+        date_end = Date.parse(period_params[:end]).tomorrow
+        @period_start= DateTime.new(date_start.year,date_start.month,date_start.day, 0,0,0,ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
+        @period_end= DateTime.new(date_end.year,date_end.month,date_end.day, 0,0,0,ActiveSupport::TimeZone[@calendar.time_zone].formatted_offset)
+        get_mixed_events(@period_start,@period_end)
+      }
+    end
   end
 
   # GET /events/1
@@ -114,7 +132,7 @@ class EventsController < ApplicationController
       @google_event=calendar_service.delete_event(@calendar.google_calendar_id, params[:id])
       redirect_to group_category_calendar_path(@group,@category), notice: 'Google Event was successfully deleted'
     rescue
-      redirect_to group_category_google_event_path(@group,@category,params[id]), notice: 'Attempt to delete Google Event was unsuccessful'
+      redirect_to group_category_google_event_path(@group,@category,params[:id]), notice: 'Attempt to delete Google Event was unsuccessful'
     end
   end
 
@@ -205,12 +223,14 @@ class EventsController < ApplicationController
     end
 
     # edited from get_events from calendars_controller
-    def get_events(period_start, period_end)
+    # inclusive of period_start, exclusive of period_end
+    def get_mixed_events(period_start, period_end)
 
       day_start= period_start
-      day_end= period_start.to_time.at_time_zone(@calendar.time_zone).end_of_day.to_datetime
-      @events= @calendar.events.where.not("start >= ?", month_end).where.not("end <= ?", month_start).order(:start).all
-      @mixed_events=@events.collect{|event|{google:false, event: event } }
+      day_end= period_start.to_time.in_time_zone(@calendar.time_zone).end_of_day.to_datetime
+      @events= @calendar.events.where.not("start >= ?", period_end).where.not("end < ?", period_start).order(:start).all
+      @events.shift while !@events.empty? && @events.first.start<period_start
+      @mixed_events=@events.collect{|event|{google:false, event: event, start: event.start} }
       @google_events=[]
       if @calendar.google_calendar_id && @calendar.google_calendar_id.length>0
         #load google calendar events
@@ -240,8 +260,10 @@ class EventsController < ApplicationController
           end
         end
       end
-      addition=@google_events.collect{|event|{google:true, event: event }}
-      @mixed_events.concat(addition) if addition && !addition.empty?
+      @mixed_events.concat(@google_events.collect{|event|{google:true,
+        event: event, start: event.start.date_time}}).sort! {
+          |x,y| x[:start] <=> y[:start]
+        }
     end
 
     # copied from google_settings from calendars_controller

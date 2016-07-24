@@ -18,7 +18,6 @@ class CalendarsController < ApplicationController
 
   # POST /calendar/show_period
   def show_period
-    puts 'SHOW_PERIOD'
     respond_to do |format|
       format.js{
         period_params=params.require(:period).permit(:month, :year)
@@ -140,8 +139,8 @@ class CalendarsController < ApplicationController
       @days_in_month=Time.days_in_month(date.month,date.year)
       @day_events=Array.new(@days_in_month,nil)
       @google_events=[]
-      @events= @calendar.events.where.not("start >= ?", month_end).where.not("end <= ?", month_start).order(:start).all
-
+      @events= @calendar.events.where.not("start >= ?", month_end).where.not("end < ?", month_start).order(:start).all
+      @events.shift while !@events.empty? && @events.first.start<month_start
       if @calendar.google_calendar_id && @calendar.google_calendar_id.length>0
         #load google calendar events
         begin
@@ -176,18 +175,18 @@ class CalendarsController < ApplicationController
       for i in (0..@days_in_month-1)
         @day_events[i]=[]
         if gIdx<@google_events.length
-          gIdx+=1 while gIdx< @google_events.length && @google_events[gIdx].end.date_time<=day_start
+          gIdx+=1 while gIdx< @google_events.length && @google_events[gIdx].end.date_time<day_start
           idx=gIdx
           while idx<@google_events.length && @google_events[idx].start.date_time<=day_end
-            @day_events[i].push({event:@google_events[idx],id:idx, google:true}) if !(@google_events[idx].end.date_time<=day_start)
+            @day_events[i].push({event:@google_events[idx],id:idx, google:true}) if @google_events[idx].end.date_time>day_start || @google_events[idx].start.date_time==day_start
             idx+=1
           end
         end
         if eIdx<@events.length
-          eIdx+=1 while eIdx< @events.length && @events[eIdx].end<=day_start
+          eIdx+=1 while eIdx< @events.length && @events[eIdx].end<day_start
           idx=eIdx
           while idx<@events.length && @events[idx].start<=day_end
-            @day_events[i].push({event:@events[idx],id:idx, google:false}) if !(@events[idx].end<=day_start)
+            @day_events[i].push({event:@events[idx],id:idx, google:false}) if @events[idx].end>day_start || @events[idx].start==day_start
             idx+=1
           end
         end

@@ -1,0 +1,39 @@
+<thead>
+  <tr>
+    <th>Summary</th>
+    <th>Start</th>
+    <th>End</th>
+    <% if @authorised_member%>
+      <th colspan="2"></th>
+    <%end%>
+  </tr>
+</thead>
+
+<tbody>
+  <% @mixed_events.each do |hash| %>
+    <% if hash[:google]%>
+      <tr>
+        <%google_event=hash[:event]%>
+        <td><%= link_to google_event.summary||'(No Title)', group_category_google_event_path(@group,@category,google_event.id) %></td>
+        <td><%= google_event.start.date_time.to_time.in_time_zone(@calendar.time_zone).strftime('%e %B %4Y %R') %></td>
+        <td><%= google_event.end.date_time.to_time.in_time_zone(@calendar.time_zone).strftime('%e %B %4Y %R') %></td>
+        <% if @authorised_member%>
+          <td><%= link_to '<i class="material-icons">mode_edit</i>'.html_safe, group_category_edit_google_event_path(@group,@category,google_event.id) %></td>
+          <td><%= link_to '<i class="material-icons">delete</i>'.html_safe, group_category_google_event_path(@group,@category,google_event.id), method: :delete,
+            data: { confirm: 'Are you sure?' }, class: 'red-text'  %></td>
+        <%end%>
+      </tr>
+    <% else %>
+      <tr>
+        <%event=hash[:event]%>
+        <td><%= link_to event.summary, [@group,@category,event] %></td>
+        <td><%= event.start.to_time.in_time_zone(@calendar.time_zone).strftime('%e %B %4Y %R') %></td>
+        <td><%= event.end.to_time.in_time_zone(@calendar.time_zone).strftime('%e %B %4Y %R') %></td>
+        <% if @authorised_member%>
+          <td><%= link_to '<i class="material-icons">mode_edit</i>'.html_safe, edit_group_category_event_path(@group,@category,event) %></td>
+          <td><%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,@category,event], method: :delete, data: { confirm: 'Are you sure?' }, class: 'red-text' %></td>
+        <%end%>
+      </tr>
+    <%end%>
+  <% end %>
+</tbody>

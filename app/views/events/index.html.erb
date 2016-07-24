@@ -16,28 +16,21 @@
 </div>
 
 <div class='row'>
+  <div>
+    <%=form_for(:period, url: group_category_events_period_path(@group, @category),remote: true,  html: {id: "events_period_form" }) do |f|%>
+      <div class='input-field col s6 m4'>
+        <%= f.text_field :start, class:'datepicker events-period', type: 'date', value: @period_start.to_date%>
+        <%= f.label :start, "From",class: 'active'%>
+      </div>
+      <div class='input-field col s6 m4'>
+        <%= f.text_field :end, class:'datepicker events-period', type: 'date', value: @period_end.to_date.yesterday%>
+        <%= f.label :end, "Until", class: 'active'%>
+      </div>
+    <%end%>
+  </div>
   <div class='col s12'>
-    <table>
-      <thead>
-        <tr>
-          <th>Summary</th>
-          <th>Start</th>
-          <th>End</th>
-          <th colspan="2"></th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @events.each do |event| %>
-          <tr>
-            <td><%= link_to event.summary, [@group,@category,event] %></td>
-            <td><%= event.start %></td>
-            <td><%= event.end %></td>
-            <td><%= link_to '<i class="material-icons">mode_edit</i>'.html_safe, edit_group_category_event_path(@group,@category,event) %></td>
-            <td><%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,@category,event], method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          </tr>
-        <% end %>
-      </tbody>
+    <table id='events_table'>
+      <%=render 'table'%>
     </table>
   </div>
 </div>

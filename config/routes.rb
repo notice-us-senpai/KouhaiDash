@@ -50,6 +50,7 @@ Rails.application.routes.draw do
       get 'events/google/:id', to: 'events#google_show', as: 'google_event'
       post 'events/google/:id', to: 'events#google_update'
       delete 'events/google/:id', to: 'events#google_destroy'
+      post 'events/index_period', to: 'events#index_period', as: 'events_period'
     end
     post '/categories_save_order', to: 'categories#saveOrder', as: 'categories_save_order'
   end
