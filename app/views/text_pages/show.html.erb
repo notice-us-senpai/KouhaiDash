@@ -4,7 +4,7 @@
 </div>
 
 <% if @authorised_member%>
-  <div class="fixed-action-btn" style="top: 45px; right: 24px;">
+  <div class="fixed-action-btn">
     <%= link_to "<i class='material-icons'>mode_edit</i>".html_safe,
       edit_group_category_text_page_path(@group,@category),
       class: 'btn-floating btn-large waves-effect waves-light red right'%>

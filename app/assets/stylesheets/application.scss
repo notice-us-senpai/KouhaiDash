@@ -32,6 +32,13 @@ h1 {
   @extend .red-text, .text-darken-4;
 }
 
+//fixed action button
+.fixed-action-btn{
+  top: 45px;
+  right: 24px;
+  bottom: auto;
+}
+
 //contact
 .contact-card{
   .card-content{
