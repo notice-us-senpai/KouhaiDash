@@ -50,6 +50,7 @@ Category.create(name: "Welcome", group_id: 1, type_no: 2, is_public: true)
 Category.create(name: "Private Task List", group_id: 1, type_no: 3, is_public: false)
 Category.create(name: "Public Task List", group_id: 1, type_no: 3, is_public: true)
 Category.create(name: "Contacts", group_id: 1, type_no: 1, is_public: true)
+Category.create(name: "Events", group_id: 1, type_no: 0, is_public: true)
 
 TextPage.create(title: "EGroup", contents: "This is an example group. Take a look to see how this website can be used.", category_id: '1')
 
@@ -80,6 +81,19 @@ magic_number.times do |n|
     website: Faker::Internet.url,
     description: Faker::Lorem.paragraph,
     category_id: 4
+  )
+end
+Calendar.create(category_id: 5, time_zone: 'Singapore')
+magic_number.times do |n|
+  start_date= Faker::Time.forward(60, :all)
+  end_date = Faker::Time.between(start_date, start_date+3.days)
+
+  Event.create(calendar_id: 1,
+    summary: Faker::Company.buzzword()+' discussion',
+    start: start_date.to_datetime,
+    end: end_date.to_datetime,
+    location: Faker::Company.name() +" room",
+    description: Faker::Company.bs
   )
 end
 

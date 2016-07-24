@@ -357,7 +357,7 @@ class EventsController < ApplicationController
     def get_mixed_events(period_start, period_end)
       day_start= period_start
       day_end= period_start.to_time.in_time_zone(@calendar.time_zone).end_of_day.to_datetime
-      @events= @calendar.events.where.not('"start" >= ?', period_end).where.not('"end" < ?', period_start).order(:start).all
+      @events= @calendar.events.where.not('"start" >= ?', period_end).where.not('"end" < ?', period_start).order(:start).to_a
       @events.shift while !@events.empty? && @events.first.start<period_start
       @mixed_events=@events.collect{|event|{google:false, event: event, start: event.start} }
       @google_events=[]

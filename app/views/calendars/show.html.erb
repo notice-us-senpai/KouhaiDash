@@ -1,6 +1,6 @@
-<% provide(:title, "#{@calendar.name.length>0? @calendar.name : @category.name}") %>
+<% provide(:title, "#{@calendar.name && @calendar.name.length>0? @calendar.name : @category.name}") %>
 <div class="row">
-  <h1><%=@calendar.name.length>0? @calendar.name : @category.name%></h1>
+  <h1><%=@calendar.name && @calendar.name.length>0? @calendar.name : @category.name%></h1>
 </div>
 
 
