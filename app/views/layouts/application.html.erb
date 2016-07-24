@@ -60,40 +60,41 @@
         <nav>
           <ul id='slide-out' class='side-nav fixed'>
             <li><%= link_to 'KouhaiDash!', root_path, id: 'brand'%></li>
-            <li>
-              <%= link_to "Groups", groups_path %>
-            </li>
-            <% if @group %>
+
+            <% if @group && @group.id %>
               <%get_categories_and_path(@group).each do |link| %>
                 <li>
                   <%= link_to link[:name], link[:path] %>
                 </li>
               <%end%>
-              <%if @group.id && (@group.members_public || @authorised_member) %>
+              <%if @group.members_public || @authorised_member %>
                 <li>
                   <%= link_to "Group Members", group_memberships_path(@group) %>
                 </li>
               <%end%>
-              <%if @group.id && @authorised_member %>
+              <%if @authorised_member %>
                 <li>
                   <%= link_to "Manage Categories", group_categories_path(@group) %>
                 </li>
               <%end%>
-            <%end%>
-            <% if (!@group || !@group.id) && logged_in? %>
+            <%else%>
               <li>
-                <%= link_to "Profile", current_user %>
+                <%= link_to "Groups", groups_path %>
               </li>
-              <li>
-                <%= link_to "Members", users_path %>
-              </li>
-
-              <li>
-                <%= link_to "Calendar", calendar_path %>
-              </li>
-              <li>
-                <%= link_to "Files", files_path %>
-              </li>
+              <% if logged_in? %>
+                <li>
+                  <%= link_to "Profile", current_user %>
+                </li>
+                <li>
+                  <%= link_to "Members", users_path %>
+                </li>
+                <li>
+                  <%= link_to "Calendar", calendar_path %>
+                </li>
+                <li>
+                  <%= link_to "Files", files_path %>
+                </li>
+              <%end%>
             <%end%>
             <%if logged_in?%>
               <li>
