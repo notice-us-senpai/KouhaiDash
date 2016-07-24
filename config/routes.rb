@@ -47,10 +47,12 @@ Rails.application.routes.draw do
       get 'calendar/to_authenticate', to: 'calendars#to_authenticate', as: 'calendar_auth'
       post 'calendar/show_period', to: 'calendars#show_period', as: 'calendar_period'
       get 'events/google_edit/:id', to: 'events#google_edit', as: 'edit_google_event'
+
       get 'events/google/:id', to: 'events#google_show', as: 'google_event'
       post 'events/google/:id', to: 'events#google_update'
       delete 'events/google/:id', to: 'events#google_destroy'
       post 'events/index_period', to: 'events#index_period', as: 'events_period'
+      post 'events/export_event/:id', to: 'events#export_event', as: 'export_event'
     end
     post '/categories_save_order', to: 'categories#saveOrder', as: 'categories_save_order'
   end

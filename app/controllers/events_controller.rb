@@ -3,7 +3,7 @@ class EventsController < ApplicationController
   before_action :check_view_auth
   before_action :check_edit_auth, except: [:index, :show, :google_show]
   before_action :check_created
-  before_action :set_event, only: [:edit, :update, :show, :destroy]
+  before_action :set_event, only: [:edit, :update, :show, :destroy, :export_event]
   before_action :set_google_event, only:[:google_edit, :google_show, :google_update]
 
   # GET /events
@@ -71,14 +71,16 @@ class EventsController < ApplicationController
               date_time: @event.end.rfc3339
             }
           )
-          result = calendar_service.insert_event(@calendar.google_calendar_id, event)
-          puts @event.start.rfc3339
-          puts @event.end.rfc3339
-          @event.destroy if result.id
+          @google_event = calendar_service.insert_event(@calendar.google_calendar_id, event)
+          @event.destroy if @google_event.id
+          @event=nil
         rescue Exception => e
           puts e.message
         end
-        format.html { redirect_to [@group,@category,@event], notice: 'Event was successfully created.' }
+        format.html {
+          redirect_to [@group,@category,@event], notice: 'Event was successfully created.' if @event
+          redirect_to group_category_google_event_path(@group,@category,@google_event.id), notice: 'Google event was successfully created.' if @event
+        }
         format.json { render :show, status: :created, location: [@group,@category,@event] }
       else
         format.html { render :new }
@@ -119,8 +121,58 @@ class EventsController < ApplicationController
   def destroy
     @event.destroy
     respond_to do |format|
-      format.html { redirect_to group_category_calendar_path(@group,@category), notice: 'Event was successfully destroyed.' }
+      format.html { redirect_to group_category_events_path(@group,@category), notice: 'Event was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def export_event
+    begin
+      #create with google calendar and destroy
+      calendar_client = Signet::OAuth2::Client.new(access_token: current_user.google_account.fresh_token)
+      calendar_service = Google::Apis::CalendarV3::CalendarService.new
+      calendar_service.authorization = calendar_client
+      event = Google::Apis::CalendarV3::Event.new(
+        summary: @event.summary,
+        location: @event.location,
+        description: @event.description,
+        start: {
+          date_time: @event.start.to_datetime.rfc3339
+        },
+        end: {
+          date_time: @event.end.to_datetime.rfc3339
+        }
+      )
+      result = calendar_service.insert_event(@calendar.google_calendar_id, event)
+      @event.destroy if result.id
+      redirect_to group_category_google_event_path(@group,@category,result.id), notice: 'Event was successfully exported to Google Calendar.'
+    rescue Exception => e
+      puts e.message
+      # try again after resetting google settings
+      google_settings
+      begin
+        #create with google calendar and destroy
+        calendar_client = Signet::OAuth2::Client.new(access_token: current_user.google_account.fresh_token)
+        calendar_service = Google::Apis::CalendarV3::CalendarService.new
+        calendar_service.authorization = calendar_client
+        event = Google::Apis::CalendarV3::Event.new(
+          summary: @event.summary,
+          location: @event.location,
+          description: @event.description,
+          start: {
+            date_time: @event.start.to_datetime.rfc3339
+          },
+          end: {
+            date_time: @event.end.to_datetime.rfc3339
+          }
+        )
+        result = calendar_service.insert_event(@calendar.google_calendar_id, event)
+        @event.destroy if result.id
+        redirect_to group_category_google_event_path(@group,@category,result.id), notice: 'Event was successfully exported to Google Calendar.'
+      rescue Exception => e
+        puts e.message
+        redirect_to group_category_event_path(@group,@category,@event), notice: 'Unable to export event. Please sign in with Google through Settings if you have not done so or check the Google Calendar settings.'
+      end
     end
   end
 
@@ -130,7 +182,7 @@ class EventsController < ApplicationController
       calendar_service = Google::Apis::CalendarV3::CalendarService.new
       calendar_service.authorization = calendar_client
       @google_event=calendar_service.delete_event(@calendar.google_calendar_id, params[:id])
-      redirect_to group_category_calendar_path(@group,@category), notice: 'Google Event was successfully deleted'
+      redirect_to group_category_events_path(@group,@category), notice: 'Google Event was successfully deleted'
     rescue
       redirect_to group_category_google_event_path(@group,@category,params[:id]), notice: 'Attempt to delete Google Event was unsuccessful'
     end
@@ -225,7 +277,6 @@ class EventsController < ApplicationController
     # edited from get_events from calendars_controller
     # inclusive of period_start, exclusive of period_end
     def get_mixed_events(period_start, period_end)
-
       day_start= period_start
       day_end= period_start.to_time.in_time_zone(@calendar.time_zone).end_of_day.to_datetime
       @events= @calendar.events.where.not("start >= ?", period_end).where.not("end < ?", period_start).order(:start).all
