@@ -139,7 +139,7 @@ class CalendarsController < ApplicationController
       @days_in_month=Time.days_in_month(date.month,date.year)
       @day_events=Array.new(@days_in_month,nil)
       @google_events=[]
-      @events= @calendar.events.where.not("start >= ?", month_end).where.not("end < ?", month_start).order(:start).all
+      @events= @calendar.events.where.not('"start" >= ?', month_end).where.not('"end" < ?', month_start).order(:start).all
       @events.shift while !@events.empty? && @events.first.start<month_start
       if @calendar.google_calendar_id && @calendar.google_calendar_id.length>0
         #load google calendar events
