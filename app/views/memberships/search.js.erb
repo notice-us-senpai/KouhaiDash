@@ -1,0 +1,6 @@
+document.getElementById("memberships_users_div").innerHTML = "<%= escape_javascript(render 'users') %>";
+$('.grid').isotope({
+  itemSelector: '.grid-item',
+  percentPosition: true
+});
+$('.tooltipped').tooltip({delay: 50});

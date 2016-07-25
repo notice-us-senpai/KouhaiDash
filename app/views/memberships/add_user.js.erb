@@ -1,0 +1,8 @@
+<%if @success%>
+  Materialize.toast('<%=@user.username%> was successfully added as a new member.');
+  $('#user_<%=@user.id%>').hide('fast');
+<%else%>
+  <% @membership.errors.full_messages.each do |msg| %>
+    Materialize.toast('<%=msg%>');
+  <% end %>
+<%end%>

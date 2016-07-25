@@ -38,6 +38,8 @@ Rails.application.routes.draw do
   post 'groups/search', to: 'groups#search', as: 'groups_search'
   resources :groups do
     resources :memberships, only: [:index, :create, :destroy, :update]
+    post 'memberships/search', to: 'memberships#search', as: 'memberships_search'
+    post 'memberships/add_user/:user_id', to: 'memberships#add_user', as: 'memberships_add'
     resources :categories, path: 'c' do
       resources :tasks
       resource :text_page, only: [:create, :new, :show, :update, :edit]

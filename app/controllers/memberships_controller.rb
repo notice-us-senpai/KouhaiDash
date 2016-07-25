@@ -7,6 +7,7 @@ class MembershipsController < ApplicationController
   # GET /memberships
   # GET /memberships.json
   def index
+    @users = User.where.not(id: @memberships.select('user_id')).limit(4)
   end
 
 
@@ -62,6 +63,29 @@ class MembershipsController < ApplicationController
     end
   end
 
+  def search
+    @users = User.where('LOWER(username) LIKE ?',"%#{params.require(:search)[:input]}%".downcase).where.not(id: @memberships.select('user_id')).order("LENGTH(name) ASC").limit(4)
+    respond_to do |format|
+      format.js{
+
+      }
+    end
+  end
+
+  def add_user
+    @user=User.find(params[:user_id])
+    respond_to do |format|
+      format.js{
+         @membership=@group.memberships.new(user_id: @user.id, approved:true)
+         if @membership.save
+           @success=true
+         else
+           @success=false
+         end
+      }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_membership
@@ -70,10 +94,8 @@ class MembershipsController < ApplicationController
 
     def set_variables
       @group = Group.find(params[:group_id])
-      @memberships = @group.memberships.includes(:user).order(approved: :asc).all
-      members = @memberships.collect{|member| member.user_id}
-      @users_array = User.where.not(id: members).collect{|user| [user.username,user.id]}
-      @new_membership = @group.memberships.new
+      @memberships = @group.memberships.includes(:user).order(approved: :asc)
+      @users = User.where.not(id: @memberships).limit(4)
       @authorised_member= is_user_of_group?(@group)
     end
 
