@@ -80,7 +80,7 @@ class TasksController < ApplicationController
     end
 
     def get_member_list
-      @memberships_array = @group.memberships.includes(:user).all.collect{|m|[m.user.username,m.id] }
+      @memberships_array = @group.memberships.includes(:user).where(approved:true).all.collect{|m|[m.user.username,m.id] }
     end
 
     def check_edit_auth
