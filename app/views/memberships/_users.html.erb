@@ -1,13 +1,16 @@
 <div class='grid'>
   <% @users.each do |user|%>
     <div class="grid-item col s6 m3" id='user_<%=user.id%>'>
-      <div class="card horizontal">
-        <div class="card-image">
-          <%= image_tag "default#{user.id%4}.jpg"%>
+      <div class="card ">
+        <div class="card-image waves-effect waves-block waves-light">
+          <%= image_tag "default#{user.id%4}.jpg", class:'activator'%>
         </div>
-        <div class="card-stacked">
+
           <div class="card-content">
-            <strong><%= user.username %></strong>
+            <p class="activator"><%= user.username %></p>
+          </div>
+          <div class="card-reveal">
+            <span class="card-title grey-text text-darken-4"><%=user.username %><i class="material-icons right">close</i></span>
             <p><%=user.description%></p>
           </div>
           <div class="card-action">
@@ -16,7 +19,7 @@
             <%= link_to "<i class='material-icons'>add</i>".html_safe, group_memberships_add_path(@group,user.id),
              remote: true, method: :post, data: {position:"bottom", delay:"50",tooltip:"Add to Group"}, class:'tooltipped'%>
           </div>
-        </div>
+
       </div>
     </div>
   <% end %>

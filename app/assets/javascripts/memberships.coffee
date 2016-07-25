@@ -10,4 +10,4 @@ $(document).on "page:change", ->
   $('.grid').isotope({
     itemSelector: '.grid-item',
     percentPosition: true
-  });
+  })

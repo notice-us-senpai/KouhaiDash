@@ -13,17 +13,27 @@ User.create(
   email: "akashahikari@gmail.com",
   password: "password",
   password_confirmation: "password",
-  admin: true
+  admin: true,
+  description: Faker::Hipster.sentence
   )
 
 User.create(
 	username: "yimin",
   email: "yimin@kouhaidash.org",
   password: "password",
-  password_confirmation: "password"
+  password_confirmation: "password",
+  description: Faker::Hipster.sentence
   )
 
-magic_number.times do |n|
+User.create(
+	username: "test",
+  email: "test@kouhaidash.org",
+  password: "password",
+  password_confirmation: "password",
+  description: Faker::Hipster.sentence
+)
+
+20.times do |n|
   user=false
   until user
     username = ""
@@ -35,17 +45,25 @@ magic_number.times do |n|
     	username: username,
       email: Faker::Internet.email[0...64],
       password: password,
-      password_confirmation: password
+      password_confirmation: password,
+      description: Faker::Hipster.sentence
     ).id
   end
 end
 
-Group.create(name: 'EGroup', string_id: 'EGroup', description: 'This is an example group. Take a look to see how this website can be used.')
-Group.create(name: 'NoMember', string_id: 'nomember')
-Group.create(name: 'Not Approved', string_id: 'notapproved')
+Group.create(name: 'EGroup', string_id: 'egroup', description: 'This is an example group. Take a look to see how this website can be used.')
+Group.create(name: 'one member', string_id: 'one_member',description: 'seeded with only test member inside')
+Group.create(name: 'Not Approved', string_id: 'notapproved',description: Faker::Company.bs)
+Membership.create(user_id: 1, group_id:1, approved: true)
+Membership.create(user_id: 2, group_id:1, approved: true)
 magic_number.times do |i|
-  Membership.create(user_id: i+1, group_id:1, approved: (i!=0 && i%2==0? false : true))
+  Membership.create(user_id: i+3, group_id:1, approved: true)
 end
+3.times do |i|
+  Membership.create(user_id: Faker::Number.between(13, 20), group_id:1, approved: false)
+end
+Membership.create(user_id: 3, group_id:2, approved: true)
+Membership.create(user_id: 4, group_id:3, approved: true)
 Membership.create(user_id: 1, group_id:3, approved: false)
 Membership.create(user_id: 2, group_id:3, approved: false)
 Category.create(name: "Welcome", group_id: 1, type_no: 2, is_public: true)
@@ -58,7 +76,7 @@ TextPage.create(title: "EGroup", contents: "This is an example group. Take a loo
 
 magic_number.times do |i|
   Task.create(
-    category_id: 2+Faker::Number.between(1, 10)%2,
+    category_id: Faker::Number.between(1, 2),
     name: Faker::Hacker.verb() + " "+Faker::Hacker.adjective() +" "+ Faker::Hacker.noun() ,
     description: Faker::Lorem.paragraph,
     deadline: Faker::Date.between(5.year.ago, 5.year.from_now),
@@ -67,7 +85,7 @@ magic_number.times do |i|
     Faker::Number.between(1, 3).times do |j|
       TaskAssignment.create(
         task_id: i+1,
-        membership_id: Faker::Number.between(1, 10)%10+1
+        membership_id: Faker::Number.between(1, 12)
       )
     end
 end
@@ -109,7 +127,7 @@ magic_number.times do |i|
   Membership.create(user_id: 2, group_id:group.id, approved: true)
   no=Faker::Number.between(1, 5)
   no.times do |n|
-    Membership.create(user_id: Faker::Number.between(3, 13), group_id:group.id, approved:Faker::Boolean.boolean)
+    Membership.create(user_id: Faker::Number.between(3, 20), group_id:group.id, approved:Faker::Boolean.boolean)
   end
 end
 

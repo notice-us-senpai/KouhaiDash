@@ -1,13 +1,13 @@
 class MembershipsController < ApplicationController
   before_action :set_variables
   before_action :set_membership, only: [:update, :destroy]
-  before_action :check_view_auth, only: [:index, :create, :update]
-  before_action :check_edit_auth, only: [:create, :update]
+  before_action :check_view_auth
+  before_action :check_edit_auth, only: [:create, :update, :add_user]
   before_action :check_destroy_auth, only: [:destroy]
   # GET /memberships
   # GET /memberships.json
   def index
-    @users = User.where.not(id: @memberships.select('user_id')).limit(4)
+
   end
 
 
@@ -40,7 +40,7 @@ class MembershipsController < ApplicationController
   # PATCH/PUT /memberships/1.json
   def update
     respond_to do |format|
-      if @membership.update(membership_params)
+      if @membership.update(approved: true)
         format.html { redirect_to group_memberships_path(@group), notice: 'Membership was successfully updated.' }
         format.json { render :show, status: :ok, location: group_memberships_path(@group) }
       else
@@ -95,7 +95,7 @@ class MembershipsController < ApplicationController
     def set_variables
       @group = Group.find(params[:group_id])
       @memberships = @group.memberships.includes(:user).order(approved: :asc)
-      @users = User.where.not(id: @memberships).limit(4)
+      @users = User.where.not(id: @memberships.select('user_id')).limit(4)
       @authorised_member= is_user_of_group?(@group)
     end
 

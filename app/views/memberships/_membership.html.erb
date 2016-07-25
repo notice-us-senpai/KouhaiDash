@@ -1,22 +1,29 @@
 <%unless !membership.approved && !@authorised_member %>
 <!--Only shows non-approved members if current user is an approved member-->
-  <tr>
-    <td><%= link_to membership.user.username, membership.user %></td>
-    <% if @authorised_member && !membership.approved %>
-      <td>
-        <%= form_for([@group,membership]) do |f| %>
-          <%=f.hidden_field :approved, value: true%>
-          <div class="actions">
-            <%= f.submit "approve",class:"btn btn-primary"%>
-          </div>
-        <% end %>
-      </td>
-      <td>
-        <%= link_to "delete", [@group,membership], method: :delete,
-        data: { confirm: "Kick #{membership.user.username} out?"}, class:"btn btn-danger" %>
-      </td>
-    <%else%>
-      <td colspan="2"></td>
-    <% end %>
-  </tr>
+<div class="grid-item col s12 m6" id='member_<%=membership.id%>'>
+  <div class="card">
+    <div class="card-image waves-effect waves-block waves-light">
+      <%= image_tag "default#{membership.user.id%4}.jpg", class:'activator' %>
+    </div>
+    <div class="card-content">
+      <span class="activator flow-text"><%= membership.user.username %><i class="material-icons right">more_vert</i></span>
+      <p></p>
+    </div>
+    <div class='card-action'>
+      <%= link_to "<i class='material-icons'>info</i>".html_safe, membership.user,
+       data: {position:"bottom", delay:"50",tooltip:"View User"}, class:'tooltipped' %>
+       <% if @authorised_member && !membership.approved %>
+        <%= link_to "<i class='material-icons'>add</i>".html_safe, [@group,membership], method: :patch,
+          data: {position:"bottom", delay:"50",tooltip:"Approve member"}, class:"tooltipped" %>
+         <%= link_to "<i class='material-icons'>remove_circle</i>".html_safe, [@group,membership], method: :delete,
+           data: { confirm: "Kick #{membership.user.username} out?",position:"bottom", delay:"50",tooltip:"Remove member"}, class:"tooltipped" %>
+        <% end%>
+    </div>
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4"><%= membership.user.username %><i class="material-icons right">close</i></span>
+      <p><%=membership.user.description%></p>
+    </div>
+  </div>
+</div>
+
 <%end%>
