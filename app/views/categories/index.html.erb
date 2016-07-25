@@ -15,7 +15,7 @@
     <table class='highlight'>
       <thead>
         <tr>
-          <th></th>
+          <th class='tooltipped' data-position="bottom" data-delay="50" data-tooltip="Drag handle to reorder"><i class='material-icons'>reorder</i></th>
           <th>Name</th>
           <th>Type</th>
           <th>Public</th>
@@ -27,7 +27,7 @@
 
         <% @categories.each do |category| %>
           <tr id='<%=dom_id(category)%>'data-order='<%=category.id%>'>
-            <td class='handle'><i class='material-icons'>drag_handle</i></td>
+            <td class='handle tooltipped' data-position="bottom" data-delay="50" data-tooltip="Drag to reorder"><i class='material-icons'>drag_handle</i></td>
             <td><%= link_to category.name, [@group,category] %></td>
             <td><%= @type_no_array[category.type_no][0] %></td>
             <td><%= category.is_public %></td>
