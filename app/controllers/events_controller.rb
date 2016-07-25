@@ -411,7 +411,7 @@ class EventsController < ApplicationController
           result=calendar_service.get_calendar_list(@calendar.google_calendar_id)
           @owner_found=(result.access_role=='owner')
         rescue Exception => e
-          #puts e.message
+          puts e.message
           #find within members' accounts
           accounts.each do |item|
             break if @owner_found
@@ -455,7 +455,7 @@ class EventsController < ApplicationController
           )
           result=calendar_service.insert_acl(@calendar.google_calendar_id, rule)
         rescue Exception => e
-          #puts e.message
+          puts e.message
           @settings_failed=true
         end
         #add individual member
@@ -473,7 +473,7 @@ class EventsController < ApplicationController
             )
             result=calendar_service.insert_acl(@calendar.google_calendar_id, rule)
           rescue Exception => e
-            #puts e.message
+            puts e.message
             @settings_failed=true
           end
         end

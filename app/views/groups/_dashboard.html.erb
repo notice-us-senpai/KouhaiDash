@@ -1,0 +1,153 @@
+<div class="row dashboard-grid">
+  <!-- group info card -->
+  <div class="col s12 m6 grid-item">
+    <div class="card group-info">
+      <div class="card-content">
+        <span class="card-title"><%=@group.name%></span>
+        <p><%=@group.description%><br>
+        <%=link_to group_string_url(@group.string_id),group_string_path(@group.string_id)%><br>
+        Member List is <%="not "unless @group.members_public%>public.</p>
+      </div>
+    </div>
+  </div>
+  <% if @authorised_member%>
+    <!-- members -->
+    <div class="col s12 m6 grid-item">
+      <div class="card group-dash-members">
+        <div class="card-content">
+          <span class="card-title">Members</span>
+          <table>
+            <tr class='dash-members-row'>
+              <td>Total no. of members</td>
+              <td><%=@members.size%></td>
+            </tr>
+            <tr class='dash-members-row'>
+              <td>No. of unapproved members</td>
+              <td><%=@unapproved.size%></td>
+            </tr>
+          </table>
+        </div>
+        <div class="card-action">
+          <%=link_to '<i class="material-icons">list</i>'.html_safe, group_memberships_path(@group),
+          data: {position:"bottom", delay:"50",tooltip:"View List"}, class:"tooltipped"%>
+        </div>
+      </div>
+    </div>
+
+    <!-- overdue tasks -->
+    <div class="col s12 m6 grid-item">
+      <div class="card group-dash-overdue">
+        <div class="card-content">
+          <span class="card-title">Overdue Tasks</span>
+          <%if @overdue.empty?%>
+            <p>No overdue tasks.</p>
+          <%else%>
+            <table class='highlight'>
+              <%@overdue.each do |task|%>
+                <tr>
+                  <td><%=link_to task.name, group_category_task_path(@group,task.category_id,task)%></td>
+                  <td><%=task.deadline.strftime('%e %b %4Y')%></td>
+                </tr>
+              <%end%>
+            </table>
+          <%end%>
+        </div>
+      </div>
+    </div>
+
+    <!-- events -->
+    <div class="col s12 m6 grid-item">
+      <div class="card group-dash-events">
+        <div class="card-content">
+          <span class="card-title">Upcoming Events</span>
+          <%if @events.empty?%>
+            <p>No upcoming events.</p>
+          <%else%>
+            <table class='highlight'>
+              <%@events.each do |hash|%>
+                <tr>
+                  <%if hash[:google]%>
+                    <td><%=link_to hash[:event].summary, group_category_google_event_path(@group,hash[:category],hash[:event].id)%></td>
+                  <%else%>
+                    <td><%=link_to hash[:event].summary, group_category_event_path(@group,hash[:category],hash[:event])%></td>
+                  <%end%>
+                  <td><%=hash[:start].to_time.in_time_zone(hash[:time_zone]).strftime('%e %B %4Y %R')%></td>
+                </tr>
+              <%end%>
+            </table>
+          <%end%>
+        </div>
+      </div>
+    </div>
+
+    <!-- tasks -->
+    <div class="col s12 m6 grid-item">
+      <div class="card group-dash-tasks">
+        <div class="card-content">
+          <span class="card-title">Upcoming Tasks</span>
+          <%if @tasks.empty?%>
+            <p>No upcoming tasks.</p>
+          <%else%>
+            <table class='highlight'>
+              <%@tasks.each do |task|%>
+                <tr>
+                  <td><%=link_to task.name, group_category_task_path(@group,task.category_id,task)%></td>
+                  <td><%=task.deadline.strftime('%e %b %4Y')%></td>
+                </tr>
+              <%end%>
+            </table>
+          <%end%>
+        </div>
+      </div>
+    </div>
+
+    <!-- text pages -->
+    <div class="col s12 m6 grid-item">
+      <div class="card group-dash-text-pages">
+        <div class="card-content">
+          <span class="card-title">Text Pages</span>
+          <%if @text_pages.empty?%>
+            <p>No text pages.</p>
+          <%else%>
+            <table class='highlight'>
+              <thead><th>Title</th><th>Loading from Google</th></thead>
+              <%@text_pages.each do |page|%>
+                <tr>
+                  <td><%=link_to page.title, group_category_text_page_path(@group,page.category_id)%></td>
+                  <td><%=page.load_from_google==true%></td>
+                </tr>
+              <%end%>
+            </table>
+          <%end%>
+        </div>
+      </div>
+    </div>
+
+    <!-- categories -->
+    <div class="col s12 m6 grid-item">
+      <div class="card group-dash-categories">
+        <div class="card-content">
+          <span class="card-title">Categories</span>
+          <%if @categories.empty?%>
+            <p>No categories.</p>
+          <%else%>
+            <table class='highlight'>
+              <thead><th>Name</th><th>Public</th></thead>
+              <%@categories.each do |category|%>
+                <tr>
+                  <td><%=link_to category.name, group_category_path(@group,category)%></td>
+                  <td><%=category.is_public==true%></td>
+                </tr>
+              <%end%>
+            </table>
+          <%end%>
+        </div>
+        <div class="card-action">
+          <%=link_to '<i class="material-icons">list</i>'.html_safe, group_categories_path(@group),
+          data: {position:"bottom", delay:"50",tooltip:"View List"}, class:"tooltipped"%>
+        </div>
+      </div>
+    </div>
+
+  <%end%>
+</div>

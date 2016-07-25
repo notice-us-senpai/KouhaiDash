@@ -18,8 +18,9 @@
   </div>
   <div class="input-field col s12">
     <%= f.text_field :string_id%>
-    <%= f.label :string_id, 'Group ID' %>
+    <%= f.label :string_id, "Group ID (#{group_string_url('group_id')})" %>
   </div>
+
   <div class="input-field col s12">
     <%= f.text_area :description, class: 'materialize-textarea'%>
     <%= f.label :description %>

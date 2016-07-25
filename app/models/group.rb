@@ -5,6 +5,10 @@ class Group < ActiveRecord::Base
   has_many :users, through: :memberships
   has_many :tasks, through: :categories
   has_many :task_assignments, through: :tasks
+  has_many :calendars, through: :categories
+  has_many :events, through: :calendars
+  has_many :text_pages, through: :categories
+  has_many :contacts, through: :categories
   # validations
   validates :name,
     presence: true

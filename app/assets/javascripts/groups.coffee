@@ -12,3 +12,9 @@ $(document).on "page:change", ->
     itemSelector: '.grid-item',
     percentPosition: true
   })
+$(document).on "page:change", ->
+  return unless $(".groups.show").length > 0
+  $('.dashboard-grid').isotope({
+    itemSelector: '.grid-item',
+    percentPosition: true
+  })

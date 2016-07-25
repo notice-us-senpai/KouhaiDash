@@ -32,6 +32,12 @@ h1 {
   @extend .red-text, .text-darken-4;
 }
 
+//word-break anchors
+a:not(#brand){
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
 //fixed action button
 .fixed-action-btn{
   top: 45px;
@@ -59,6 +65,67 @@ h1 {
   }
   .card-action a{
     @extend .indigo-text, .text-accent-1;
+  }
+}
+.group-info{
+  .card-content{
+    @extend .teal, .accent-4, .white-text;
+    a,.card-title{
+      @extend .teal-text, .text-accent-1;
+    }
+  }
+}
+.group-dash-members{
+  .card-content{
+    @extend .lime, .lighten-2, .lime-text, .text-darken-4;
+  }
+  .card-action a{
+    @extend .lime-text;
+  }
+}
+.group-dash-overdue{
+  .card-content{
+    @extend .red, .lighten-4, .red-text;
+  }
+  a{
+    @extend .red-text, .text-darken-4;
+  }
+}
+.group-dash-events{
+  .card-content{
+    @extend .indigo, .lighten-4, .indigo-text;
+  }
+  a{
+    @extend .indigo-text, .text-darken-4;
+  }
+}
+.group-dash-tasks{
+  .card-content{
+    @extend .green, .lighten-4, .green-text;
+  }
+  a{
+    @extend .green-text, .text-darken-4;
+  }
+}
+.group-dash-text-pages{
+  .card-content{
+    @extend .amber, .lighten-3, .orange-text, .text-darken-1;
+  }
+  a{
+    @extend .amber-text, .text-darken-4;
+  }
+}
+.group-dash-categories{
+  .card-content{
+    @extend .teal, .lighten-3, .teal-text, .text-darken-1;
+  }
+  a{
+    @extend .teal-text, .text-darken-4;
+  }
+}
+.dash-members-row{
+  td{
+    padding: 5px 5px;
   }
 }
 
