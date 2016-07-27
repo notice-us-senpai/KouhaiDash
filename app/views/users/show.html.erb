@@ -3,8 +3,8 @@
 	<h1>All About <%= @user.username %></h1>
 </div>
 
-<div class="row">
-  <div class="col s12 m7">
+<div class="row dashboard-grid">
+  <div class="col s12 m6 grid-item">
    <div class="card">
      <div class="card-image">
        <%= image_tag "default#{@user.id%4}.jpg" %>
@@ -15,4 +15,97 @@
      </div>
    </div>
   </div>
+  <% if @user==current_user%>
+    <!-- groups -->
+    <div class="col s12 m6 grid-item">
+      <div class="card dash-groups">
+        <div class="card-content">
+          <span class="card-title">Joined Groups</span>
+          <%if @memberships.empty?%>
+            <p>No joined groups.</p>
+          <%else%>
+            <table class='highlight'>
+              <thead><th>Group</th><th>Status</th></thead>
+              <%@memberships.each do |mem|%>
+                <tr>
+                  <td><%=link_to mem.group.name, mem.group%></td>
+                  <td><% if mem.approved%><i class='material-icons'>person</i><%else%><i class='material-icons'>person_outline</i><%end%></td>
+                </tr>
+              <%end%>
+            </table>
+          <%end%>
+        </div>
+      </div>
+    </div>
+
+    <!-- overdue tasks -->
+    <div class="col s12 m6 grid-item">
+      <div class="card dash-overdue">
+        <div class="card-content">
+          <span class="card-title">Overdue Tasks</span>
+          <%if @overdue.empty?%>
+            <p>No overdue tasks.</p>
+          <%else%>
+            <table class='highlight'>
+              <%@overdue.each do |task|%>
+                <tr>
+                  <td><%=link_to task.name, group_category_task_path(task.category.group_id,task.category_id,task)%></td>
+                  <td><%=link_to task.category.group.name, group_path(task.category.group_id)%></td>
+                  <td><%=task.deadline.strftime('%e %b %4Y')%></td>
+                </tr>
+              <%end%>
+            </table>
+          <%end%>
+        </div>
+      </div>
+    </div>
+
+    <!-- events -->
+    <div class="col s12 m6 grid-item">
+      <div class="card dash-events">
+        <div class="card-content">
+          <span class="card-title">Upcoming Events</span>
+          <%if @events.empty?%>
+            <p>No upcoming events.</p>
+          <%else%>
+            <table class='highlight'>
+              <%@events.each do |hash|%>
+                <tr>
+                  <%if hash[:google]%>
+                    <td><%=link_to hash[:event].summary, group_category_google_event_path(hash[:group],hash[:category],hash[:event].id)%></td>
+                  <%else%>
+                    <td><%=link_to hash[:event].summary, group_category_event_path(hash[:group],hash[:category],hash[:event])%></td>
+                  <%end%>
+                  <td><%=hash[:start].to_time.in_time_zone(hash[:time_zone]).strftime('%e %B %4Y %R')%></td>
+                </tr>
+              <%end%>
+            </table>
+          <%end%>
+        </div>
+      </div>
+    </div>
+
+    <!-- tasks -->
+    <div class="col s12 m6 grid-item">
+      <div class="card dash-tasks">
+        <div class="card-content">
+          <span class="card-title">Upcoming Tasks</span>
+          <%if @tasks.empty?%>
+            <p>No upcoming tasks.</p>
+          <%else%>
+            <table class='highlight'>
+              <%@tasks.each do |task|%>
+                <tr>
+                  <td><%=link_to task.name, group_category_task_path(task.category.group_id,task.category_id,task)%></td>
+                  <td><%=link_to task.category.group.name, group_path(task.category.group_id)%></td>
+                  <td><%=task.deadline.strftime('%e %b %4Y')%></td>
+                </tr>
+              <%end%>
+            </table>
+          <%end%>
+        </div>
+      </div>
+    </div>
+    <%end%>
+
 </div>

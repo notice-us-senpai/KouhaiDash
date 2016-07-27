@@ -67,23 +67,33 @@ a:not(#brand) {
     @extend .indigo-text, .text-accent-1;
   }
 }
+
 .group-info {
   .card-content {
     @extend .teal, .accent-4, .white-text;
-    a,.card-title{
+    a, .card-title {
       @extend .teal-text, .text-accent-1;
     }
   }
 }
-.group-dash-members {
+
+/* dashboard */
+.dash-members {
   .card-content {
     @extend .lime, .lighten-2, .lime-text, .text-darken-4;
   }
-  .card-action a{
+  .card-action a {
     @extend .lime-text;
   }
 }
-.group-dash-overdue {
+
+.dash-members-row {
+  td {
+    padding: 5px 5px;
+  }
+}
+
+.dash-overdue {
   .card-content {
     @extend .red, .lighten-4, .red-text;
   }
@@ -91,7 +101,8 @@ a:not(#brand) {
     @extend .red-text, .text-darken-4;
   }
 }
-.group-dash-events {
+
+.dash-events {
   .card-content {
     @extend .indigo, .lighten-4, .indigo-text;
   }
@@ -99,7 +110,8 @@ a:not(#brand) {
     @extend .indigo-text, .text-darken-4;
   }
 }
-.group-dash-tasks {
+
+.dash-tasks {
   .card-content {
     @extend .green, .lighten-4, .green-text;
   }
@@ -107,7 +119,8 @@ a:not(#brand) {
     @extend .green-text, .text-darken-4;
   }
 }
-.group-dash-text-pages {
+
+.dash-text-pages {
   .card-content {
     @extend .amber, .lighten-3, .orange-text, .text-darken-1;
   }
@@ -115,16 +128,18 @@ a:not(#brand) {
     @extend .amber-text, .text-darken-4;
   }
 }
-.group-dash-categories {
+
+.dash-categories {
   .card-content {
     @extend .teal, .lighten-3, .teal-text, .text-darken-1;
   }
-  a{
+  a {
     @extend .teal-text, .text-darken-4;
   }
 }
+
 .dash-members-row {
-  td{
+  td {
     padding: 5px 5px;
   }
 }
@@ -139,7 +154,7 @@ a:not(#brand) {
   .card-content {
     @extend .green, .white-text;
   }
-  .card-action a{
+  .card-action a {
     @extend .green-text;
   }
 }

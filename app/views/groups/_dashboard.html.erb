@@ -13,15 +13,15 @@
   <% if @authorised_member%>
     <!-- members -->
     <div class="col s12 m6 grid-item">
-      <div class="card group-dash-members">
+      <div class="card dash-members">
         <div class="card-content">
           <span class="card-title">Members</span>
           <table>
-            <tr class='dash-members-row'>
+            <tr class='members-row'>
               <td>Total no. of members</td>
               <td><%=@members.size%></td>
             </tr>
-            <tr class='dash-members-row'>
+            <tr class='members-row'>
               <td>No. of unapproved members</td>
               <td><%=@unapproved.size%></td>
             </tr>
@@ -36,7 +36,7 @@
 
     <!-- overdue tasks -->
     <div class="col s12 m6 grid-item">
-      <div class="card group-dash-overdue">
+      <div class="card dash-overdue">
         <div class="card-content">
           <span class="card-title">Overdue Tasks</span>
           <%if @overdue.empty?%>
@@ -57,7 +57,7 @@
 
     <!-- events -->
     <div class="col s12 m6 grid-item">
-      <div class="card group-dash-events">
+      <div class="card dash-events">
         <div class="card-content">
           <span class="card-title">Upcoming Events</span>
           <%if @events.empty?%>
@@ -82,7 +82,7 @@
 
     <!-- tasks -->
     <div class="col s12 m6 grid-item">
-      <div class="card group-dash-tasks">
+      <div class="card dash-tasks">
         <div class="card-content">
           <span class="card-title">Upcoming Tasks</span>
           <%if @tasks.empty?%>
@@ -103,7 +103,7 @@
 
     <!-- text pages -->
     <div class="col s12 m6 grid-item">
-      <div class="card group-dash-text-pages">
+      <div class="card dash-text-pages">
         <div class="card-content">
           <span class="card-title">Text Pages</span>
           <%if @text_pages.empty?%>
@@ -125,7 +125,7 @@
 
     <!-- categories -->
     <div class="col s12 m6 grid-item">
-      <div class="card group-dash-categories">
+      <div class="card dash-categories">
         <div class="card-content">
           <span class="card-title">Categories</span>
           <%if @categories.empty?%>
