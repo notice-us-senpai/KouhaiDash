@@ -4,7 +4,7 @@
 </div>
 
 <div class="row dashboard-grid">
-  <div class="col s12 m6">
+  <div class="col s12 m6 grid-item">
    <div class="card">
      <div class="card-image">
        <%= image_tag "default#{@user.id%4}.jpg" %>
@@ -16,9 +16,31 @@
    </div>
   </div>
   <% if @user==current_user%>
+    <!-- groups -->
+    <div class="col s12 m6 grid-item">
+      <div class="card dash-groups">
+        <div class="card-content">
+          <span class="card-title">Joined Groups</span>
+          <%if @memberships.empty?%>
+            <p>No joined groups.</p>
+          <%else%>
+            <table class='highlight'>
+              <thead><th>Group</th><th>Status</th></thead>
+              <%@memberships.each do |mem|%>
+                <tr>
+                  <td><%=link_to mem.group.name, mem.group%></td>
+                  <td><% if mem.approved%><i class='material-icons'>person</i><%else%><i class='material-icons'>person_outline</i><%end%></td>
+                </tr>
+              <%end%>
+            </table>
+          <%end%>
+        </div>
+      </div>
+    </div>
+
     <!-- overdue tasks -->
     <div class="col s12 m6 grid-item">
-      <div class="card group-dash-overdue">
+      <div class="card dash-overdue">
         <div class="card-content">
           <span class="card-title">Overdue Tasks</span>
           <%if @overdue.empty?%>
@@ -40,7 +62,7 @@
 
     <!-- events -->
     <div class="col s12 m6 grid-item">
-      <div class="card group-dash-events">
+      <div class="card dash-events">
         <div class="card-content">
           <span class="card-title">Upcoming Events</span>
           <%if @events.empty?%>
@@ -65,7 +87,7 @@
 
     <!-- tasks -->
     <div class="col s12 m6 grid-item">
-      <div class="card group-dash-tasks">
+      <div class="card dash-tasks">
         <div class="card-content">
           <span class="card-title">Upcoming Tasks</span>
           <%if @tasks.empty?%>
