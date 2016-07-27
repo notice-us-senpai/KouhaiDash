@@ -1,6 +1,6 @@
 <% provide(:title, @user.username) %>
 <div class="row">
-	<h1>All About <%= @user.username %></h1>
+	<h1><%= @user.username %></h1>
 </div>
 
 <div class="row dashboard-grid">
@@ -15,32 +15,33 @@
      </div>
    </div>
   </div>
-  <% if @user==current_user%>
-    <!-- groups -->
-    <div class="col s12 m6 grid-item">
-      <div class="card dash-groups">
-        <div class="card-content">
-          <span class="card-title">Joined Groups</span>
-          <%if @memberships.empty?%>
-            <p>No joined groups.</p>
-          <%else%>
-            <table class='highlight'>
-              <thead><th>Group</th><th>Status</th></thead>
-              <%@memberships.each do |mem|%>
-                <tr>
-                  <td><%=link_to mem.group.name, mem.group%></td>
-                  <% if mem.approved%>
-                    <td class='tooltipped' data-position="bottom" data-delay="50" data-tooltip="Official Member"><i class='material-icons'>person</i></td>
-                  <%else%>
-                    <td class='tooltipped' data-position="bottom" data-delay="50" data-tooltip="Not approved yet :("><i class='material-icons'>person_outline</i></td>
-                  <%end%>
-                </tr>
-              <%end%>
-            </table>
-          <%end%>
-        </div>
+  <!-- groups -->
+  <div class="col s12 m6 grid-item">
+    <div class="card dash-groups">
+      <div class="card-content">
+        <span class="card-title">Joined Groups</span>
+        <%if @memberships.empty?%>
+          <p>No joined groups.</p>
+        <%else%>
+          <table class='highlight'>
+            <thead><th>Group</th><th>Status</th></thead>
+            <%@memberships.each do |mem|%>
+              <tr>
+                <td><%=link_to mem.group.name, mem.group%></td>
+                <% if mem.approved%>
+                  <td class='tooltipped' data-position="bottom" data-delay="50" data-tooltip="Official Member"><i class='material-icons'>person</i></td>
+                <%else%>
+                  <td class='tooltipped' data-position="bottom" data-delay="50" data-tooltip="Not approved yet :("><i class='material-icons'>person_outline</i></td>
+                <%end%>
+              </tr>
+            <%end%>
+          </table>
+        <%end%>
       </div>
     </div>
+  </div>
+
+  <% if @user==current_user%>
 
     <!-- overdue tasks -->
     <div class="col s12 m6 grid-item">

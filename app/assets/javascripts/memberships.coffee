@@ -7,7 +7,10 @@ $(document).ready ->
   ))
 $(document).on "page:change", ->
   return unless $(".memberships.index").length > 0
-  $('.grid').isotope({
+  grid=$('.grid').isotope({
     itemSelector: '.grid-item',
     percentPosition: true
   })
+  grid.imagesLoaded().progress( (->
+    grid.isotope('layout')
+  ))

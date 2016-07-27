@@ -14,8 +14,8 @@ class UsersController < ApplicationController
   end
 
   def show
+    @memberships=@user.memberships.includes(:group).order(:approved)
     if @user==current_user
-      @memberships=@user.memberships.includes(:group).order(:approved)
       @overdue=@user.tasks.includes(:category).where(done: false).where("deadline < ?",Date.today).order('deadline ASC').limit(5)
       @tasks=@user.tasks.includes(:category).where(done: false).where("deadline >= ?",Date.today).order("deadline ASC").limit(5)
       @events=@user.events.includes(calendar: {category: :group}).where('"end" >= ?',Time.now).order("start").where('"start" < ?',Time.now + 7.days).order("start ASC").limit(5).collect{|event|
