@@ -1,116 +1,134 @@
 <% provide(:title, "#{@category.name}") %>
 <div class="row">
   <div class="col s12">
-    <h1><%=@category.name%></h1>
+    <h1><%= @category.name%></h1>
   </div>
 </div>
 
 <div class="fixed-action-btn">
-  <a class="modal-trigger waves-effect waves-light btn-large btn-floating" href="#modal1"><i class='material-icons'>filter_list</i></a>
+  <a class="modal-trigger waves-effect waves-light 
+    btn-large btn-floating" href="#modal1">
+    <i class='material-icons'>filter_list</i>
+  </a>
 </div>
+
 <% if @authorised_member %>
   <div class='row'>
     <div class="col s12 m9">
       <%= link_to '<i class="material-icons left">add</i>New Task'.html_safe, new_group_category_task_path(@group,@category), class: "btn waves-effect waves-light red" %>
     </div>
   </div>
-<%end%>
+<% end %>
+
 <div class="row card-grid">
-    <% @tasks.each do |task| %>
-      <div class='col s12 m6 grid-item' data-name='<%= task.name %>' data-deadline='<%= task.deadline.strftime('%Q') %>' data-done='<%= task.done %>' >
-        <div class="card <%if task.done%> task-done-card <%else%> task-not-done-card<%end%>">
-         <div class="card-content">
-           <span class="card-title activator"><%= task.name %><i class="material-icons right">more_vert</i></span>
-           <table>
-             <tbody>
-               <tr>
-                 <th>Deadline</th>
-                 <td><%= task.deadline.strftime('%v') %></td>
-               </tr>
-               <tr>
-                 <th>Done</th>
-                 <td>
-                   <% if task.done %>
-                    <%= "Yes!" %>
-                  <% else %>
-                    <%= "Not yet!" %>
+  <% @tasks.each do |task| %>
+    <div class='col s12 m6 grid-item' 
+      data-name='<%= task.name %>' 
+      data-deadline='
+      <% if task.deadline.nil? %><%= "For Ever" %><% else %><%= task.deadline.strftime('%Q') %><% end %>' 
+      data-done='<%= task.done %>' >
+      <div class="card <% if task.done %> task-done-card <% else %> task-not-done-card<% end %>">
+      <div class="card-content">
+        <span class="card-title activator"><%= task.name %><i class="material-icons right">more_vert</i></span>
+          <table>
+            <tbody>
+              <tr>
+                <th>Deadline</th>
+                <td>
+                  <% if task.deadline.nil? %><%= "For Ever" %>
+                  <% else %><%= task.deadline.strftime('%v') %>
                   <% end %>
                 </td>
-               </tr>
-               <%unless task.task_assignments.empty?%>
-                 <tr>
-                   <th>Assigned to</th>
-                   <td>
-                     <%task.task_assignments.each do |assign| %>
-                        <div class="chip">
-                          <%= image_tag "default#{assign.membership.user.id%4}.jpg", class:'activator' %>
-                          <%= assign.membership.user.username %>
-                        </div>
-                     <%end %>
-                   </td>
-                 </tr>
-              <%end%>
-             </tbody>
-           </table>
-         </div>
-         <div class="card-action">
-           <a class='activator'><i class="material-icons">more_vert</i></a>
-           <%= link_to '<i class="material-icons">info</i>'.html_safe, [@group,@category,task]%>
-           <% if @authorised_member %>
-             <%= link_to '<i class="material-icons">mode_edit</i>'.html_safe, edit_group_category_task_path(@group,@category,task)%>
-             <%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,@category,task], method: :delete,
-               data: { confirm: 'Are you sure?' }%>
-          <%end%>
-         </div>
-         <div class="card-reveal">
-           <span class="card-title"><%= task.name %><i class="material-icons right">close</i></span>
-           <p><%=task.description%></p>
-         </div>
+              </tr>
+              <tr>
+                <th>Done</th>
+                <td>
+                <% if task.done %>
+                  <%= "Yes!" %>
+                <% else %>
+                  <%= "Not yet!" %>
+                <% end %>
+                </td>
+              </tr>
+              <!-- unless task.task_assignments.empty? -->
+              <tr>
+                <th>Assigned to</th>
+                <% if task.task_assignments.empty? %>
+                  <td>No one yet!</td>
+                <% else %>
+                  <td>
+                    <% task.task_assignments.each do |assign| %>
+                      <div class="chip" style="margin-bottom:4px;">
+                        <%= image_tag "default#{assign.membership.user.id%4}.jpg", class:'activator' %>
+                        <%= assign.membership.user.username %>
+                      </div>
+                    <% end %>
+                  </td>
+                <% end %>
+              </tr>
+              <!-- end -->
+            </tbody>
+          </table>
+        </div>
+        <div class="card-action">
+          <a class='activator'><i class="material-icons">more_vert</i></a>
+          <%= link_to '<i class="material-icons">info</i>'.html_safe, [@group,@category,task]%>
+          <% if @authorised_member %>
+          <%= link_to '<i class="material-icons">mode_edit</i>'.html_safe, edit_group_category_task_path(@group,@category,task)%>
+          <%= link_to '<i class="material-icons">delete</i>'.html_safe, [@group,@category,task], method: :delete,
+             data: { confirm: 'Are you sure?' }%>
+        <% end %>
+       </div>
+        <div class="card-reveal">
+          <span class="card-title"><%= task.name %><i class="material-icons right">close</i></span>
+          <p><%= task.description%></p>
         </div>
       </div>
-    <% end%>
+    </div>
+  <% end %>
 </div>
+
 <!-- Filter panel -->
 <div id="modal1" class="modal bottom-sheet">
-    <div class="modal-content">
-      <div class='row'>
-        <div class='col s12'>
-          <h4>Filter</h4>
+  <div class="modal-content">
+    <div class='row'>
+      <div class='col s12'>
+        <h4>Filter</h4>
+      </div>
+      <form>
+        <div class='input-field col s12 m12 l4'>
+          <input id='task-search-field' type='text' class='task-filter-field'/>
+          <label for='task-search-field'>Search for...</label>
         </div>
-        <form>
-          <div class='input-field col s12 m12 l4'>
-            <input id='task-search-field' type='text' class='task-filter-field'/>
-            <label for='task-search-field'>Search for...</label>
-          </div>
-          <div class='input-field col s12 m6 l4'>
-            <input id='task-from-date-field' class='datepicker task-filter-field' type= 'date'/>
-            <label for='task-from-date-field' class='active'>Deadline from</label>
-          </div>
-          <div class='input-field col s12 m6 l4'>
-            <input id='task-till-date-field' class='datepicker task-filter-field' type= 'date'/>
-            <label for='task-till-date-field' class='active'>Till</label>
-          </div>
-          <div class='input-field col s6 l4'>
-            <input type='checkbox' id='task-done-field' checked='checked' class='task-filter-btn'/>
-            <label for='task-done-field'>Done</label>
-          </div>
-          <div class='input-field col s6 l4'>
-            <input type='checkbox' id='task-not-done-field' checked='checked' class='task-filter-btn'/>
-            <label for='task-not-done-field'>Not yet done</label>
-          </div>
-        </form>
-        <div class='col s12'>
-          <p><br>Sort by:    <button class='task-sort-btn waves-effect waves-green btn' data-sort='name' data-order='true'>Name</button>
-          <button class='task-sort-btn waves-effect waves-green btn' data-sort='deadline' data-order='true'>Asc. date</button>
-          <button class='task-sort-btn waves-effect waves-green btn' data-sort='deadline' data-order='false'>Desc. date</button></p>
+        <div class='input-field col s12 m6 l4'>
+          <input id='task-from-date-field' class='datepicker task-filter-field' type= 'date'/>
+          <label for='task-from-date-field' class='active'>Deadline from</label>
         </div>
+        <div class='input-field col s12 m6 l4'>
+          <input id='task-till-date-field' class='datepicker task-filter-field' type= 'date'/>
+          <label for='task-till-date-field' class='active'>Till</label>
+        </div>
+        <div class='input-field col s6 l4'>
+          <input type='checkbox' id='task-done-field' checked='checked' class='task-filter-btn'/>
+          <label for='task-done-field'>Done</label>
+        </div>
+        <div class='input-field col s6 l4'>
+          <input type='checkbox' id='task-not-done-field' checked='checked' class='task-filter-btn'/>
+          <label for='task-not-done-field'>Not yet done</label>
+        </div>
+      </form>
+      <div class='col s12'>
+        <p><br>Sort by:    <button class='task-sort-btn waves-effect waves-green btn' data-sort='name' data-order='true'>Name</button>
+        <button class='task-sort-btn waves-effect waves-green btn' data-sort='deadline' data-order='true'>Asc. date</button>
+        <button class='task-sort-btn waves-effect waves-green btn' data-sort='deadline' data-order='false'>Desc. date</button></p>
       </div>
     </div>
-    <div class="modal-footer">
-      <a class=" modal-action modal-close waves-effect waves-green btn-flat">Done</a>
-      <a id='task-reset-btn' class="waves-effect waves-green btn-flat">Reset</a>
-    </div>
   </div>
+  <div class="modal-footer">
+    <a class=" modal-action modal-close waves-effect waves-green btn-flat">Done</a>
+    <a id='task-reset-btn' class="waves-effect waves-green btn-flat">Reset</a>
+  </div>
+</div>
 
 <div id='datepicker-container'>
 </div>
