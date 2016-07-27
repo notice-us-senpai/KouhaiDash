@@ -12,7 +12,11 @@ class User < ActiveRecord::Base
   has_many :memberships, dependent: :destroy
   has_many :groups, through: :memberships
   has_many :task_assignments, through: :memberships
-  has_many :tasks, through: :memberships
+  has_many :tasks, through: :task_assignments
+  #to retrieve events
+  has_many :categories, through: :groups
+  has_many :calendars, through: :categories
+  has_many :events, through: :calendars
   has_one :google_account
 
 	before_save { self.email = email.downcase }

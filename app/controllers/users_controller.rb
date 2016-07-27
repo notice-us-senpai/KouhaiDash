@@ -14,6 +14,30 @@ class UsersController < ApplicationController
   end
 
   def show
+    if @user==current_user
+      @overdue=@user.tasks.includes(category: :group).where(done: false).where("deadline < ?",Date.today).order('deadline ASC').limit(5)
+      @tasks=@user.tasks.includes(category: :group).where(done: false).where("deadline >= ?",Date.today).order("deadline ASC").limit(5)
+      @events=@user.events.includes(calendar: {category: :group}).where('"end" >= ?',Time.now).order("start").where('"start" < ?',Time.now + 7.days).order("start ASC").limit(5).collect{|event|
+        {start:event.start, google:false, event:event, category: event.calendar.category_id, time_zone: event.calendar.time_zone , group: event.calendar.category.group.id}}
+      @user.calendars.each do |cal|
+        next unless cal.google_calendar_id && cal.google_calendar_id.length>0
+        begin
+          token = cal.google_account.fresh_token
+          calendar_client = Signet::OAuth2::Client.new(access_token: token)
+          calendar_service = Google::Apis::CalendarV3::CalendarService.new
+          calendar_service.authorization = calendar_client
+          result= calendar_service.list_events(cal.google_calendar_id, single_events: true, max_results: 5,
+            order_by: "startTime",time_max: (Time.now + 7.days).to_datetime.rfc3339,
+            time_min: Time.now.to_datetime.rfc3339)
+          @events.concat(result.items.collect{|event|{start: event.start.date_time,google: true, event:event, category: cal.category_id, time_zone:cal.time_zone, group: cal.category.group.id}})
+        rescue
+        end
+      end
+      @events.sort!{
+        |x,y| x[:start]<=>y[:start]
+      }
+      @events=@events.first(5)
+    end
   end
 
   def new
