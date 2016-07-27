@@ -1,7 +1,7 @@
 <% provide(:title, "#{@task.name}") %>
 <div class="row">
   <div class="col s12">
-    <h1><%=@task.name%></h1>
+    <h1><%= @task.name %></h1>
   </div>
 </div>
 <div class="row">
@@ -16,24 +16,24 @@
           <th>Done</th>
           <td>
             <% if @task.done %>
-             <%= "Yes!" %>
-           <% else %>
-             <%= "Not yet!" %>
-           <% end %>
-         </td>
+              <%= "Yes!" %>
+            <% else %>
+              <%= "Not yet!" %>
+            <% end %>
+          </td>
         </tr>
         <tr>
           <th>Description</th>
           <td><%= @task.description %></td>
         </tr>
-        <%first=true%>
-        <%@task.task_assignments.each do |assign| %>
+        <% first = true %>
+        <% @task.task_assignments.each do |assign| %>
           <tr>
             <th>
-              <%if first%>
+              <% if first %>
                 Assigned To
-              <%first =false%>
-              <%end%>
+              <% first = false %>
+              <% end %>
             </th>
             <td><div class="chip">
               <%= image_tag "default#{assign.membership.user.id%4}.jpg", class:'activator' %>

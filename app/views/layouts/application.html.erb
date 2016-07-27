@@ -63,44 +63,44 @@
 
             <% if @group && @group.id %>
               <li><%= link_to @group.name, group_path(@group) %></li>
-              <%get_categories_and_path(@group).each do |link| %>
+              <% get_categories_and_path(@group).each do |link| %>
                 <li>
                   <%= link_to link[:name], link[:path] %>
                 </li>
               <%end%>
               <%if @group.members_public || @authorised_member %>
                 <li>
-                  <%= link_to "Group Members", group_memberships_path(@group) %>
+                  <%= link_to "Members", group_memberships_path(@group) %>
                 </li>
               <%end%>
               <%if @authorised_member %>
                 <li>
-                  <%= link_to "Manage Categories", group_categories_path(@group) %>
+                  <%= link_to "Edit this sidebar", group_categories_path(@group) %>
                 </li>
               <%end%>
             <%else%>
-              <li>
-                <%= link_to "Groups", groups_path %>
-              </li>
               <% if logged_in? %>
                 <li>
-                  <%= link_to "Profile", current_user %>
+                  <%= link_to "Groups", groups_path %>
                 </li>
                 <li>
-                  <%= link_to "Members", users_path %>
+                  <%= link_to "My Profile", current_user %>
                 </li>
                 <li>
-                  <%= link_to "Calendar", calendar_path %>
+                  <%= link_to "All Users", users_path %>
                 </li>
                 <li>
-                  <%= link_to "Files", files_path %>
+                  <%= link_to "My Calendar", calendar_path %>
+                </li>
+                <li>
+                  <%= link_to "My Files", files_path %>
+                </li>
+                <li>
+                  <%= link_to "Settings", edit_user_path(current_user) %>
                 </li>
               <%end%>
             <%end%>
             <%if logged_in?%>
-              <li>
-                <%= link_to "Settings", edit_user_path(current_user) %>
-              </li>
               <li>
                 <%= link_to "Logout", logout_path, method: "delete" %>
               </li>
@@ -132,10 +132,8 @@
     </main>
     <!-- /main -->
 
-    <!--footer-->
+    <!-- footer -->
     <%= render 'layouts/footer' %>
     <!-- /footer -->
-
-      <!-- Menu Toggle Script -->
   </body>
 </html>
