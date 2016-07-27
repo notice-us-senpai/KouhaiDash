@@ -29,7 +29,11 @@
               <%@memberships.each do |mem|%>
                 <tr>
                   <td><%=link_to mem.group.name, mem.group%></td>
-                  <td><% if mem.approved%><i class='material-icons'>person</i><%else%><i class='material-icons'>person_outline</i><%end%></td>
+                  <% if mem.approved%>
+                    <td class='tooltipped' data-position="bottom" data-delay="50" data-tooltip="Official Member"><i class='material-icons'>person</i></td>
+                  <%else%>
+                    <td class='tooltipped' data-position="bottom" data-delay="50" data-tooltip="Not approved yet :("><i class='material-icons'>person_outline</i></td>
+                  <%end%>
                 </tr>
               <%end%>
             </table>
@@ -50,7 +54,6 @@
               <%@overdue.each do |task|%>
                 <tr>
                   <td><%=link_to task.name, group_category_task_path(task.category.group_id,task.category_id,task)%></td>
-                  <td><%=link_to task.category.group.name, group_path(task.category.group_id)%></td>
                   <td><%=task.deadline.strftime('%e %b %4Y')%></td>
                 </tr>
               <%end%>
@@ -97,7 +100,6 @@
               <%@tasks.each do |task|%>
                 <tr>
                   <td><%=link_to task.name, group_category_task_path(task.category.group_id,task.category_id,task)%></td>
-                  <td><%=link_to task.category.group.name, group_path(task.category.group_id)%></td>
                   <td><%=task.deadline.strftime('%e %b %4Y')%></td>
                 </tr>
               <%end%>
