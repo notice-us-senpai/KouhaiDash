@@ -1,5 +1,9 @@
 /* Preloader */
 
+body {
+  overflow: hidden;
+}
+
 #preloader {
   position: fixed;
   top: 0;
