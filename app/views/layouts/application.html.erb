@@ -2,28 +2,28 @@
 <html>
   <head>
     <title>
-    	<%= full_title(yield(:title)) %>
-  	</title>
+      <%= full_title(yield(:title)) %>
+    </title>
 
     <meta name="viewport" content="width=device-width,
       initial-scale=1, maximum-scale=1" />
     <%= stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Raleway|Pacifico|Nosifer',media: 'all'%>
     <%= stylesheet_link_tag 'https://fonts.googleapis.com/icon?family=Material+Icons',media: 'all'%>
     <%= stylesheet_link_tag 'application',
-    		media: 'all', 'data-turbolinks-track' => true %>
+        media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application',
-    		'data-turbolinks-track' => true %>
+        'data-turbolinks-track' => true %>
     <%=javascript_include_tag '//cdn.jsdelivr.net/sortable/1.4.2/Sortable.min.js',
-    		'data-turbolinks-track' => true %>
+        'data-turbolinks-track' => true %>
     <%=javascript_include_tag 'https://npmcdn.com/isotope-layout@3.0/dist/isotope.pkgd.min.js',
-        		'data-turbolinks-track' => true %>
+            'data-turbolinks-track' => true %>
     <script>
     function onApiLoad() {
        gapi.load('picker');
      }
     </script>
     <%=javascript_include_tag 'https://apis.google.com/js/api.js?onload=onApiLoad',
-        		'data-turbolinks-track' => true %>
+            'data-turbolinks-track' => true %>
 
     <%= csrf_meta_tags %>
     <%= render 'layouts/shim' %>
@@ -53,6 +53,11 @@
 
   </head>
   <body class="<%= controller_name %> <%= action_name %>">
+
+    <!-- Preloader -->
+    <div id="preloader">
+      <div id="status">&nbsp;</div>
+    </div>
 
     <header>
       <!-- Sidebar -->
@@ -135,5 +140,15 @@
     <!-- footer -->
     <%= render 'layouts/footer' %>
     <!-- /footer -->
+
+    <script>
+      $(window).load(function() { // makes sure the whole site is loaded
+      $('#status').fadeOut(); // will first fade out the loading animation
+      $('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website.
+      $('body').delay(350).css({
+        'overflow': 'visible'
+      });
+    })
+    </script>
   </body>
 </html>
