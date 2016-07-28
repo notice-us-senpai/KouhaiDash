@@ -3,9 +3,12 @@
   document.getElementById("memberships_users_div").innerHTML = "<%= escape_javascript(render 'users') %>";
   document.getElementById("memberships_div").innerHTML = "<%= escape_javascript(render 'list') %>";
   $('.memberships-search').val("");
-  $('.grid').isotope({
+  grid=$('.grid').isotope({
     itemSelector: '.grid-item',
     percentPosition: true
+  });
+  grid.imagesLoaded().progress( function() {
+    grid.isotope('layout');
   });
 
 <%else%>

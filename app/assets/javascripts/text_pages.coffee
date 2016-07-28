@@ -1,6 +1,11 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
+root = exports ? this
+root.onApiLoad=()->
+  gapi.load('picker')
+
+
 createPicker=()->
   picker = new google.picker.PickerBuilder().addView(google.picker.ViewId.DOCUMENTS).
        setOrigin(window.location.protocol + '//' + window.location.host).

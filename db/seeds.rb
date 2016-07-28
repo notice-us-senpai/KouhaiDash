@@ -76,7 +76,7 @@ TextPage.create(title: "EGroup", contents: "This is an example group. Take a loo
 
 magic_number.times do |i|
   Task.create(
-    category_id: Faker::Number.between(1, 2),
+    category_id: Faker::Number.between(2, 3),
     name: Faker::Hacker.verb() + " "+Faker::Hacker.adjective() +" "+ Faker::Hacker.noun() ,
     description: Faker::Lorem.paragraph,
     deadline: Faker::Date.between(5.year.ago, 5.year.from_now),

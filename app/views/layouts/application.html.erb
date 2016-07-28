@@ -17,11 +17,8 @@
     		'data-turbolinks-track' => true %>
     <%=javascript_include_tag 'https://npmcdn.com/isotope-layout@3.0/dist/isotope.pkgd.min.js',
         		'data-turbolinks-track' => true %>
-    <script>
-    function onApiLoad() {
-       gapi.load('picker');
-     }
-    </script>
+    <%=javascript_include_tag 'https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.min.js',
+        		'data-turbolinks-track' => true %>
     <%=javascript_include_tag 'https://apis.google.com/js/api.js?onload=onApiLoad',
         		'data-turbolinks-track' => true %>
 
