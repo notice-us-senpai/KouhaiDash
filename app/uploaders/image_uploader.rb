@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+=begin
 class ImageUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
@@ -49,3 +50,4 @@ class ImageUploader < CarrierWave::Uploader::Base
   # end
 
 end
+=end
