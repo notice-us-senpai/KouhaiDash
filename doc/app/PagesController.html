@@ -72,17 +72,9 @@
     
     <li ><a href="#method-i-calendar">#calendar</a>
     
-    <li ><a href="#method-i-calendar_callback">#calendar_callback</a>
-    
     <li ><a href="#method-i-contacts">#contacts</a>
     
-    <li ><a href="#method-i-drive">#drive</a>
-    
-    <li ><a href="#method-i-drive_callback">#drive_callback</a>
-    
-    <li ><a href="#method-i-google_calendar">#google_calendar</a>
-    
-    <li ><a href="#method-i-google_drive">#google_drive</a>
+    <li ><a href="#method-i-files">#files</a>
     
     <li ><a href="#method-i-home">#home</a>
     
@@ -143,54 +135,19 @@
 
           
           <div class="method-source-code" id="calendar-source">
-            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 11</span>
+            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 8</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">calendar</span>
-  <span class="ruby-identifier">client</span> = <span class="ruby-constant">Signet</span><span class="ruby-operator">::</span><span class="ruby-constant">OAuth2</span><span class="ruby-operator">::</span><span class="ruby-constant">Client</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">access_token</span><span class="ruby-operator">:</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:access_token</span>])
-  <span class="ruby-identifier">service</span> = <span class="ruby-constant">Google</span><span class="ruby-operator">::</span><span class="ruby-constant">Apis</span><span class="ruby-operator">::</span><span class="ruby-constant">CalendarV3</span><span class="ruby-operator">::</span><span class="ruby-constant">CalendarService</span>.<span class="ruby-identifier">new</span>
-  <span class="ruby-identifier">service</span>.<span class="ruby-identifier">authorization</span> = <span class="ruby-identifier">client</span>
-  <span class="ruby-ivar">@calendar_list</span> = <span class="ruby-identifier">service</span>.<span class="ruby-identifier">list_calendar_lists</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-calendar_callback" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">calendar_callback</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="calendar_callback-source">
-            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 38</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">calendar_callback</span>
-  <span class="ruby-identifier">client</span> = <span class="ruby-constant">Signet</span><span class="ruby-operator">::</span><span class="ruby-constant">OAuth2</span><span class="ruby-operator">::</span><span class="ruby-constant">Client</span>.<span class="ruby-identifier">new</span>({
-    <span class="ruby-identifier">client_id</span><span class="ruby-operator">:</span> <span class="ruby-constant">ENV</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">&#39;GOOGLE_API_CLIENT_ID&#39;</span>),
-    <span class="ruby-identifier">client_secret</span><span class="ruby-operator">:</span> <span class="ruby-constant">ENV</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">&#39;GOOGLE_API_CLIENT_SECRET&#39;</span>),
-    <span class="ruby-identifier">token_credential_uri</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;https://accounts.google.com/o/oauth2/token&#39;</span>,
-    <span class="ruby-identifier">redirect_uri</span><span class="ruby-operator">:</span> <span class="ruby-identifier">url_for</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:calendar_callback</span>),
-    <span class="ruby-identifier">code</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:code</span>]
-  })
-  <span class="ruby-identifier">response</span> = <span class="ruby-identifier">client</span>.<span class="ruby-identifier">fetch_access_token!</span>
-  <span class="ruby-identifier">session</span>[<span class="ruby-value">:access_token</span>] = <span class="ruby-identifier">response</span>[<span class="ruby-string">&#39;access_token&#39;</span>]
-  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">url_for</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:calendar</span>)
+  <span class="ruby-ivar">@calendar_authorised</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-identifier">calendar_client</span> = <span class="ruby-constant">Signet</span><span class="ruby-operator">::</span><span class="ruby-constant">OAuth2</span><span class="ruby-operator">::</span><span class="ruby-constant">Client</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">access_token</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">fresh_token</span>)
+    <span class="ruby-identifier">calendar_service</span> = <span class="ruby-constant">Google</span><span class="ruby-operator">::</span><span class="ruby-constant">Apis</span><span class="ruby-operator">::</span><span class="ruby-constant">CalendarV3</span><span class="ruby-operator">::</span><span class="ruby-constant">CalendarService</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">calendar_service</span>.<span class="ruby-identifier">authorization</span> = <span class="ruby-identifier">calendar_client</span>
+    <span class="ruby-ivar">@calendar_response</span> = <span class="ruby-identifier">calendar_service</span>.<span class="ruby-identifier">list_events</span>(
+      <span class="ruby-string">&#39;primary&#39;</span>, <span class="ruby-identifier">max_results</span><span class="ruby-operator">:</span> <span class="ruby-value">5</span>)
+    <span class="ruby-ivar">@authorised</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">rescue</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/auth/google_oauth2&#39;</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -221,7 +178,7 @@
 
           
           <div class="method-source-code" id="contacts-source">
-            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 24</span>
+            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 38</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">contacts</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -234,10 +191,10 @@
       </div>
 
     
-      <div id="method-i-drive" class="method-detail ">
+      <div id="method-i-files" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">drive</span><span
+          <span class="method-name">files</span><span
             class="method-args">()</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -252,131 +209,19 @@
           
 
           
-          <div class="method-source-code" id="drive-source">
-            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 21</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">drive</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-drive_callback" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">drive_callback</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="drive_callback-source">
-            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 62</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">drive_callback</span>
-  <span class="ruby-identifier">client</span> = <span class="ruby-constant">Signet</span><span class="ruby-operator">::</span><span class="ruby-constant">OAuth2</span><span class="ruby-operator">::</span><span class="ruby-constant">Client</span>.<span class="ruby-identifier">new</span>({
-    <span class="ruby-identifier">client_id</span><span class="ruby-operator">:</span> <span class="ruby-constant">ENV</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">&#39;GOOGLE_API_CLIENT_ID&#39;</span>),
-    <span class="ruby-identifier">client_secret</span><span class="ruby-operator">:</span> <span class="ruby-constant">ENV</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">&#39;GOOGLE_API_CLIENT_SECRET&#39;</span>),
-    <span class="ruby-identifier">token_credential_uri</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;https://accounts.google.com/o/oauth2/token&#39;</span>,
-    <span class="ruby-identifier">redirect_uri</span><span class="ruby-operator">:</span> <span class="ruby-identifier">url_for</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:drive_callback</span>),
-    <span class="ruby-identifier">code</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:code</span>]
-  })
-  <span class="ruby-identifier">response</span> = <span class="ruby-identifier">client</span>.<span class="ruby-identifier">fetch_access_token!</span>
-  <span class="ruby-identifier">session</span>[<span class="ruby-value">:access_token</span>] = <span class="ruby-identifier">response</span>[<span class="ruby-string">&#39;access_token&#39;</span>]
-  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">url_for</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:drive</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-google_calendar" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">google_calendar</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="google_calendar-source">
-            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 27</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">google_calendar</span>
-  <span class="ruby-identifier">client</span> = <span class="ruby-constant">Signet</span><span class="ruby-operator">::</span><span class="ruby-constant">OAuth2</span><span class="ruby-operator">::</span><span class="ruby-constant">Client</span>.<span class="ruby-identifier">new</span>({
-    <span class="ruby-identifier">client_id</span><span class="ruby-operator">:</span> <span class="ruby-constant">ENV</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">&#39;GOOGLE_API_CLIENT_ID&#39;</span>),
-    <span class="ruby-identifier">client_secret</span><span class="ruby-operator">:</span> <span class="ruby-constant">ENV</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">&#39;GOOGLE_API_CLIENT_SECRET&#39;</span>),
-    <span class="ruby-identifier">authorization_uri</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;https://accounts.google.com/o/oauth2/auth&#39;</span>,
-    <span class="ruby-identifier">scope</span><span class="ruby-operator">:</span> <span class="ruby-constant">Google</span><span class="ruby-operator">::</span><span class="ruby-constant">Apis</span><span class="ruby-operator">::</span><span class="ruby-constant">CalendarV3</span><span class="ruby-operator">::</span><span class="ruby-constant">AUTH_CALENDAR_READONLY</span>,
-    <span class="ruby-identifier">redirect_uri</span><span class="ruby-operator">:</span> <span class="ruby-identifier">url_for</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:calendar_callback</span>)
-  })
-  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">client</span>.<span class="ruby-identifier">authorization_uri</span>.<span class="ruby-identifier">to_s</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-google_drive" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">google_drive</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="google_drive-source">
-            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 51</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">google_drive</span>
-  <span class="ruby-identifier">client</span> = <span class="ruby-constant">Signet</span><span class="ruby-operator">::</span><span class="ruby-constant">OAuth2</span><span class="ruby-operator">::</span><span class="ruby-constant">Client</span>.<span class="ruby-identifier">new</span>({
-    <span class="ruby-identifier">client_id</span><span class="ruby-operator">:</span> <span class="ruby-constant">ENV</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">&#39;GOOGLE_API_CLIENT_ID&#39;</span>),
-    <span class="ruby-identifier">client_secret</span><span class="ruby-operator">:</span> <span class="ruby-constant">ENV</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">&#39;GOOGLE_API_CLIENT_SECRET&#39;</span>),
-    <span class="ruby-identifier">authorization_uri</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;https://accounts.google.com/o/oauth2/auth&#39;</span>,
-    <span class="ruby-comment"># scope: Google::Apis::CalendarV3::AUTH_CALENDAR_READONLY,</span>
-    <span class="ruby-identifier">redirect_uri</span><span class="ruby-operator">:</span> <span class="ruby-identifier">url_for</span>(<span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:drive_callback</span>)
-  })
-  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">client</span>.<span class="ruby-identifier">authorization_uri</span>.<span class="ruby-identifier">to_s</span>
+          <div class="method-source-code" id="files-source">
+            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">files</span>
+  <span class="ruby-ivar">@drive_authorised</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-identifier">drive_client</span> = <span class="ruby-constant">Signet</span><span class="ruby-operator">::</span><span class="ruby-constant">OAuth2</span><span class="ruby-operator">::</span><span class="ruby-constant">Client</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">access_token</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">fresh_token</span>)
+    <span class="ruby-identifier">drive_service</span> = <span class="ruby-constant">Google</span><span class="ruby-operator">::</span><span class="ruby-constant">Apis</span><span class="ruby-operator">::</span><span class="ruby-constant">DriveV3</span><span class="ruby-operator">::</span><span class="ruby-constant">DriveService</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">drive_service</span>.<span class="ruby-identifier">authorization</span> = <span class="ruby-identifier">drive_client</span>
+    <span class="ruby-ivar">@drive_response</span> = <span class="ruby-identifier">drive_service</span>.<span class="ruby-identifier">list_files</span>
+    <span class="ruby-ivar">@drive_authorised</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">rescue</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/auth/google_oauth2&#39;</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -407,7 +252,7 @@
 
           
           <div class="method-source-code" id="home-source">
-            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 5</span>
+            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 2</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">home</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -439,7 +284,7 @@
 
           
           <div class="method-source-code" id="profile-source">
-            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 8</span>
+            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">profile</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -471,7 +316,7 @@
 
           
           <div class="method-source-code" id="tasks-source">
-            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 18</span>
+            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tasks</span>
 <span class="ruby-keyword">end</span></pre>
           </div>

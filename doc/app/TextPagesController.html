@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 
-<title>class CategoriesController - Rails Application Documentation</title>
+<title>class TextPagesController - Rails Application Documentation</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -80,9 +80,9 @@
     
     <li ><a href="#method-i-new">#new</a>
     
-    <li ><a href="#method-i-saveOrder">#saveOrder</a>
-    
     <li ><a href="#method-i-show">#show</a>
+    
+    <li ><a href="#method-i-to_authenticate">#to_authenticate</a>
     
     <li ><a href="#method-i-update">#update</a>
     
@@ -92,9 +92,9 @@
   </div>
 </nav>
 
-<main role="main" aria-labelledby="class-CategoriesController">
-  <h1 id="class-CategoriesController" class="class">
-    class CategoriesController
+<main role="main" aria-labelledby="class-TextPagesController">
+  <h1 id="class-TextPagesController" class="class">
+    class TextPagesController
   </h1>
 
   <section class="description">
@@ -133,23 +133,24 @@
 
         <div class="method-description">
           
-          <p>POST /categories POST /categories.json</p>
+          
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/categories_controller.rb, line 39</span>
+            <pre><span class="ruby-comment"># File app/controllers/text_pages_controller.rb, line 43</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
-  <span class="ruby-ivar">@category</span> = <span class="ruby-ivar">@group</span>.<span class="ruby-identifier">categories</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">category_params</span>)
-
+  <span class="ruby-ivar">@text_page</span> = <span class="ruby-constant">TextPage</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">text_page_params</span>)
+  <span class="ruby-ivar">@text_page</span>.<span class="ruby-identifier">category</span> = <span class="ruby-ivar">@category</span>
+  <span class="ruby-identifier">set_file_name_and_link</span>
   <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@category</span>.<span class="ruby-identifier">save</span>
-      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> [<span class="ruby-ivar">@group</span>,<span class="ruby-ivar">@category</span>], <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Category was successfully created.&#39;</span> }
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@text_page</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> [<span class="ruby-ivar">@group</span>,<span class="ruby-ivar">@category</span>], <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Text page was successfully created.&#39;</span> }
       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:show</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:created</span>, <span class="ruby-identifier">location</span><span class="ruby-operator">:</span> [<span class="ruby-ivar">@group</span>,<span class="ruby-ivar">@category</span>] }
     <span class="ruby-keyword">else</span>
       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:new</span> }
-      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@category</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:unprocessable_entity</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@text_page</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:unprocessable_entity</span> }
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
@@ -176,19 +177,18 @@
 
         <div class="method-description">
           
-          <p>DELETE /categories/1 DELETE /categories/1.json</p>
+          
           
           
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/categories_controller.rb, line 69</span>
+            <pre><span class="ruby-comment"># File app/controllers/text_pages_controller.rb, line 72</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
-  <span class="ruby-ivar">@category</span>.<span class="ruby-identifier">destroy</span>
+  <span class="ruby-ivar">@text_page</span>.<span class="ruby-identifier">destroy</span>
   <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">group_categories_url</span>, <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Category was successfully destroyed.&#39;</span> }
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@group</span>, <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Text page was successfully destroyed.&#39;</span> }
     <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span> }
-    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -214,14 +214,15 @@
 
         <div class="method-description">
           
-          <p>GET /categories/1/edit</p>
+          
           
           
 
           
           <div class="method-source-code" id="edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/categories_controller.rb, line 34</span>
+            <pre><span class="ruby-comment"># File app/controllers/text_pages_controller.rb, line 39</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
+  <span class="ruby-identifier">set_file_name_and_link</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -246,15 +247,15 @@
 
         <div class="method-description">
           
-          <p>GET /categories GET /categories.json</p>
+          
           
           
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/categories_controller.rb, line 8</span>
+            <pre><span class="ruby-comment"># File app/controllers/text_pages_controller.rb, line 9</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
-  <span class="ruby-ivar">@categories</span> = <span class="ruby-ivar">@group</span>.<span class="ruby-identifier">categories</span>.<span class="ruby-identifier">order</span>(<span class="ruby-value">:order_no</span>)
+  <span class="ruby-comment">#@text_pages = TextPage.all</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -279,57 +280,15 @@
 
         <div class="method-description">
           
-          <p>GET /categories/new</p>
+          
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/categories_controller.rb, line 29</span>
+            <pre><span class="ruby-comment"># File app/controllers/text_pages_controller.rb, line 35</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
-  <span class="ruby-ivar">@category</span> = <span class="ruby-ivar">@group</span>.<span class="ruby-identifier">categories</span>.<span class="ruby-identifier">new</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-saveOrder" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">saveOrder</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="saveOrder-source">
-            <pre><span class="ruby-comment"># File app/controllers/categories_controller.rb, line 78</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">saveOrder</span>
-  <span class="ruby-identifier">order</span>=<span class="ruby-identifier">params</span>.<span class="ruby-identifier">require</span>(<span class="ruby-value">:category</span>).<span class="ruby-identifier">fetch</span>(<span class="ruby-value">:order_no</span>,[])
-  <span class="ruby-identifier">i</span>=<span class="ruby-value">1</span>
-  <span class="ruby-identifier">order</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">category_id</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">category</span>=<span class="ruby-ivar">@group</span>.<span class="ruby-identifier">categories</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">category_id</span>)
-    <span class="ruby-identifier">category</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">order_no</span><span class="ruby-operator">:</span> <span class="ruby-identifier">i</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">category</span>
-    <span class="ruby-identifier">i</span><span class="ruby-operator">+=</span><span class="ruby-value">1</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
-  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@text_page</span> = <span class="ruby-constant">TextPage</span>.<span class="ruby-identifier">new</span>()
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -354,25 +313,72 @@
 
         <div class="method-description">
           
-          <p>GET /categories/1 GET /categories/1.json</p>
+          
           
           
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/categories_controller.rb, line 14</span>
+            <pre><span class="ruby-comment"># File app/controllers/text_pages_controller.rb, line 13</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
-  <span class="ruby-keyword">case</span> <span class="ruby-ivar">@category</span>.<span class="ruby-identifier">type_no</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-value">0</span>
-    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">group_category_calendar_path</span>(<span class="ruby-ivar">@group</span>,<span class="ruby-ivar">@category</span>)
-  <span class="ruby-keyword">when</span> <span class="ruby-value">1</span>
-    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">group_category_contacts_path</span>(<span class="ruby-ivar">@group</span>,<span class="ruby-ivar">@category</span>)
-  <span class="ruby-keyword">when</span> <span class="ruby-value">2</span>
-    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">group_category_text_page_path</span>(<span class="ruby-ivar">@group</span>,<span class="ruby-ivar">@category</span>)
-  <span class="ruby-keyword">when</span> <span class="ruby-value">3</span>
-    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">group_category_tasks_path</span>(<span class="ruby-ivar">@group</span>,<span class="ruby-ivar">@category</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@text_page</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@text_page</span>.<span class="ruby-identifier">load_from_google</span>
+        <span class="ruby-keyword">begin</span>
+          <span class="ruby-comment">#load using the uploader&#39;s google_account</span>
+          <span class="ruby-identifier">drive_client</span> = <span class="ruby-constant">Signet</span><span class="ruby-operator">::</span><span class="ruby-constant">OAuth2</span><span class="ruby-operator">::</span><span class="ruby-constant">Client</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">access_token</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@text_page</span>.<span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">fresh_token</span>)
+          <span class="ruby-identifier">drive_service</span> = <span class="ruby-constant">Google</span><span class="ruby-operator">::</span><span class="ruby-constant">Apis</span><span class="ruby-operator">::</span><span class="ruby-constant">DriveV3</span><span class="ruby-operator">::</span><span class="ruby-constant">DriveService</span>.<span class="ruby-identifier">new</span>
+          <span class="ruby-identifier">drive_service</span>.<span class="ruby-identifier">authorization</span> = <span class="ruby-identifier">drive_client</span>
+          <span class="ruby-ivar">@contents</span> = <span class="ruby-identifier">drive_service</span>.<span class="ruby-identifier">export_file</span>(<span class="ruby-ivar">@text_page</span>.<span class="ruby-identifier">file_id</span>, <span class="ruby-string">&#39;text/html&#39;</span>)
+        <span class="ruby-keyword">rescue</span>
+          <span class="ruby-comment">#load from contents instead</span>
+          <span class="ruby-ivar">@contents</span>=<span class="ruby-ivar">@text_page</span>.<span class="ruby-identifier">contents</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-ivar">@contents</span>=<span class="ruby-ivar">@text_page</span>.<span class="ruby-identifier">contents</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">new_group_category_text_page_path</span>(<span class="ruby-ivar">@group</span>,<span class="ruby-ivar">@category</span>)
   <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_authenticate" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_authenticate</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_authenticate-source">
+            <pre><span class="ruby-comment"># File app/controllers/text_pages_controller.rb, line 80</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_authenticate</span>
+  <span class="ruby-identifier">store_location_url</span>(
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@text_page</span>
+      <span class="ruby-identifier">edit_group_category_text_page_path</span>(<span class="ruby-ivar">@group</span>,<span class="ruby-ivar">@category</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">new_group_category_text_page_path</span>(<span class="ruby-ivar">@group</span>,<span class="ruby-ivar">@category</span>)
+    <span class="ruby-keyword">end</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/auth/google_oauth2&#39;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -397,21 +403,22 @@
 
         <div class="method-description">
           
-          <p>PATCH/PUT /categories/1 PATCH/PUT /categories/1.json</p>
+          
           
           
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/categories_controller.rb, line 55</span>
+            <pre><span class="ruby-comment"># File app/controllers/text_pages_controller.rb, line 59</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
+  <span class="ruby-identifier">set_file_name_and_link</span>
   <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@category</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">category_params</span>)
-      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> [<span class="ruby-ivar">@group</span>,<span class="ruby-ivar">@category</span>], <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Category was successfully updated.&#39;</span> }
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@text_page</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">text_page_params</span>)
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> [<span class="ruby-ivar">@group</span>,<span class="ruby-ivar">@category</span>], <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Text page was successfully updated.&#39;</span> }
       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:show</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:ok</span>, <span class="ruby-identifier">location</span><span class="ruby-operator">:</span> [<span class="ruby-ivar">@group</span>,<span class="ruby-ivar">@category</span>] }
     <span class="ruby-keyword">else</span>
       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:edit</span> }
-      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@category</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:unprocessable_entity</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@text_page</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:unprocessable_entity</span> }
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>

@@ -84,6 +84,10 @@
     
     <li ><a href="#method-i-show">#show</a>
     
+    <li ><a href="#method-i-to_authenticate">#to_authenticate</a>
+    
+    <li ><a href="#method-i-to_revoke">#to_revoke</a>
+    
     <li ><a href="#method-i-update">#update</a>
     
   </ul>
@@ -139,7 +143,7 @@
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 22</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 48</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
       <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">user_params</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save</span>
@@ -180,7 +184,7 @@
 
           
           <div class="method-source-code" id="delete-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 46</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 72</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -212,7 +216,7 @@
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 49</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 75</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">destroy</span>
   <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-string">&quot;User Deleted!&quot;</span>
@@ -247,7 +251,7 @@
 
           
           <div class="method-source-code" id="edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 34</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 60</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -279,7 +283,7 @@
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 9</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 10</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
   <span class="ruby-comment"># raise params.inspect</span>
   <span class="ruby-comment"># @users = User.paginate(page: params[:page])</span>
@@ -314,7 +318,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 18</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
       <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>
 <span class="ruby-keyword">end</span></pre>
@@ -347,8 +351,104 @@
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 15</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 16</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span><span class="ruby-operator">==</span><span class="ruby-identifier">current_user</span>
+    <span class="ruby-ivar">@memberships</span>=<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">memberships</span>.<span class="ruby-identifier">includes</span>(<span class="ruby-value">:group</span>).<span class="ruby-identifier">order</span>(<span class="ruby-value">:approved</span>)
+    <span class="ruby-ivar">@overdue</span>=<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">includes</span>(<span class="ruby-value">:category</span>).<span class="ruby-identifier">where</span>(<span class="ruby-identifier">done</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>).<span class="ruby-identifier">where</span>(<span class="ruby-string">&quot;deadline &lt; ?&quot;</span>,<span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>).<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;deadline ASC&#39;</span>).<span class="ruby-identifier">limit</span>(<span class="ruby-value">5</span>)
+    <span class="ruby-ivar">@tasks</span>=<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">includes</span>(<span class="ruby-value">:category</span>).<span class="ruby-identifier">where</span>(<span class="ruby-identifier">done</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>).<span class="ruby-identifier">where</span>(<span class="ruby-string">&quot;deadline &gt;= ?&quot;</span>,<span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>).<span class="ruby-identifier">order</span>(<span class="ruby-string">&quot;deadline ASC&quot;</span>).<span class="ruby-identifier">limit</span>(<span class="ruby-value">5</span>)
+    <span class="ruby-ivar">@events</span>=<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">includes</span>(<span class="ruby-identifier">calendar</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">category</span><span class="ruby-operator">:</span> <span class="ruby-value">:group</span>}).<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;&quot;end&quot; &gt;= ?&#39;</span>,<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>).<span class="ruby-identifier">order</span>(<span class="ruby-string">&quot;start&quot;</span>).<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;&quot;start&quot; &lt; ?&#39;</span>,<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">+</span> <span class="ruby-value">7</span>.<span class="ruby-identifier">days</span>).<span class="ruby-identifier">order</span>(<span class="ruby-string">&quot;start ASC&quot;</span>).<span class="ruby-identifier">limit</span>(<span class="ruby-value">5</span>).<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">event</span><span class="ruby-operator">|</span>
+      {<span class="ruby-identifier">start</span><span class="ruby-value">:event</span>.<span class="ruby-identifier">start</span>, <span class="ruby-identifier">google</span><span class="ruby-value">:false</span>, <span class="ruby-identifier">event</span><span class="ruby-value">:event</span>, <span class="ruby-identifier">category</span><span class="ruby-operator">:</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">calendar</span>.<span class="ruby-identifier">category_id</span>, <span class="ruby-identifier">time_zone</span><span class="ruby-operator">:</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">calendar</span>.<span class="ruby-identifier">time_zone</span> , <span class="ruby-identifier">group</span><span class="ruby-operator">:</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">calendar</span>.<span class="ruby-identifier">category</span>.<span class="ruby-identifier">group</span>.<span class="ruby-identifier">id</span>}}
+    <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">calendars</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">cal</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">cal</span>.<span class="ruby-identifier">google_calendar_id</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">cal</span>.<span class="ruby-identifier">google_calendar_id</span>.<span class="ruby-identifier">length</span><span class="ruby-operator">&gt;</span><span class="ruby-value">0</span>
+      <span class="ruby-keyword">begin</span>
+        <span class="ruby-identifier">token</span> = <span class="ruby-identifier">cal</span>.<span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">fresh_token</span>
+        <span class="ruby-identifier">calendar_client</span> = <span class="ruby-constant">Signet</span><span class="ruby-operator">::</span><span class="ruby-constant">OAuth2</span><span class="ruby-operator">::</span><span class="ruby-constant">Client</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">access_token</span><span class="ruby-operator">:</span> <span class="ruby-identifier">token</span>)
+        <span class="ruby-identifier">calendar_service</span> = <span class="ruby-constant">Google</span><span class="ruby-operator">::</span><span class="ruby-constant">Apis</span><span class="ruby-operator">::</span><span class="ruby-constant">CalendarV3</span><span class="ruby-operator">::</span><span class="ruby-constant">CalendarService</span>.<span class="ruby-identifier">new</span>
+        <span class="ruby-identifier">calendar_service</span>.<span class="ruby-identifier">authorization</span> = <span class="ruby-identifier">calendar_client</span>
+        <span class="ruby-identifier">result</span>= <span class="ruby-identifier">calendar_service</span>.<span class="ruby-identifier">list_events</span>(<span class="ruby-identifier">cal</span>.<span class="ruby-identifier">google_calendar_id</span>, <span class="ruby-identifier">single_events</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>, <span class="ruby-identifier">max_results</span><span class="ruby-operator">:</span> <span class="ruby-value">5</span>,
+          <span class="ruby-identifier">order_by</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;startTime&quot;</span>,<span class="ruby-identifier">time_max</span><span class="ruby-operator">:</span> (<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">+</span> <span class="ruby-value">7</span>.<span class="ruby-identifier">days</span>).<span class="ruby-identifier">to_datetime</span>.<span class="ruby-identifier">rfc3339</span>,
+          <span class="ruby-identifier">time_min</span><span class="ruby-operator">:</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_datetime</span>.<span class="ruby-identifier">rfc3339</span>)
+        <span class="ruby-ivar">@events</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">result</span>.<span class="ruby-identifier">items</span>.<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">event</span><span class="ruby-operator">|</span>{<span class="ruby-identifier">start</span><span class="ruby-operator">:</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">start</span>.<span class="ruby-identifier">date_time</span>,<span class="ruby-identifier">google</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>, <span class="ruby-identifier">event</span><span class="ruby-value">:event</span>, <span class="ruby-identifier">category</span><span class="ruby-operator">:</span> <span class="ruby-identifier">cal</span>.<span class="ruby-identifier">category_id</span>, <span class="ruby-identifier">time_zone</span><span class="ruby-value">:cal</span>.<span class="ruby-identifier">time_zone</span>, <span class="ruby-identifier">group</span><span class="ruby-operator">:</span> <span class="ruby-identifier">cal</span>.<span class="ruby-identifier">category</span>.<span class="ruby-identifier">group</span>.<span class="ruby-identifier">id</span>}})
+      <span class="ruby-keyword">rescue</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@events</span>.<span class="ruby-identifier">sort!</span>{
+      <span class="ruby-operator">|</span><span class="ruby-identifier">x</span>,<span class="ruby-identifier">y</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>[<span class="ruby-value">:start</span>]<span class="ruby-operator">&lt;=&gt;</span><span class="ruby-identifier">y</span>[<span class="ruby-value">:start</span>]
+    }
+    <span class="ruby-ivar">@events</span>=<span class="ruby-ivar">@events</span>.<span class="ruby-identifier">first</span>(<span class="ruby-value">5</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_authenticate" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_authenticate</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_authenticate-source">
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 81</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_authenticate</span>
+  <span class="ruby-identifier">store_location_url</span>(<span class="ruby-identifier">edit_user_path</span>(<span class="ruby-ivar">@user</span>))
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/auth/google_oauth2&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_revoke" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_revoke</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_revoke-source">
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 86</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_revoke</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">revoke_google_token</span>(<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">fresh_token</span>)
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">&#39;The google account is no longer associated with your account. Permissions for KouhaiDash are also revoked.&#39;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">destroy</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">edit_user_path</span>(<span class="ruby-ivar">@user</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -379,7 +479,7 @@
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 37</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 63</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">user_params</span>)
     <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-string">&quot;Profile Updated!&quot;</span>

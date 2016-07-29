@@ -70,11 +70,19 @@
 
   <ul class="link-list" role="directory">
     
+    <li ><a href="#method-i-auth_callback">#auth_callback</a>
+    
     <li ><a href="#method-i-create">#create</a>
     
     <li ><a href="#method-i-destroy">#destroy</a>
     
+    <li ><a href="#method-i-login_with_google">#login_with_google</a>
+    
     <li ><a href="#method-i-new">#new</a>
+    
+    <li ><a href="#method-i-omniauth_failure">#omniauth_failure</a>
+    
+    <li ><a href="#method-i-register_with_google">#register_with_google</a>
     
   </ul>
 </div>
@@ -110,6 +118,114 @@
        </header>
 
     
+      <div id="method-i-auth_callback" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">auth_callback</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="auth_callback-source">
+            <pre><span class="ruby-comment"># File app/controllers/sessions_controller.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">auth_callback</span>
+  <span class="ruby-identifier">auth</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">env</span>[<span class="ruby-string">&#39;omniauth.auth&#39;</span>]
+  <span class="ruby-identifier">email</span> = <span class="ruby-identifier">auth</span>[<span class="ruby-string">&#39;info&#39;</span>][<span class="ruby-string">&#39;email&#39;</span>].<span class="ruby-identifier">downcase</span>
+  <span class="ruby-identifier">credentials</span> = <span class="ruby-identifier">auth</span>[<span class="ruby-string">&#39;credentials&#39;</span>]
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">logged_in?</span>
+    <span class="ruby-comment">#logged in</span>
+    <span class="ruby-identifier">google_account</span>=<span class="ruby-constant">GoogleAccount</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">gmail</span><span class="ruby-operator">:</span> <span class="ruby-identifier">email</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">google_account</span>
+      <span class="ruby-comment">#google_account found</span>
+      <span class="ruby-identifier">update_tokens</span>(<span class="ruby-identifier">google_account</span>,<span class="ruby-identifier">credentials</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">user_id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>
+        <span class="ruby-comment">#google_account belongs to current user, redirect to original action</span>
+        <span class="ruby-identifier">redirect_back_or</span> <span class="ruby-identifier">root_path</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">user_id</span> <span class="ruby-operator">==</span> <span class="ruby-value">-1</span>
+        <span class="ruby-comment">#set google_account to be of current user, redirect to original action</span>
+        <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">update_attributes</span>( <span class="ruby-identifier">user_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>)
+        <span class="ruby-identifier">redirect_back_or</span> <span class="ruby-identifier">root_path</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-comment">#google_account belongs to another user, flash error message</span>
+        <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">&#39;The google account is already registered with another user. Please use another google account or log in with that user account.&#39;</span>
+        <span class="ruby-identifier">redirect_back_or</span> <span class="ruby-identifier">root_path</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">google_account</span>
+      <span class="ruby-comment">#user already has another google_account, flash error message</span>
+      <span class="ruby-identifier">revoke_google_token</span>(<span class="ruby-identifier">credentials</span>[<span class="ruby-string">&#39;token&#39;</span>])
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">&#39;Please sign in with your associated google account or change your associated google account.&#39;</span>
+      <span class="ruby-identifier">redirect_back_or</span> <span class="ruby-identifier">root_path</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-comment">#create google_account for user, redirect to original action</span>
+      <span class="ruby-identifier">google_account</span>= <span class="ruby-constant">GoogleAccount</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">user_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">gmail</span><span class="ruby-operator">:</span> <span class="ruby-identifier">email</span>)
+      <span class="ruby-identifier">update_tokens</span>(<span class="ruby-identifier">google_account</span>,<span class="ruby-identifier">credentials</span>)
+      <span class="ruby-identifier">redirect_back_or</span> <span class="ruby-identifier">root_path</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-comment">#not logged in yet</span>
+    <span class="ruby-identifier">google_account</span>=<span class="ruby-constant">GoogleAccount</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">gmail</span><span class="ruby-operator">:</span> <span class="ruby-identifier">email</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">google_account</span>
+      <span class="ruby-comment">#associated with existing google_account, update tokens, log in user if it exists</span>
+      <span class="ruby-identifier">update_tokens</span>(<span class="ruby-identifier">google_account</span>,<span class="ruby-identifier">credentials</span>)
+      <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">user_id</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>
+        <span class="ruby-comment">#user exists</span>
+        <span class="ruby-identifier">log_in</span> <span class="ruby-identifier">user</span>
+        <span class="ruby-identifier">redirect_back_or</span> <span class="ruby-identifier">user</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-comment">#invalid user, render register_with_google</span>
+        <span class="ruby-identifier">render_register</span>(<span class="ruby-identifier">google_account</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-comment"># separate user email and gmail</span>
+    <span class="ruby-comment"># uncomment for email-gmail procedures</span>
+    <span class="ruby-comment"># elsif user=User.find_by(email: email)</span>
+    <span class="ruby-comment">#   # for enabling direct authorization when user with same email is found</span>
+    <span class="ruby-comment">#   # if user.google_account</span>
+    <span class="ruby-comment">#   #   #user already has an existing google_account with another gmail address, flash error msg</span>
+    <span class="ruby-comment">#   #   #revoke access for user</span>
+    <span class="ruby-comment">#   #   revoke_google_token(credentials[&#39;token&#39;])</span>
+    <span class="ruby-comment">#   #   flash[:notice] = &#39;The Google email is already associated with another user. Please login with that account or another google account.&#39;</span>
+    <span class="ruby-comment">#   #   redirect_to root_path</span>
+    <span class="ruby-comment">#   # else</span>
+    <span class="ruby-comment">#   #   #create google_account, log in user</span>
+    <span class="ruby-comment">#   #   google_account=GoogleAccount.create(user_id: user.id, gmail: email)</span>
+    <span class="ruby-comment">#   #   update_tokens(google_account,credentials)</span>
+    <span class="ruby-comment">#   #   log_in user</span>
+    <span class="ruby-comment">#   #   redirect_back_or user</span>
+    <span class="ruby-comment">#   # end</span>
+    <span class="ruby-comment">#</span>
+    <span class="ruby-comment">#   #disabled direct authorization</span>
+    <span class="ruby-comment">#   revoke_google_token(credentials[&#39;token&#39;])</span>
+    <span class="ruby-comment">#   flash[:notice] = &#39;The Google email is already associated with an existing user. Please login with that account and authenticate your google account or another google account.&#39;</span>
+    <span class="ruby-comment">#   redirect_to root_path</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-comment">#create google_account with user_id: -1, render register_with_google</span>
+      <span class="ruby-identifier">google_account</span>= <span class="ruby-constant">GoogleAccount</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">user_id</span><span class="ruby-operator">:</span> <span class="ruby-value">-1</span>, <span class="ruby-identifier">gmail</span><span class="ruby-operator">:</span> <span class="ruby-identifier">email</span>)
+      <span class="ruby-identifier">update_tokens</span>(<span class="ruby-identifier">google_account</span>,<span class="ruby-identifier">credentials</span>)
+      <span class="ruby-identifier">render_register</span>(<span class="ruby-identifier">google_account</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
       <div id="method-i-create" class="method-detail ">
         
         <div class="method-heading">
@@ -133,8 +249,9 @@
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
       <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">username</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:session</span>][<span class="ruby-value">:username</span>])
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">authenticate</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:session</span>][<span class="ruby-value">:password</span>])
+    <span class="ruby-identifier">reset_session</span>
     <span class="ruby-identifier">log_in</span> <span class="ruby-identifier">user</span>
-    <span class="ruby-identifier">params</span>[<span class="ruby-value">:session</span>][<span class="ruby-value">:remember_me</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;1&#39;</span> <span class="ruby-operator">?</span> 
+    <span class="ruby-identifier">params</span>[<span class="ruby-value">:session</span>][<span class="ruby-value">:remember_me</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;1&#39;</span> <span class="ruby-operator">?</span>
       <span class="ruby-identifier">remember</span>(<span class="ruby-identifier">user</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">forget</span>(<span class="ruby-identifier">user</span>)
     <span class="ruby-identifier">redirect_back_or</span> <span class="ruby-identifier">user</span>
   <span class="ruby-keyword">else</span>
@@ -171,11 +288,77 @@
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/sessions_controller.rb, line 18</span>
+            <pre><span class="ruby-comment"># File app/controllers/sessions_controller.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
+  <span class="ruby-identifier">reset_session</span>
   <span class="ruby-identifier">log_out</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">logged_in?</span>
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
       <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-login_with_google" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">login_with_google</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="login_with_google-source">
+            <pre><span class="ruby-comment"># File app/controllers/sessions_controller.rb, line 134</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">login_with_google</span>
+      <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">username</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:session</span>][<span class="ruby-value">:username</span>])
+  <span class="ruby-identifier">gacc_params</span>=<span class="ruby-identifier">params</span>.<span class="ruby-identifier">require</span>(<span class="ruby-value">:gacc</span>).<span class="ruby-identifier">permit</span>(<span class="ruby-value">:id</span>, <span class="ruby-value">:access_token</span>)
+  <span class="ruby-identifier">google_account</span>=<span class="ruby-constant">GoogleAccount</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">gacc_params</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">authenticate</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:session</span>][<span class="ruby-value">:password</span>])
+    <span class="ruby-identifier">reset_session</span>
+    <span class="ruby-identifier">log_in</span> <span class="ruby-identifier">user</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">google_account</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">user_id</span> <span class="ruby-operator">==</span> <span class="ruby-value">-1</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">user</span>.<span class="ruby-identifier">google_account</span>
+        <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">user_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span>)
+        <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">refresh!</span>
+        <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] =<span class="ruby-string">&#39;The Google account is now linked to your user account.&#39;</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] =<span class="ruby-string">&#39;There is an existing Google account associated with your user account.&#39;</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">params</span>[<span class="ruby-value">:session</span>][<span class="ruby-value">:remember_me</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;1&#39;</span> <span class="ruby-operator">?</span>
+      <span class="ruby-identifier">remember</span>(<span class="ruby-identifier">user</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">forget</span>(<span class="ruby-identifier">user</span>)
+    <span class="ruby-identifier">redirect_back_or</span> <span class="ruby-identifier">user</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span> = <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">gmail</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">google_account</span>
+    <span class="ruby-ivar">@google_id</span> = <span class="ruby-identifier">gacc_params</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-value">:id</span>, <span class="ruby-value">0</span>)
+    <span class="ruby-ivar">@token</span>=<span class="ruby-value">0</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">google_account</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">user_id</span> <span class="ruby-operator">==</span> <span class="ruby-value">-1</span>
+      <span class="ruby-comment">#create new outdated token</span>
+      <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">refresh!</span>
+      <span class="ruby-ivar">@token</span> = <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">access_token</span>
+      <span class="ruby-ivar">@gmail</span> = <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">gmail</span>
+      <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">request_token_from_google</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:danger</span>] = <span class="ruby-string">&#39;Invalid username or password&#39;</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;register_with_google&#39;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -207,6 +390,94 @@
           <div class="method-source-code" id="new-source">
             <pre><span class="ruby-comment"># File app/controllers/sessions_controller.rb, line 2</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-omniauth_failure" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">omniauth_failure</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="omniauth_failure-source">
+            <pre><span class="ruby-comment"># File app/controllers/sessions_controller.rb, line 129</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">omniauth_failure</span>
+  <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">&#39;Google authenication failed. Please try again.&#39;</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_path</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-register_with_google" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">register_with_google</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="register_with_google-source">
+            <pre><span class="ruby-comment"># File app/controllers/sessions_controller.rb, line 104</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_with_google</span>
+  <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">user_params</span>)
+  <span class="ruby-identifier">gacc_params</span>=<span class="ruby-identifier">params</span>.<span class="ruby-identifier">require</span>(<span class="ruby-value">:gacc</span>).<span class="ruby-identifier">permit</span>(<span class="ruby-value">:id</span>, <span class="ruby-value">:access_token</span>)
+  <span class="ruby-identifier">google_account</span>=<span class="ruby-constant">GoogleAccount</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">gacc_params</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">google_account</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">user_id</span> <span class="ruby-operator">==</span> <span class="ruby-value">-1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">user_id</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">id</span>)
+    <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">refresh!</span>
+    <span class="ruby-identifier">log_in</span> <span class="ruby-ivar">@user</span>
+    <span class="ruby-identifier">remember</span> <span class="ruby-ivar">@user</span>
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-string">&quot;Welcome to KouhaiDash!&quot;</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@user</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@google_id</span> = <span class="ruby-identifier">gacc_params</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-value">:id</span>, <span class="ruby-value">0</span>)
+    <span class="ruby-ivar">@token</span>=<span class="ruby-value">0</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">google_account</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">user_id</span> <span class="ruby-operator">==</span> <span class="ruby-value">-1</span>
+      <span class="ruby-comment">#create new outdated token</span>
+      <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">refresh!</span>
+      <span class="ruby-ivar">@token</span> = <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">access_token</span>
+      <span class="ruby-ivar">@gmail</span> = <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">gmail</span>
+      <span class="ruby-identifier">google_account</span>.<span class="ruby-identifier">request_token_from_google</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;register_with_google&#39;</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
