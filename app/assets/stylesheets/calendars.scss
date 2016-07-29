@@ -1,7 +1,7 @@
 // Place all the styles related to the calendars controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-
+@import "materialize";
 //calendar
 .day-6, .day-0{
   @extend .orange-text, .text-darken-2;

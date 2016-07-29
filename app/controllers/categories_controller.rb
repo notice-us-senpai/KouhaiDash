@@ -21,6 +21,8 @@ class CategoriesController < ApplicationController
       redirect_to group_category_text_page_path(@group,@category)
     when 3
       redirect_to group_category_tasks_path(@group,@category)
+    when 4
+      redirect_to group_category_display_path(@group,@category)
     else
     end
   end
@@ -107,7 +109,7 @@ class CategoriesController < ApplicationController
     end
 
     def set_type_no_array
-      @type_no_array = [["Calendar",0],["Contacts",1],["Text Page",2],["Tasks",3]]
+      @type_no_array = [["Calendar",0],["Contacts",1],["Text Page",2],["Tasks",3],["Image Display",4]]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

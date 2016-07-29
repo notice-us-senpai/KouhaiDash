@@ -1,24 +1,43 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, "#{@display.title && @display.title.length>0? @display.title : @category.name}") %>
+<div class="row">
+  <h1><%=@display.title && @display.title.length>0? @display.title : @category.name%></h1>
+</div>
 
-<p>
-  <strong>Category:</strong>
-  <%= @display.category_id %>
-</p>
+<% if @authorised_member%>
+  <div class="fixed-action-btn">
+    <%= link_to "<i class='material-icons'>settings</i>".html_safe,
+      edit_group_category_display_path(@group,@category),
+      class: 'btn-floating btn-large waves-effect waves-light'%>
+  </div>
+<%end%>
 
-<p>
-  <strong>Google account:</strong>
-  <%= @display.google_account_id %>
-</p>
 
-<p>
-  <strong>Google folder:</strong>
-  <%= @display.google_folder_id %>
-</p>
-
-<p>
-  <strong>Display type:</strong>
-  <%= @display.display_type %>
-</p>
-
-<%= link_to 'Edit', edit_display_path(@display) %> |
-<%= link_to 'Back', displays_path %>
+<div class="row">
+  <div class='col s12'>
+    <% if !@images || @images.empty? %>
+      <p>
+        No images loaded.
+      </p>
+    <% else %>
+      <% if @display.display_type==1 %>
+        <div class="slider">
+          <ul class="slides">
+            <% @images.each do |image| %>
+                <li>
+                  <%= image_tag image[:content]%>
+                </li>
+            <% end %>
+          </ul>
+          </div>
+      <% else %>
+      <div class='col s12 display-grid'>
+        <% @images.each do |image| %>
+        <div class='grid-item'>
+          <%= image_tag image[:thumbnail]%>
+        </div>
+        <% end %>
+      </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

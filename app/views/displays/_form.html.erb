@@ -13,9 +13,26 @@
   <% end %>
 
   <div class="input-field col s12">
-    <%= f.label :display_type %><br>
-    <%= f.number_field :display_type %>
+    <%= f.text_field :title%>
+    <%= f.label :title %>
   </div>
+  
+  <div class='col s12'>
+    <h5>Display Style</h5>
+  </div>
+  <div class='col s12'>
+    <div>
+       <%= f.radio_button :display_type, '0', class: 'display-radio'%>
+       <%= f.label :display_type, '<i class="material-icons small">view_quilt</i>'.html_safe, value:'0' %>
+     </div>
+     <p>
+       <%= f.radio_button :display_type, '1', class: 'display-radio'%>
+       <%= f.label :display_type, '<i class="material-icons small">view_carousel</i>'.html_safe, value:'1' %>
+     </p>
+  </div>
+<div class="col s12">
+  <h5>Google Drive Folder</h5>
+</div>
   <%if @google_token%>
       <div class="col s12">
 
@@ -38,3 +55,7 @@
     </button></p>
   </div>
 <% end %>
+<div id='display-form-info' data-key="<%=ENV.fetch('GOOGLE_API_KEY')%>"
+  data-token='<%=@google_token%>' data-id='<%=@google_id%>'
+  style='display:none'>
+</div>

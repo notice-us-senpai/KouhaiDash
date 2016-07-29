@@ -4,15 +4,30 @@ class DisplaysController < ApplicationController
   before_action :check_edit_auth, only: [:edit, :update, :destroy, :new, :create]
   before_action :check_created, only:[:new, :create]
   before_action :google_access_for_edit, only: [:edit, :update, :new, :create]
-  # GET /displays
-  # GET /displays.json
-  def index
-    @displays = Display.all
-  end
 
   # GET /displays/1
   # GET /displays/1.json
   def show
+    if @display
+      begin
+        #load using the uploader's google_account
+        drive_client = Signet::OAuth2::Client.new(access_token: @display.google_account.fresh_token)
+        drive_service = Google::Apis::DriveV3::DriveService.new
+        drive_service.authorization = drive_client
+        @file_list = drive_service.list_files(q: "'#{@display.google_folder_id}' in parents  and (mimeType contains 'image/' or mimeType contains 'video/')",
+          fields: 'files(id,mimeType,thumbnailLink,webContentLink)')
+        @images=@file_list.files.collect{|file |
+          {mime: file.mime_type, thumbnail: file.thumbnail_link, content: file.web_content_link.chomp('&export=download')}
+        }
+      rescue
+        flash.now[:notice]='There was a problem loading the images from the specified google folder.'
+      end
+    else
+      redirect_to new_group_category_display_path(@group,@category)
+      return
+    end
+
+
   end
 
   # GET /displays/new
@@ -22,17 +37,19 @@ class DisplaysController < ApplicationController
 
   # GET /displays/1/edit
   def edit
+    set_folder_name_and_link
   end
 
   # POST /displays
   # POST /displays.json
   def create
     @display = Display.new(display_params)
-
+    @display.category=@category
+    set_folder_name_and_link
     respond_to do |format|
       if @display.save
-        format.html { redirect_to @display, notice: 'Display was successfully created.' }
-        format.json { render :show, status: :created, location: @display }
+        format.html { redirect_to group_category_display_path(@group,@category), notice: 'Display was successfully created.' }
+        format.json { render :show, status: :created, location: group_category_display_path(@group,@category) }
       else
         format.html { render :new }
         format.json { render json: @display.errors, status: :unprocessable_entity }
@@ -45,8 +62,8 @@ class DisplaysController < ApplicationController
   def update
     respond_to do |format|
       if @display.update(display_params)
-        format.html { redirect_to @display, notice: 'Display was successfully updated.' }
-        format.json { render :show, status: :ok, location: @display }
+        format.html { redirect_to group_category_display_path(@group,@category), notice: 'Display was successfully updated.' }
+        format.json { render :show, status: :ok, location: group_category_display_path(@group,@category) }
       else
         format.html { render :edit }
         format.json { render json: @display.errors, status: :unprocessable_entity }
@@ -59,7 +76,7 @@ class DisplaysController < ApplicationController
   def destroy
     @display.destroy
     respond_to do |format|
-      format.html { redirect_to displays_url, notice: 'Display was successfully destroyed.' }
+      format.html { redirect_to @group, notice: 'Display was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -108,26 +125,36 @@ class DisplaysController < ApplicationController
           flash.now[:notice] = 'Permissions from your google account has expired. Please sign in with google again to renew the permissions.'
         end
         @google_token = account && account.refresh_token.length>0 && account.fresh_token
+        @google_id = account.id
         #google_token, @google_id is nill if refresh fails ( ie access has failed and fresh_token = '')
       end
     end
 
     def set_folder_name_and_link
       if @display && @display.google_account
+
         begin
-          drive_client = Signet::OAuth2::Client.new(access_token: @text_page.google_account.fresh_token)
+          drive_client = Signet::OAuth2::Client.new(access_token: @display.google_account.fresh_token)
           drive_service = Google::Apis::DriveV3::DriveService.new
           drive_service.authorization = drive_client
           file= drive_service.get_file(@display.google_folder_id, fields: 'name,web_view_link')
           @file_name=file.name
           @file_link=file.web_view_link
-        rescue
+        rescue Exception => e
+          puts e.message
         end
+      end
+    end
+
+    def check_created
+      if @display
+        redirect_to group_category_display_path(@group,@category)
+        return
       end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def display_params
-      params.require(:display).permit(:google_account_id, :google_folder_id, :display_type)
+      params.require(:display).permit(:title, :google_account_id, :google_folder_id, :display_type)
     end
 end

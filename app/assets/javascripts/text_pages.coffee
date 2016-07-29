@@ -9,8 +9,8 @@ root.onApiLoad=()->
 createPicker=()->
   picker = new google.picker.PickerBuilder().addView(google.picker.ViewId.DOCUMENTS).
        setOrigin(window.location.protocol + '//' + window.location.host).
-       setOAuthToken($('#task-form-info').data("token")).
-       setDeveloperKey($('#task-form-info').data("key")).
+       setOAuthToken($('#text-page-form-info').data("token")).
+       setDeveloperKey($('#text-page-form-info').data("key")).
        setCallback(pickerCallback).
        build()
   picker.setVisible(true)
@@ -27,7 +27,7 @@ pickerCallback=(data)->
    $('#text_page_file_id').val(file_id)
    $('#name-display').text(file_name)
    $('#name-display').attr('href',file_url)
-   $('#text_page_google_account_id').val($('#task-form-info').data("id"))
+   $('#text_page_google_account_id').val($('#text-page-form-info').data("id"))
 
 $(document).ready ->
   $(document).on('click','#text-page-select-btn',(event)->

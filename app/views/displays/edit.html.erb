@@ -1,6 +1,12 @@
-<h1>Editing Display</h1>
+<% provide(:title, "Edit #{@display.title && @display.title.length>0? @display.title : 'Display'}") %>
 
-<%= render 'form' %>
-
-<%= link_to 'Show', @display %> |
-<%= link_to 'Back', displays_path %>
+<div class="row">
+  <div class="col s12">
+    <h1>Edit <%=@display.title && @display.title.length>0? @display.title : 'Display'%></h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col s12 m9">
+    <%= render 'form' %>
+  </div>
+</div>

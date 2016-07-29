@@ -107,6 +107,12 @@ textarea.materialize-textarea{
   resize: none;
 }
 
+//google-picker
+.picker-dialog-content {
+position: relative;
+}
+
+
 //nav
 nav {
   @extend .lime;

@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20160729070732) do
   end
 
   create_table "displays", force: :cascade do |t|
+    t.string   "title"
     t.integer  "category_id"
     t.integer  "google_account_id"
     t.string   "google_folder_id"
