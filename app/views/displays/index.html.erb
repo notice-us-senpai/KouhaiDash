@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Displays</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Google account</th>
+      <th>Google folder</th>
+      <th>Display type</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @displays.each do |display| %>
+      <tr>
+        <td><%= display.category_id %></td>
+        <td><%= display.google_account_id %></td>
+        <td><%= display.google_folder_id %></td>
+        <td><%= display.display_type %></td>
+        <td><%= link_to 'Show', display %></td>
+        <td><%= link_to 'Edit', edit_display_path(display) %></td>
+        <td><%= link_to 'Destroy', display, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Display', new_display_path %>

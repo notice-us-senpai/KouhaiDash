@@ -1,0 +1,40 @@
+<%= form_for([@group,@category,@display], url: group_category_display_path(@group,@category)) do |f| %>
+  <% if @display.errors.any? %>
+    <div class="col s12">
+      <div class="alert">
+        <p>The form contains <%= pluralize(@display.errors.count, "error") %>.</p>
+      </div>
+      <ul class='alert'>
+      <% @display.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="input-field col s12">
+    <%= f.label :display_type %><br>
+    <%= f.number_field :display_type %>
+  </div>
+  <%if @google_token%>
+      <div class="col s12">
+
+        <p><button id='display-select-btn' class='btn waves-effect waves-light'>Google Drive Folder</button>
+        <%= f.text_field :google_folder_id, class: 'google_folder_id', style: 'display:none'%>
+        <a id='name-display'<%if @file_link %> href="<%=@file_link%>" <%end%> >
+          <%=@file_name||"No file selected."%>
+        </a></p>
+      </div>
+    <%=f.hidden_field :google_account_id, class: 'google_id'%>
+  <%else%>
+    <div id='google-authenicate' class='col s12'>
+      <br>
+      <%=link_to 'Sign in and load from Google Drive',group_category_display_auth_path(@group,@category),class:'btn waves-effect waves-light'%>
+    </div>
+  <%end%>
+  <div class="actions col s12">
+    <p><br><button class="btn-large waves-effect waves-light" type="submit" name="action">Submit
+      <i class="material-icons right">send</i>
+    </button></p>
+  </div>
+<% end %>

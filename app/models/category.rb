@@ -6,6 +6,7 @@ class Category < ActiveRecord::Base
   has_one :text_page, dependent: :destroy
   has_one :calendar, dependent: :destroy
   has_many :contacts, dependent: :destroy
+  has_one :display, dependent: :destroy
   scope :is_public, ->{ where(is_public: true)}
   # validations
   validates :name,

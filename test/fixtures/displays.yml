@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  category_id: 1
+  google_account_id: 1
+  google_folder_id: MyString
+  display_type: 1
+
+two:
+  category_id: 1
+  google_account_id: 1
+  google_folder_id: MyString
+  display_type: 1

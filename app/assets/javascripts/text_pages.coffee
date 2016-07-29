@@ -43,5 +43,5 @@ $(document).on "page:change", ->
   img = document.getElementById("contents").getElementsByTagName("img")
   for i in [0..img.length-1]
     img[i].style.height= "auto"
-    img[i].className = "img-responsive"
+    img[i].className = "responsive-img"
     img[i].parentElement.style=""

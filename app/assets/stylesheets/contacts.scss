@@ -2,14 +2,12 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-// .contact {
-// 	border: 4px groove snow;
-// }
-//
-// .contact-text {
-// 	padding: 16px 0px;
-// }
-//
-// .contact-details {
-// 	list-style-type: none;
-// }
+//contact
+.contact-card{
+  .card-content{
+    a{
+      @extend .amber-text, .text-accent-1;
+    }
+    @extend .amber, .darken-2, .white-text;
+  }
+}

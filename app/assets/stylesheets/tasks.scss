@@ -1,3 +1,26 @@
 // Place all the styles related to the tasks controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+//task
+.task-done-card{
+  .card-content{
+    @extend .green, .white-text;
+  }
+  .card-action a{
+    @extend .green-text;
+  }
+}
+.task-not-done-card{
+  .card-content{
+    @extend .red, .accent-1;
+  }
+  .card-action a{
+    @extend .red-text, .text-accent-1;
+  }
+}
+//datepicker-fix
+#datepicker-container {
+  position: fixed;
+  z-index: 10000;
+}

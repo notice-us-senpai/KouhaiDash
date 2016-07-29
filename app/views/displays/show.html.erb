@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @display.category_id %>
+</p>
+
+<p>
+  <strong>Google account:</strong>
+  <%= @display.google_account_id %>
+</p>
+
+<p>
+  <strong>Google folder:</strong>
+  <%= @display.google_folder_id %>
+</p>
+
+<p>
+  <strong>Display type:</strong>
+  <%= @display.display_type %>
+</p>
+
+<%= link_to 'Edit', edit_display_path(@display) %> |
+<%= link_to 'Back', displays_path %>
