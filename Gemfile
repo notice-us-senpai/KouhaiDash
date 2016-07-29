@@ -55,10 +55,10 @@ group :production do
 end
 
 gem 'faker'
-gem 'will_paginate'
+# gem 'will_paginate'
 
-gem 'carrierwave', '~> 0.10.0'
-gem 'mini_magick', '~> 4.3'
+# gem 'carrierwave', '~> 0.10.0'
+# gem 'mini_magick', '~> 4.3'
 
 gem 'google-api-client', '~> 0.9',
   require: ['google/apis/calendar_v3', 'google/apis/drive_v3']
