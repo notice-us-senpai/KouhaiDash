@@ -11,6 +11,10 @@ position: relative;
   @extend .lime,.z-depth-1;
 }
 
+.indicators{
+  z-index: 10;
+}
+
 .display-image{
   display: block;
 }

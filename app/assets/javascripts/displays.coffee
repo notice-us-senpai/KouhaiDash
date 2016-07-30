@@ -92,7 +92,7 @@ $(document).ready ->
 
 $(document).on "page:change", ->
   return unless $(".displays.show").length > 0
-  $('.slider').slider({full_width: true})
+  $('.slider').slider({full_width: true,height: 450})
   $('.display-grid-item').width('auto').height('auto')
   root = exports ? this
   root.grid = $('.display-grid').isotope({
