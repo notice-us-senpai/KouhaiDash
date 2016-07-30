@@ -36,7 +36,7 @@
       <% else %>
       <div class='col s12 display-grid'>
         <% @images.each do |image| %>
-          <div class='display-grid-item'>
+          <div class='display-grid-item '>
             <% if @supported_formats.include? image[:mime] %>
               <%= image_tag image[:thumbnail], class:'display-image display-toggle',
                 data:{toggle: image[:content], full: false, rotation: image[:rotation]}%>

@@ -35,22 +35,22 @@ $(document).ready ->
 
   $(document).on('click','.display-toggle',->
     if $(this).parent().height()>=$(this).parent().width()
-      $(this).parent().toggleClass('display-tall')
+      $(this).parent().toggleClass('display-tall loading')
     else
-      $(this).parent().toggleClass('display-wide')
+      $(this).parent().toggleClass('display-wide loading')
     $(this).css('transform','')
     $(this).width('')
     $(this).parent().width('')
     $(this).height('')
     $(this).parent().height('')
-
+    $(this).attr('alt',' ')
     $(this).data('full', !($(this).data('full')) )
-
     $(this).imagesLoaded().always( (instance)->
       images= instance.images
       for image in images
         img= $(image.img)
         parent=img.parent()
+        parent.toggleClass('loading')
         if img.data('full')
           img.addClass('full display-rotate-'+img.data('rotation'))
           if img.hasClass('display-rotate-1') && parent.hasClass('display-tall')
@@ -70,7 +70,7 @@ $(document).ready ->
           layoutMode: 'packery',
           itemSelector: '.display-grid-item',
           packery: {
-            gutter: 0
+            gutter: 10
           }
         })
         grid.on( 'layoutComplete', ->
@@ -99,9 +99,9 @@ $(document).on "page:change", ->
     layoutMode: 'packery',
     itemSelector: '.display-grid-item',
     packery: {
-      gutter: 0
+      gutter: 10
     }
   })
-  root.grid.imagesLoaded().progress(->
+  root.grid.imagesLoaded().progress((instance,image)->
     root.grid.isotope('layout')
   )

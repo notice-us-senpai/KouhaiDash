@@ -23,7 +23,7 @@ class DisplaysController < ApplicationController
         end
 
         #load images and videos
-        @file_list = drive_service.list_files(q: "'#{@display.google_folder_id}' in parents and (mimeType contains 'image/' or mimeType contains 'video/')",
+        @file_list = drive_service.list_files(q: "'#{@display.google_folder_id}' in parents and (mimeType contains 'image/' or mimeType contains 'video/') and trashed != true",
           fields: 'files(imageMediaMetadata/rotation,id,mimeType,thumbnailLink,webContentLink,webViewLink)')
         @images=@file_list.files.collect{|file |
           {mime: file.mime_type, thumbnail: file.thumbnail_link,
