@@ -32,17 +32,75 @@ $(document).ready ->
     event.preventDefault();
     createPicker();
   )
-  # $(document).on('click','.display-image.thumb',->
-  #   $(this).attr("src", $(this).data('full'))
-  #   $(this).removeClass('thumb')
-  # )
+
+  $(document).on('click','.display-toggle',->
+    if $(this).parent().height()>=$(this).parent().width()
+      $(this).parent().toggleClass('display-tall')
+    else
+      $(this).parent().toggleClass('display-wide')
+    $(this).css('transform','')
+    $(this).width('')
+    $(this).parent().width('')
+    $(this).height('')
+    $(this).parent().height('')
+
+    $(this).data('full', !($(this).data('full')) )
+
+    $(this).imagesLoaded().always( (instance)->
+      images= instance.images
+      for image in images
+        img= $(image.img)
+        parent=img.parent()
+        if img.data('full')
+          img.addClass('full display-rotate-'+img.data('rotation'))
+          if img.hasClass('display-rotate-1') && parent.hasClass('display-tall')
+            img.width('80vh')
+            img.height('auto')
+            parent.width(img.height())
+            parent.height(img.width())
+          if img.hasClass('display-rotate-1') && parent.hasClass('display-wide')
+            img.width('auto')
+            img.height(parent.parent().width())
+            parent.width(img.height())
+            parent.height(img.width())
+        else
+          img.removeClass('full display-rotate-'+img.data('rotation'))
+
+        grid=$('.display-grid').isotope({
+          layoutMode: 'packery',
+          itemSelector: '.display-grid-item',
+          packery: {
+            gutter: 0
+          }
+        })
+        grid.on( 'layoutComplete', ->
+          $('.display-wide .display-rotate-1').each(->
+            displace=parseInt(-0.5*parseFloat($(this).parent().width()) + 0.5*parseFloat($(this).parent().height()))+'px'
+            $(this).css('transform','rotate(90deg) translate('+displace+','+displace+')')
+          )
+          $('.display-tall .display-rotate-1').each(->
+            displace=parseInt(-0.5 * parseFloat($(this).parent().width()) + 0.5 * parseFloat($(this).parent().height()))+'px'
+            $(this).css('transform','rotate(90deg) translate('+displace+','+displace+')')
+          )
+        )
+    )
+    swap = $(this).attr('src')
+    $(this).attr('src',"")
+    $(this).attr('src',$(this).data('toggle'))
+    $(this).data('toggle',swap)
+  )
 
 $(document).on "page:change", ->
   return unless $(".displays.show").length > 0
   $('.slider').slider({full_width: true})
+  $('.display-grid-item').width('auto').height('auto')
   root = exports ? this
-  root.grid=$('.display-grid').isotope({
-    layoutMode: 'packery'
+  root.grid = $('.display-grid').isotope({
+    layoutMode: 'packery',
+    itemSelector: '.display-grid-item',
+    packery: {
+      gutter: 0
+    }
   })
   root.grid.imagesLoaded().progress(->
     root.grid.isotope('layout')

@@ -24,10 +24,10 @@
           <ul class="slides">
             <% @images.each do |image| %>
                 <li>
-                  <% if image[:mime][0..4]== 'video' %>
-                    <a href='<%=image[:view]%>' target="_blank"><%= image_tag image[:thumbnail], class:'responsive-img'%></a>
+                  <% if @supported_formats.include? image[:mime] %>
+                    <%= image_tag image[:content], class:"responsive-img display-rotate-#{image[:rotation]}"%>
                   <% else %>
-                    <%= image_tag image[:content], class:'responsive-img'%>
+                    <a href='<%=image[:view]%>' target="_blank"><%= image_tag image[:thumbnail], class:'responsive-img'%></a>
                   <% end %>
                 </li>
             <% end %>
@@ -36,9 +36,14 @@
       <% else %>
       <div class='col s12 display-grid'>
         <% @images.each do |image| %>
-        <div class='grid-item'>
-          <a href='<%=image[:view]%>' target="_blank"><%= image_tag image[:thumbnail], class:'display-image'%></a>
-        </div>
+          <div class='display-grid-item'>
+            <% if @supported_formats.include? image[:mime] %>
+              <%= image_tag image[:thumbnail], class:'display-image display-toggle',
+                data:{toggle: image[:content], full: false, rotation: image[:rotation]}%>
+            <% else %>
+              <a href='<%=image[:view]%>' target="_blank"><%= image_tag image[:thumbnail], class:'display-image'%></a>
+            <% end %>
+          </div>
         <% end %>
       </div>
       <% end %>

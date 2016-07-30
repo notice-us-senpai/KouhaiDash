@@ -7,7 +7,33 @@
 position: relative;
 }
 
-.display-image:not(.active){
+.display-image:not(.full){
   max-width: 300px;
   max-height: 300px;
+}
+
+.display-rotate-1{
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.display-wide:not(.display-rotate-1){
+  width: 100%;
+  height: auto;
+  .full{
+    width: 100%;
+    height: auto;
+  }
+}
+
+.display-tall:not(.display-rotate-1){
+  height: 80vh;
+  width: auto;
+  .full{
+    height: 100%;
+    width: auto;
+  }
 }

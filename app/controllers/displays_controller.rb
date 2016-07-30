@@ -8,7 +8,7 @@ class DisplaysController < ApplicationController
   # GET /displays/1
   # GET /displays/1.json
   def show
-    @set = Set.new [1,2]
+    @supported_formats = Set.new ["image/jpeg","image/gif","image/png","image/bmp"]
     if @display
       begin
         #load using the uploader's google_account
@@ -24,10 +24,11 @@ class DisplaysController < ApplicationController
 
         #load images and videos
         @file_list = drive_service.list_files(q: "'#{@display.google_folder_id}' in parents and (mimeType contains 'image/' or mimeType contains 'video/')",
-          fields: 'files(id,mimeType,thumbnailLink,webContentLink,webViewLink)')
+          fields: 'files(imageMediaMetadata/rotation,id,mimeType,thumbnailLink,webContentLink,webViewLink)')
         @images=@file_list.files.collect{|file |
           {mime: file.mime_type, thumbnail: file.thumbnail_link,
-            content: file.web_content_link.chomp('&export=download'), view: file.web_view_link}
+            content: file.web_content_link.chomp('&export=download'), view: file.web_view_link,
+            rotation: (file.image_media_metadata && file.image_media_metadata.rotation)||0 }
         }
 
       rescue
