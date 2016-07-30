@@ -1,3 +1,24 @@
 // Place all the styles related to the groups controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@import "materialize";
+//group
+.group-card{
+  .card-content{
+    @extend .indigo, .darken-2, .white-text;
+    a{
+      @extend .indigo-text, .text-accent-1;
+    }
+  }
+  .card-action a{
+    @extend .indigo-text, .text-accent-1;
+  }
+}
+.group-info{
+  .card-content{
+    @extend .teal, .accent-4, .white-text;
+    a,.card-title{
+      @extend .teal-text, .text-accent-1;
+    }
+  }
+}

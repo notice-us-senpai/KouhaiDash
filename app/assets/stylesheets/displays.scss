@@ -1,0 +1,47 @@
+// Place all the styles related to the displays controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "materialize";
+//google-picker
+.picker-dialog-content {
+position: relative;
+}
+
+.display-grid-item{
+  @extend .lime,.z-depth-1;
+}
+
+.display-image{
+  display: block;
+}
+
+.display-image:not(.full){
+  max-width: 300px;
+  max-height: 300px;
+}
+
+.display-rotate-1{
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.display-wide:not(.display-rotate-1):not(.loading){
+  width: 100%;
+  height: auto;
+  .full{
+    width: 100%;
+    height: auto;
+  }
+}
+
+.display-tall:not(.display-rotate-1):not(.loading){
+  height: 80vh;
+  width: auto;
+  .full{
+    height: 100%;
+    width: auto;
+  }
+}

@@ -45,37 +45,6 @@ a:not(#brand){
   bottom: auto;
 }
 
-//contact
-.contact-card{
-  .card-content{
-    a{
-      @extend .amber-text, .text-accent-1;
-    }
-    @extend .amber, .darken-2, .white-text;
-  }
-}
-
-//group
-.group-card{
-  .card-content{
-    @extend .indigo, .darken-2, .white-text;
-    a{
-      @extend .indigo-text, .text-accent-1;
-    }
-  }
-  .card-action a{
-    @extend .indigo-text, .text-accent-1;
-  }
-}
-.group-info{
-  .card-content{
-    @extend .teal, .accent-4, .white-text;
-    a,.card-title{
-      @extend .teal-text, .text-accent-1;
-    }
-  }
-}
-
 //dashboard
 .dash-members{
   .card-content{
@@ -131,57 +100,18 @@ a:not(#brand){
   }
 }
 
-
-//google-picker
-.picker-dialog-content {
-position: relative;
-}
-
-//task
-.task-done-card{
-  .card-content{
-    @extend .green, .white-text;
-  }
-  .card-action a{
-    @extend .green-text;
-  }
-}
-.task-not-done-card{
-  .card-content{
-    @extend .red, .accent-1;
-  }
-  .card-action a{
-    @extend .red-text, .text-accent-1;
-  }
-}
-//datepicker-fix
-#datepicker-container {
-  position: fixed;
-  z-index: 10000;
-}
-
-//calendar
-.day-6, .day-0{
-  @extend .orange-text, .text-darken-2;
-}
-.day-5,.day-4,.day-3,.day-2,.day-1{
-  @extend .lime-text, .text-darken-2;
-}
-.calendar-td{
-  vertical-align: top;
-  overflow: hidden;
-  padding: 0px 2px;
-}
-.calendar-table{
-  table-layout:fixed
-}
-
 //fix for textarea resizing issue
 textarea.materialize-textarea{
   min-height: 80px;
   overflow-y: scroll;
   resize: none;
 }
+
+//google-picker
+.picker-dialog-content {
+position: relative;
+}
+
 
 //nav
 nav {
@@ -255,159 +185,7 @@ header, main, footer {
 // fix for IE11
 :-ms-fullscreen, :root body { height:100vh; }
 
-
-
 /* Jiayee */
 .picker__date-display {
   display: none;
 }
-
-// .jumbotron {
-//   background-color: rgba(255, 255, 255, 0.9);
-//   font-family: 'Pacifico', cursive;
-//   margin-top: 1em;
-// }
-// .jumbotron > h1 {
-//   font-size: 3.6em;
-// }
-//
-// footer {
-//   color: black;
-//   font-family: 'Nosifer', cursive;
-//   font-size: 0.8em;
-//   font-weight: normal;
-// }
-//
-// .form-control, .checkbox, .btn {
-//   font-size: 1.2em;
-//   /*letter-spacing: 0.1em;*/
-//   margin-bottom: 0.8em;
-//   padding: 0.4em;
-// }
-//
-// .row {
-//   background-color: rgba(255, 255, 255, 0.9);
-//   padding: 0.5em 2em;
-// }
-//
-// .row > h1 {
-//   /*background-color: rgba(204, 255, 255, 0.25);
-//   border: 0.1em dashed black;*/
-//   line-height: 1.6em;
-// }
-//
-// a {
-//   padding: 0.2em;
-// }
-//
-// a:hover {
-//   background-color: rgba(204, 255, 255, 0.5);
-//   /*border: 0.2em groove mintcream;*/
-//   color: midnightblue;
-//   /*font-size: 1.2em;
-//   line-height: 1.6em;
-//   padding: 0.2em default;*/
-//   text-decoration: none;
-// }
-//
-// #menu-toggle {
-//   margin-top: 1em;
-// }
-//
-// .not-row {
-//   margin-bottom: 4em;
-// }
-//
-// #error_explanation {
-//   padding-bottom: 0.1em;
-// }
-//
-// /* Smartphones (portrait and landscape) ----------- */
-// @media only screen
-// and (min-device-width : 320px)
-// and (max-device-width : 480px) {
-//   body {
-//     font-size: 1em;
-//   }
-//
-//   #wrapper.toggled {
-//     padding-left: 100%;
-//   }
-//
-//   #sidebar-wrapper {
-//     border-radius: 0%;
-//     left: 100%;
-//     margin-left: -100%;
-//   }
-//
-//   #wrapper.toggled #sidebar-wrapper {
-//     width: 100%;
-//   }
-//
-//   #wrapper.toggled #page-content-wrapper {
-//     margin-right: -100%;
-//   }
-//
-//   .sidebar-nav {
-//     width: 100%;
-//   }
-//
-//   .menu-toggle {
-//     text-align: left;
-//   }
-//
-// }
-//
-// /* Smartphones (landscape) ----------- */
-// @media only screen
-// and (min-width : 321px) {
-//   /* Styles */
-// }
-//
-// /* Smartphones (portrait) ----------- */
-// @media only screen
-// and (max-width : 320px) {
-//   /* Styles */
-// }
-//
-// /* iPads (portrait and landscape) ----------- */
-// @media only screen
-// and (min-device-width : 768px)
-// and (max-device-width : 1024px) {
-//   /* Styles */
-// }
-//
-// /* iPads (landscape) ----------- */
-// @media only screen
-// and (min-device-width : 768px)
-// and (max-device-width : 1024px)
-// and (orientation : landscape) {
-//   /* Styles */
-// }
-//
-// /* iPads (portrait) ----------- */
-// @media only screen
-// and (min-device-width : 768px)
-// and (max-device-width : 1024px)
-// and (orientation : portrait) {
-//   /* Styles */
-// }
-//
-// /* Desktops and laptops ----------- */
-// @media only screen
-// and (min-width : 1224px) {
-//   /* Styles */
-// }
-//
-// /* Large screens ----------- */
-// @media only screen
-// and (min-width : 1824px) {
-// /* Styles */
-// }
-//
-// /* iPhone 4 ----------- */
-// @media
-// only screen and (-webkit-min-device-pixel-ratio : 1.5),
-// only screen and (min-device-pixel-ratio : 1.5) {
-//   /* Styles */
-// }

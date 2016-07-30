@@ -1,3 +1,19 @@
 // Place all the styles related to the calendars controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@import "materialize";
+//calendar
+.day-6, .day-0{
+  @extend .orange-text, .text-darken-2;
+}
+.day-5,.day-4,.day-3,.day-2,.day-1{
+  @extend .lime-text, .text-darken-2;
+}
+.calendar-td{
+  vertical-align: top;
+  overflow: hidden;
+  padding: 0px 2px;
+}
+.calendar-table{
+  table-layout:fixed
+}

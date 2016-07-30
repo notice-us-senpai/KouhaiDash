@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160724163601) do
+ActiveRecord::Schema.define(version: 20160729070732) do
 
   create_table "calendars", force: :cascade do |t|
     t.string   "name"
@@ -50,6 +50,19 @@ ActiveRecord::Schema.define(version: 20160724163601) do
     t.datetime "updated_at",   null: false
     t.integer  "category_id"
   end
+
+  create_table "displays", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "category_id"
+    t.integer  "google_account_id"
+    t.string   "google_folder_id"
+    t.integer  "display_type"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "displays", ["category_id"], name: "index_displays_on_category_id"
+  add_index "displays", ["google_account_id"], name: "index_displays_on_google_account_id"
 
   create_table "events", force: :cascade do |t|
     t.integer  "calendar_id"

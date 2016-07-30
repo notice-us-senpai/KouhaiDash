@@ -146,6 +146,8 @@ Rails.application.routes.draw do
       resource :text_page, only: [:create, :new, :show, :update, :edit]
       get 'text_page/to_authenticate', to: 'text_pages#to_authenticate', as: 'text_page_auth'
       resources :contacts
+      resource :display
+      get 'display/to_authenticate', to: 'displays#to_authenticate', as: 'display_auth'
       resource :calendar, only: [:create, :new, :show, :update, :edit]
       resources :events
       get 'calendar/to_authenticate', to: 'calendars#to_authenticate', as: 'calendar_auth'
