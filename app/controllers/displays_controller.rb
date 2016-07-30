@@ -8,17 +8,28 @@ class DisplaysController < ApplicationController
   # GET /displays/1
   # GET /displays/1.json
   def show
+    @set = Set.new [1,2]
     if @display
       begin
         #load using the uploader's google_account
         drive_client = Signet::OAuth2::Client.new(access_token: @display.google_account.fresh_token)
         drive_service = Google::Apis::DriveV3::DriveService.new
         drive_service.authorization = drive_client
-        @file_list = drive_service.list_files(q: "'#{@display.google_folder_id}' in parents  and (mimeType contains 'image/' or mimeType contains 'video/')",
-          fields: 'files(id,mimeType,thumbnailLink,webContentLink)')
+
+        #set viewing permission of folder
+        begin
+          result=drive_service.create_permission(@display.google_folder_id,Google::Apis::DriveV3::Permission.new(role: 'reader', type: 'anyone'))
+        rescue
+        end
+
+        #load images and videos
+        @file_list = drive_service.list_files(q: "'#{@display.google_folder_id}' in parents and (mimeType contains 'image/' or mimeType contains 'video/')",
+          fields: 'files(id,mimeType,thumbnailLink,webContentLink,webViewLink)')
         @images=@file_list.files.collect{|file |
-          {mime: file.mime_type, thumbnail: file.thumbnail_link, content: file.web_content_link.chomp('&export=download')}
+          {mime: file.mime_type, thumbnail: file.thumbnail_link,
+            content: file.web_content_link.chomp('&export=download'), view: file.web_view_link}
         }
+
       rescue
         flash.now[:notice]='There was a problem loading the images from the specified google folder.'
       end

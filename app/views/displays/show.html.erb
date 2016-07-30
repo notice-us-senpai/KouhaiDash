@@ -24,7 +24,11 @@
           <ul class="slides">
             <% @images.each do |image| %>
                 <li>
-                  <%= image_tag image[:content]%>
+                  <% if image[:mime][0..4]== 'video' %>
+                    <a href='<%=image[:view]%>' target="_blank"><%= image_tag image[:thumbnail], class:'responsive-img'%></a>
+                  <% else %>
+                    <%= image_tag image[:content], class:'responsive-img'%>
+                  <% end %>
                 </li>
             <% end %>
           </ul>
@@ -33,7 +37,7 @@
       <div class='col s12 display-grid'>
         <% @images.each do |image| %>
         <div class='grid-item'>
-          <%= image_tag image[:thumbnail]%>
+          <a href='<%=image[:view]%>' target="_blank"><%= image_tag image[:thumbnail], class:'display-image'%></a>
         </div>
         <% end %>
       </div>

@@ -7,7 +7,7 @@
 position: relative;
 }
 
-.display-radio{
-  vertical-align: middle;
-  display: block;
+.display-image:not(.active){
+  max-width: 300px;
+  max-height: 300px;
 }

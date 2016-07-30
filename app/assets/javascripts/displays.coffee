@@ -32,6 +32,10 @@ $(document).ready ->
     event.preventDefault();
     createPicker();
   )
+  # $(document).on('click','.display-image.thumb',->
+  #   $(this).attr("src", $(this).data('full'))
+  #   $(this).removeClass('thumb')
+  # )
 
 $(document).on "page:change", ->
   return unless $(".displays.show").length > 0
