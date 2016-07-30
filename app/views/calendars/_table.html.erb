@@ -18,7 +18,7 @@
       <td class='calendar-td'>
         <p class='day-<%=left%>'><%=day%><br>
         <%@day_events[day-1].each do |hash|%>
-          <a class='modal-trigger calendar-link grey' style="display:block;" href='#<%='google_' if hash[:google]%>modal<%=hash[:id]%>'><%=hash[:event].summary || '(No Title)'%></a>
+          <a class='modal-trigger calendar-link' style="display:block;" href='#<%='google_' if hash[:google]%>modal<%=hash[:id]%>'><%=hash[:event].summary || '(No Title)'%></a>
         <%end%>
         </p>
       </td>
