@@ -186,6 +186,10 @@ header, main, footer {
 :-ms-fullscreen, :root body { height:100vh; }
 
 /* Jiayee */
+html {
+  word-wrap: break-word;
+}
+
 .picker__date-display {
   display: none;
 }
