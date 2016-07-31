@@ -186,7 +186,7 @@ header, main, footer {
 :-ms-fullscreen, :root body { height:100vh; }
 
 /* Jiayee */
-html {
+html:not(#brand) {
   word-wrap: break-word;
 }
 

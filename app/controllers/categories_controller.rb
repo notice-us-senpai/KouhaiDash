@@ -109,7 +109,7 @@ class CategoriesController < ApplicationController
     end
 
     def set_type_no_array
-      @type_no_array = [["Calendar",0],["Contacts",1],["Text Page",2],["Tasks",3],["Image Display",4]]
+      @type_no_array = [["Calendar",0],["Contacts",1],["Text Page",2],["Tasks",3],["Gallery",4]]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
