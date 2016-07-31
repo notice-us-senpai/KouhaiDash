@@ -3,7 +3,11 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).on "page:change", ->
   return unless $(".users.show").length > 0
-  $('.dashboard-grid').isotope({
+  root = exports ? this
+  root.grid=$('.dashboard-grid').isotope({
     itemSelector: '.grid-item',
     percentPosition: true
   })
+  root.grid.imagesLoaded().progress(->
+    root.grid.isotope('layout')
+  )
