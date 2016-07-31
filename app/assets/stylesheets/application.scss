@@ -190,6 +190,10 @@ html:not(.brand) {
   word-wrap: break-word;
 }
 
+.brand {
+  word-wrap: normal;
+}
+
 .picker__date-display {
   display: none;
 }
