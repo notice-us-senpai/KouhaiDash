@@ -33,7 +33,7 @@ h1 {
 }
 
 //word-break anchors
-a:not(#brand){
+a:not(.brand){
   overflow-wrap: break-word;
   word-wrap: break-word;
 }
@@ -117,9 +117,9 @@ position: relative;
 nav {
   @extend .lime;
 }
-#brand {
+.brand {
   font-weight:lighter;
-  font-size: 2.2em;
+  font-size: 2.2em !important;
   @extend .lime-text, .text-darken-4;
 }
 #menu-icon{
@@ -186,7 +186,7 @@ header, main, footer {
 :-ms-fullscreen, :root body { height:100vh; }
 
 /* Jiayee */
-html:not(#brand) {
+html:not(.brand) {
   word-wrap: break-word;
 }
 

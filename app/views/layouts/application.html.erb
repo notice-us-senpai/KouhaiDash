@@ -56,7 +56,7 @@
       <div class="navbar-fixed">
         <nav>
           <ul id='slide-out' class='side-nav fixed'>
-            <li><%= link_to 'KouhaiDash!', root_path, id: 'brand'%></li>
+            <li><%= link_to 'KouhaiDash!', root_path, class: 'brand'%></li>
 
             <% if @group && @group.id %>
               <li><%= link_to @group.name, group_path(@group) %></li>
