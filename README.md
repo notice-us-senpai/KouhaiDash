@@ -24,6 +24,6 @@ An user can choose to register and login through the native system or sign in wi
 ![Groups index page](/README/group-index.png)
 Users can access the Groups Index page from the side navigation bar. On this page, users can search for a particular group or create their group.
 
-![Categories](/README/manage-category.png)
+![Categories](/README/manage-categories.png)
 ![Adding Category](/README/adding-new-category.png)
 Users can add features(categories) to their group page through the __Manage Sidebar__ tab and reorder them in the side navigation bar.
