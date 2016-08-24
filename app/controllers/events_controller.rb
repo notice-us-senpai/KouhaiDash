@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_variables
   before_action :check_view_auth
-  before_action :check_edit_auth, except: [:index, :show, :google_show]
+  before_action :check_edit_auth, except: [:index, :show, :google_show, :index_period]
   before_action :check_created
   before_action :set_event, only: [:edit, :update, :show, :destroy, :export_event]
   before_action :set_google_event, only:[:google_edit, :google_show, :google_update]
