@@ -72,14 +72,14 @@
               <%end%>
               <%if @authorised_member %>
                 <li>
-                  <%= link_to "Edit this sidebar", group_categories_path(@group) %>
+                  <%= link_to "Manage Sidebar", group_categories_path(@group) %>
                 </li>
               <%end%>
             <%else%>
+              <li>
+                <%= link_to "Groups", groups_path %>
+              </li>
               <% if logged_in? %>
-                <li>
-                  <%= link_to "Groups", groups_path %>
-                </li>
                 <li>
                   <%= link_to "My Profile", current_user %>
                 </li>
